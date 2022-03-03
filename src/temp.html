@@ -37,8 +37,49 @@
           <button type="button" aria-label="add new task">+</button>        
         </div>      
       </main>  
-      
+
     </div>
+    <div class="task-modal modal">
+      <div class="modal-header">
+        <h2>Create a new task...</h2>
+      </div>
+      <form action="" class="modal-form">
+        <input type="text" aria-label="title of your task"  placeholder="Go grocery shopping" required>
+        <input type="text" aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream">
+        <input type="text" placeholder="something else?">
+        <div>
+          <label for="due-date">Due date:</label>
+          <input type="date" id="due-date">
+        </div>
+        <div>
+          <div>Priority:</div>
+
+          <label>
+            <input type="radio" name="priority" value="low" class="" required>
+            Low
+          </label>
+
+          <label>
+            <input type="radio" name="priority" value="medium" class="" required>
+            Medium
+          </label>
+
+          <label>
+            <input type="radio" name="priority" value="high" class="" required>
+            High 
+          </label>
+
+          <label>
+            <input type="radio" name="priority" value="very-high" class="" required>
+            Very high
+          </label>
+
+        </div>
+        <input type="submit" class="add-task-btn" value="Add task">
+      </form>
+    </div>
+    
+    <div class="modal-overlay"></div>
   </body>
   </html>
   
