@@ -6,15 +6,9 @@
   box-sizing: border-box;
 }
 
-.container {
-  background-color: silver;
-  display: flex;
-  justify-content: space-around;
-}
-
 h1 {
   background-color: hsl(194deg 100% 22%);
-  font-size: 6rem;
+  font-size: 4rem;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
@@ -22,8 +16,31 @@ h1 {
   text-shadow: 0px 3px 3px hsl(0deg 0% 100% / 80%) ;
 }
 
+.container {
+  background-color: silver;
+  display: flex;
+}
+
+nav {
+  background: lightslategrey;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  width: 300px;
+  min-width: 200px;
+  min-height: 100vh;
+}
+
+main {
+  background-color: violet;
+  padding: 30px;
+  margin: 0 auto;
+  width: 1000px;
+}
+
 .modal {
-  background-color: lightblue;
+  background-color: lightblue; 
   width: 600px;
   height: 400px;
   max-width: 100%;
