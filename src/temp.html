@@ -16,8 +16,14 @@
     <div class="container">
 
       <nav class="side-bar">
-        <h2>Project List</h2>
-        <div class="project-list-container">
+        <div class="default-projects">
+          <ul>
+            <li>Overview</li>
+            <li>Due today</li>
+          </ul>
+        </div>
+        <div class="user-projects-container">
+          <h2>Project List</h2>
           <ul>
             <li class="active-project">Project 1</li>
             <li class="active-project">Project 2</li>
@@ -25,21 +31,24 @@
           </ul>
           <button type="button" aria-label="add new project" class="add-button">+</button>
         </div>
+        <h2>Notes</h2>
       </nav>
       
-      <main class="task-list-container">
-        <h2>Task List</h2>
-        <div class="task-list">           
-          <ul>                
-            <li>Task 1</li>               
-            <li>Task 2</li>           
-          </ul>            
-          <button type="button" aria-label="add new task">+</button>        
-        </div>      
+      <main>
+        <div class="task-list-container">
+          <h2>Task List</h2>
+          <div class="task-list">
+            <ul>
+              <li>Task 1</li>
+              <li>Task 2</li>
+            </ul>
+            <button type="button" aria-label="add new task">+</button>
+          </div>
+        </div>     
       </main>  
 
     </div>
-    <div class="task-modal modal">
+    <div class="task-modal modal closed">
       <div class="modal-header">
         <h2>Create a new task...</h2>
       </div>
