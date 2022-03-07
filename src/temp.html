@@ -9,7 +9,7 @@
   <body>
 
     <header>
-      <h1>Productivity Helper</h1>
+      <h1>Do It Now</h1>
       <button class="hamburger-button"></button>
     </header>
 
@@ -19,35 +19,42 @@
         <div>
           <div class="default-projects">
             <ul>
-              <li>Overview</li>
+              <li>All</li>
               <li>Due today</li>
               <li>Due this week</li>
+              <li>Important</li>
+              <li>Completed</li>
+              <li>Notes</li>
             </ul>
           </div>
           <div class="user-projects-container">
-            <h2>Project List</h2>
+            <div class="title-and-btn-container">
+              <h2>Project List</h2>
+              <button type="button" aria-label="add new project" class="add-button"></button>
+            </div>
             <div class="project-list">
               <ul>
                 <li class="active-project">Project 1</li>
                 <li class="active-project">Project 2</li>
                 <li class="active-project">Project 3</li>
               </ul>
-              <button type="button" aria-label="add new project" class="add-button">+</button>
             </div>
           </div>
-          <h2 class="notes-heading">Notes</h2>
         </div>
       </nav>
       
       <main>
         <div class="task-list-container">
-          <h2>active project title</h2>
+          <div class="title-and-btn-container">
+            <h2>active project title</h2>
+            <button type="button" aria-label="add new task" class="add-button"></button>
+          </div>
+          <p>Tasks <span>(0)</span></p>
           <div class="task-list">
             <ul>
               <li>Task 1</li>
               <li>Task 2</li>
             </ul>
-            <button type="button" aria-label="add new task">+</button>
           </div>
         </div>     
       </main>  
