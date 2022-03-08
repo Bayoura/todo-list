@@ -1,4 +1,5 @@
 import styles from "./styles.css";
+import taskFactory from "./taskFactory.js"
 
 addNavEvents();
 
@@ -50,12 +51,4 @@ document.addEventListener('DOMContentLoaded', () => {
     })    
 });
 
-function taskFactory(title, description, date, priority) {
-    const task = {};
-    task.title = title;
-    task.description = description;
-    task.date = date;
-    task.priority = priority;
-    console.log(task);
-    return task;
-}
+const addProject_button = document.querySelector('[data-addProjectBtn]');
