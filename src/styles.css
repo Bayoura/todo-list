@@ -46,7 +46,6 @@ h2,
 }
 
 .side-bar li {
-  border: 1px solid black;
   border-radius: 5px;
 }
 
@@ -60,16 +59,21 @@ li {
   list-style: none; 
 }
 
+.side-bar li {
+  background-color: hsl(207deg 72% 89%);
+  transition: 300ms ease-out;
+}
+
 .side-bar li:hover {
   cursor: pointer;
   outline: none;
-  border-color: hsl(207deg 69% 77%); 
+  /* border-color: hsl(207deg 69% 77%);  */
   box-shadow: 0 0 10px hsl(207deg 69% 77%);
 }
 
-li.active {
+.side-bar li.current {
   background-color: hsl(207deg 59% 67%);
-  border-color: hsl(207deg 69% 77%); 
+  /* border-color: hsl(207deg 69% 77%);  */
   box-shadow: 0 0 10px hsl(207deg 69% 77%);
 }
 
@@ -181,6 +185,12 @@ main {
 
 .modal {
   background-color: lightblue; 
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* transition: 300ms ease-in; */
+  z-index: 15;
   width: 600px;
   height: 400px;
   max-width: 100%;
