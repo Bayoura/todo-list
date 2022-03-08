@@ -183,6 +183,10 @@ main {
   border-top: 1px solid black;
 }
 
+.new-project-form > input{
+  width: 100%;
+}
+
 .modal {
   background-color: lightblue; 
   position: fixed;
@@ -214,4 +218,17 @@ main {
 
 .modal.closed {
   display: none;
+}
+
+.overlay {
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: 300ms ease-out;
+  background-color: var(--transDarkBrown);
+  pointer-events: none;
+  z-index: 10;
 }
