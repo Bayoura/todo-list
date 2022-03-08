@@ -18,36 +18,43 @@
     </label>
     </header>
 
-    <div class="container">
-
-      <nav class="side-bar">
-        <div>
-          <div class="default-projects">
+    <nav class="side-bar">
+      <div>   
+        <div class="default-projects">
+          <ul>
+            <li tabindex="0" data-sidebarTab class="current">All</li>
+            <li tabindex="0" data-sidebarTab>Due today</li>
+            <li tabindex="0" data-sidebarTab>Due this week</li>
+            <li tabindex="0" data-sidebarTab>Important</li>
+            <li tabindex="0" data-sidebarTab>Completed</li>
+            <li tabindex="0" data-sidebarTab>Notes</li>
+          </ul> 
+        </div> 
+        <div class="user-projects-container">
+          <div class="title-and-btn-container"> 
+            <h2>Project List</h2>
+            <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
+            <span class="tool-tip">Add new project</span>
+          </div>
+          <div class="project-list">
             <ul>
-              <li tabindex="0" data-sidebarTab class="current">All</li>
-              <li tabindex="0" data-sidebarTab>Due today</li>
-              <li tabindex="0" data-sidebarTab>Due this week</li>
-              <li tabindex="0" data-sidebarTab>Important</li>
-              <li tabindex="0" data-sidebarTab>Completed</li>
-              <li tabindex="0" data-sidebarTab>Notes</li>
+              <li tabindex="0"  data-sidebarTab>Project 1</li> 
+              <li tabindex="0" data-sidebarTab>Project 2</li>
+              <li tabindex="0" data-sidebarTab>Project 3</li> 
             </ul>
           </div>
-          <div class="user-projects-container">
-            <div class="title-and-btn-container">
-              <h2>Project List</h2>
-              <button type="button" aria-label="add new project" class="add-button"></button>
-              <span class="tool-tip">Add new project</span>
+
+          <form action="" class="new-project-form">
+            <input type="text" placeholder="New project name">
+            <div>
+              <input type="submit" value="Add">
+              <input type="button" value="Cancel">
             </div>
-            <div class="project-list">
-              <ul>
-                <li tabindex="0"  data-sidebarTab>Project 1</li>
-                <li tabindex="0" data-sidebarTab>Project 2</li>
-                <li tabindex="0" data-sidebarTab>Project 3</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
+          </form>
+         
+        </div>        
+      </div> 
+    </nav>
       
       <main>
         <div class="task-list-container">
@@ -66,8 +73,7 @@
         </div>     
       </main>  
 
-    </div>
-    <div class="task-modal modal " data-modal>
+    <div class="modal" data-modal>
       <div class="modal-header">
         <h2>Create a new task...</h2>
       </div>
@@ -106,7 +112,7 @@
       </form>
     </div>
     
-    <div class="modal-overlay"></div>
+    <div class="overlay"></div>
   </body>
   </html>
   
