@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To Do List</title>
+    <title>Do It Now</title>
   <script defer src="main.js"></script></head>
   <body>
 
@@ -18,42 +18,49 @@
     </label>
     </header>
 
-    <div class="container">
-
-      <nav class="side-bar">
-        <div>
-          <div class="default-projects">
+    <nav class="side-bar">
+      <div>   
+        <div class="default-projects">
+          <ul>
+            <li tabindex="0" data-sidebarTab class="current">All</li>
+            <li tabindex="0" data-sidebarTab>Due today</li>
+            <li tabindex="0" data-sidebarTab>Due this week</li>
+            <li tabindex="0" data-sidebarTab>Important</li>
+            <li tabindex="0" data-sidebarTab>Completed</li>
+            <li tabindex="0" data-sidebarTab>Notes</li>
+          </ul> 
+        </div> 
+        <div class="user-projects-container">
+          <div class="title-and-btn-container"> 
+            <h2>Project List</h2>
+            <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
+            <span class="tool-tip">Add new project</span>
+          </div>
+          <div class="project-list">
             <ul>
-              <li tabindex="0">All</li>
-              <li tabindex="0">Due today</li>
-              <li tabindex="0">Due this week</li>
-              <li tabindex="0">Important</li>
-              <li tabindex="0">Completed</li>
-              <li tabindex="0">Notes</li>
+              <li tabindex="0"  data-sidebarTab>Project 1</li> 
+              <li tabindex="0" data-sidebarTab>Project 2</li>
+              <li tabindex="0" data-sidebarTab>Project 3</li> 
             </ul>
           </div>
-          <div class="user-projects-container">
-            <div class="title-and-btn-container">
-              <h2>Project List</h2>
-              <button type="button" aria-label="add new project" class="add-button"></button>
-              <span class="tool-tip">Add new project</span>
+
+          <form action="" class="new-project-form closed" data-newProjectForm>
+            <input type="text" placeholder="New project name" data-projectTitleInput required>
+            <div>
+              <input type="submit" value="Add" data-submitProjectBtn>
+              <input type="button" value="Cancel" data-cancelProjectBtn>
             </div>
-            <div class="project-list">
-              <ul>
-                <li tabindex="0" class="active">Project 1</li>
-                <li tabindex="0">Project 2</li>
-                <li tabindex="0">Project 3</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
+          </form>
+         
+        </div>        
+      </div> 
+    </nav>
       
       <main>
         <div class="task-list-container">
           <div class="title-and-btn-container">
             <h2>active project title</h2>
-            <button type="button" aria-label="add new task" class="add-button"></button>
+            <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
             <span class="tool-tip">Add new task</span>
           </div>
           <p>Tasks <span>(0)</span></p>
@@ -66,18 +73,17 @@
         </div>     
       </main>  
 
-    </div>
-    <div class="task-modal modal closed">
+    <div class="modal closed" data-modal>
       <div class="modal-header">
         <h2>Create a new task...</h2>
+        <button type="button" data-cancelTaskBtn>Close</button>
       </div>
-      <form action="" class="modal-form">
-        <input type="text" aria-label="title of your task"  placeholder="Go grocery shopping" required>
-        <input type="text" aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream">
-        <input type="text" placeholder="something else?">
+      <form action="" class="modal-form" data-taskModalForm>
+        <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
+        <input type="text" data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream">
         <div>
           <label for="due-date">Due date:</label>
-          <input type="date" id="due-date">
+          <input type="date" data-dateInput id="due-date">
         </div>
         <div>
           <div>Priority:</div>
@@ -103,11 +109,11 @@
           </label>
 
         </div>
-        <input type="submit" class="add-task-btn" value="Add task">
+        <input type="submit" class="add-task-btn" value="Add task" data-submitTaskBtn>
       </form>
     </div>
     
-    <div class="modal-overlay"></div>
+    <div class="overlay closed" data-overlay></div>
   </body>
   </html>
   
