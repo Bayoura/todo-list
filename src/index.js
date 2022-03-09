@@ -1,5 +1,8 @@
 import styles from "./styles.css";
-import taskFactory from "./taskFactory.js"
+import factories from "./factories.js"
+
+// make it so that users can switch a todo from one project to another
+// shouldnt be able to select text of li
 
 addNavEvents();
 
@@ -23,16 +26,16 @@ function setCurrentTab(clickedTab) {
     clickedTab.classList.add('current');
 }
 
-function createProject() {
-    console.log('heya')
-}
-
 const submitTask_button = document.querySelector('[data-submitTaskBtn]');
 const taskForm_form = document.querySelector('[data-taskModalForm]');
 const addTask_button = document.querySelector('[data-addTaskBtn]');
 const modal_div = document.querySelector('[data-modal]');
+const overlay_div = document.querySelector('[data-overlay]');
 
-addTask_button.addEventListener('click', () => modal_div.classList.remove('closed'));
+addTask_button.addEventListener('click', () => {
+    modal_div.classList.remove('closed');
+    overlay_div.classList.remove('closed');
+});
 
 document.addEventListener('DOMContentLoaded', () => {    
     submitTask_button.addEventListener('click', e => {    
@@ -42,13 +45,41 @@ document.addEventListener('DOMContentLoaded', () => {
         let checkStatus = taskForm_form.checkValidity();
         taskForm_form.reportValidity();
         if (checkStatus) {
-            const title = document.querySelector('[data-titleInput]').value;
+            const title = document.querySelector('[data-taskTitleInput]').value;
             const description = document.querySelector('[data-descriptionInput]').value;
             const date = document.querySelector('[data-dateInput]').value;
             const priorityValue = document.querySelector('input[name=priority]:checked').value;
-            taskFactory(title, description, date, priorityValue);
+            factories.taskFactory(title, description, date, priorityValue);
         }
     })    
 });
 
 const addProject_button = document.querySelector('[data-addProjectBtn]');
+const newProject_form = document.querySelector('[data-newProjectForm]');
+const submitProject_button = document.querySelector('[data-submitProjectBtn]');
+const cancelProject_button = document.querySelector('[data-cancelProjectBtn]');
+
+addProject_button.addEventListener('click', () => newProject_form.classList.toggle('closed'));
+cancelProject_button.addEventListener('click', () => newProject_form.classList.add('closed'));
+
+
+document.addEventListener('DOMContentLoaded', () => {    
+    submitProject_button.addEventListener('click', e => {    
+        e.preventDefault(); //stop form from submitting   
+
+        //check if required fields are filled out
+        let checkStatus = newProject_form.checkValidity();
+        newProject_form.reportValidity();
+        if (checkStatus) {
+            const title = document.querySelector('[data-projectTitleInput]').value;
+            factories.projectFactory(title);
+        }
+    })    
+});
+
+const cancelTask_button = document.querySelector('[data-cancelTaskBtn]');
+
+cancelTask_button.addEventListener('click', () => {
+    modal_div.classList.add('closed');
+    overlay_div.classList.add('closed');
+})
