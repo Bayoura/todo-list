@@ -44,11 +44,11 @@
             </ul>
           </div>
 
-          <form action="" class="new-project-form">
-            <input type="text" placeholder="New project name">
+          <form action="" class="new-project-form closed" data-newProjectForm>
+            <input type="text" placeholder="New project name" data-projectTitleInput required>
             <div>
-              <input type="submit" value="Add">
-              <input type="button" value="Cancel">
+              <input type="submit" value="Add" data-submitProjectBtn>
+              <input type="button" value="Cancel" data-cancelProjectBtn>
             </div>
           </form>
          
@@ -73,12 +73,13 @@
         </div>     
       </main>  
 
-    <div class="modal" data-modal>
+    <div class="modal closed" data-modal>
       <div class="modal-header">
         <h2>Create a new task...</h2>
+        <button type="button" data-cancelTaskBtn>Close</button>
       </div>
       <form action="" class="modal-form" data-taskModalForm>
-        <input type="text" data-titleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
+        <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
         <input type="text" data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream">
         <div>
           <label for="due-date">Due date:</label>
@@ -112,7 +113,7 @@
       </form>
     </div>
     
-    <div class="overlay"></div>
+    <div class="overlay closed" data-overlay></div>
   </body>
   </html>
   
