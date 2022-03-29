@@ -1,5 +1,7 @@
 import styles from "./styles.css";
 import factories from "./factories.js"
+import '@fortawesome/fontawesome-free/js/all.js';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 // make it so that users can switch a todo from one project to another
 // shouldnt be able to select text of li
@@ -87,20 +89,19 @@ cancelTask_button.addEventListener('click', () => {
 })
 
 const sortButton_div = document.querySelector('[data-sortButton]');
-const chosenSort_span = document.querySelector('[data-chosenSort]');
-const sortOptionsContainer_div = document.querySelector('[data-sortOptionsContainer]');
+const sortOptions_div = document.querySelector('[data-sortOptions]');
 const sortDate_div = document.querySelector('[data-sortDate]');
 const sortImportance_div = document.querySelector('[data-sortImportance]');
 const sortCustom_div = document.querySelector('[data-sortCustom]');
 const sortOverlay_div = document.querySelector('[data-sortOverlay]');
 
 sortButton_div.addEventListener('click', () => {
-    sortOptionsContainer_div.classList.add('show');
+    sortOptions_div.classList.add('show');
     sortOverlay_div.classList.remove('closed');
 })
 
 sortOverlay_div.addEventListener('click', () => {
     console.log('clicked');
-    sortOptionsContainer_div.classList.remove('show');
+    sortOptions_div.classList.remove('show');
     sortOverlay_div.classList.add('closed');
 });
