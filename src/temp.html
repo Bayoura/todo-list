@@ -15,7 +15,7 @@
         <span class="line"></span>
         <span class="line"></span>
         <span class="line"></span>
-    </label>
+      </label>
     </header>
 
     <nav class="side-bar">
@@ -63,10 +63,35 @@
             <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
             <span class="tool-tip">Add new task</span>
           </div>
-          <p>Tasks <span>(0)</span></p>
+          <div class="task-sort-container">
+            <p>Tasks <span>(0)</span></p>
+            <div class="sort-container" >
+              <span data-chosenSort>Sort by date</span>
+              <div class="sort-button" tabindex="0" role="button" data-sortButton>Sort</div>
+              <div class="sort-options-container" data-sortOptionsContainer>
+                <div>Sort by...</div>
+                <div class="sort-options">
+                  <div tabindex="0" data-sortDate>Date</div>
+                  <div tabindex="0" data-sortImportance>Importance</div>
+                  <div tabindex="0" data-sortCustom>Custom</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="task-list">
             <ul>
-              <li tabindex="0">Task 1</li>
+              <li class="task" tabindex="0">
+                <div>Checkedsymbol</div>
+                <div class="task-details">
+                  <div>Title</div>
+                  <div class="task-options" data-taskOptions>
+                    <div data-taskDetails>Details</div>
+                    <div data-taskEdit>Edit</div>
+                    <div data-taskDelete>Delete</div>
+                  </div>
+                </div>
+              </li>
               <li tabindex="0">Task 2</li>
             </ul>
           </div>
@@ -78,6 +103,7 @@
         <h2>Create a new task...</h2>
         <button type="button" data-cancelTaskBtn>Close</button>
       </div>
+      
       <form action="" class="modal-form" data-taskModalForm>
         <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
         <input type="text" data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream">
@@ -114,6 +140,7 @@
     </div>
     
     <div class="overlay closed" data-overlay></div>
+    <div class="sort-overlay closed" data-sortOverlay></div>
   </body>
   </html>
   
