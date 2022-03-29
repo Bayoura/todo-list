@@ -3,6 +3,9 @@ import factories from "./factories.js"
 
 // make it so that users can switch a todo from one project to another
 // shouldnt be able to select text of li
+// make draggable project list items
+// keyboard support (make li items clickable by hitting enter etc)
+// when overlay is active you can still focus on list items etc. underneath the overlay (with tab)
 
 addNavEvents();
 
@@ -15,7 +18,6 @@ function addNavEvents() {
             setCurrentTab(e.target);
         }
     }));
-
 }
 
 function setCurrentTab(clickedTab) {
@@ -83,3 +85,22 @@ cancelTask_button.addEventListener('click', () => {
     modal_div.classList.add('closed');
     overlay_div.classList.add('closed');
 })
+
+const sortButton_div = document.querySelector('[data-sortButton]');
+const chosenSort_span = document.querySelector('[data-chosenSort]');
+const sortOptionsContainer_div = document.querySelector('[data-sortOptionsContainer]');
+const sortDate_div = document.querySelector('[data-sortDate]');
+const sortImportance_div = document.querySelector('[data-sortImportance]');
+const sortCustom_div = document.querySelector('[data-sortCustom]');
+const sortOverlay_div = document.querySelector('[data-sortOverlay]');
+
+sortButton_div.addEventListener('click', () => {
+    sortOptionsContainer_div.classList.add('show');
+    sortOverlay_div.classList.remove('closed');
+})
+
+sortOverlay_div.addEventListener('click', () => {
+    console.log('clicked');
+    sortOptionsContainer_div.classList.remove('show');
+    sortOverlay_div.classList.add('closed');
+});
