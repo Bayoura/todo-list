@@ -195,6 +195,7 @@ main {
 
 .sort-container {
   display: flex;
+  gap: 10px;
   position: relative;
 }
 
@@ -203,36 +204,29 @@ main {
 }
 
 .sort-button {
-  border: 1px solid grey;
   cursor: pointer;
-  max-width: 50px;
+  color: darkcyan;
 }
 
-.sort-options-container {
-  display: none;
+.sort-options {
   background-color: white;
   border-radius: 5px;
   border: 1px solid grey;
+  box-shadow: 0 3px 6px hsl(0deg 0% 0% / 32%), 0 9px 24px hsl(0deg 0% 0% / 35%);
+  cursor: pointer;
+  display: none;
   max-width: 250px;
   position: absolute;
   top: 100%;
   z-index: 15;
 }
 
-.sort-options-container.show {
+.sort-options.show {
   display: block;
-}
-
-.sort-options {
-  cursor: pointer;
 }
 
 .sort-options > div:hover {
   background-color: aquamarine;
-}
-
-.sort-options-container > div:first-child {
-  border-bottom: 1px solid grey;
 }
 
 .task {

@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
+  </head>  
   <body>
-
+   
     <header>
       <h1>Do It Now</h1>
       <input type="checkbox" id="hamburger">
@@ -29,9 +29,10 @@
             <li tabindex="0" data-sidebarTab>Completed</li>
             <li tabindex="0" data-sidebarTab>Notes</li>
           </ul> 
-        </div> 
+        </div>     
         <div class="user-projects-container">
           <div class="title-and-btn-container"> 
+            <i class="fa-solid fa-user"></i>
             <h2>Project List</h2>
             <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
             <span class="tool-tip">Add new project</span>
@@ -51,56 +52,66 @@
               <input type="button" value="Cancel" data-cancelProjectBtn>
             </div>
           </form>
-         
         </div>        
       </div> 
     </nav>
       
-      <main>
-        <div class="task-list-container">
-          <div class="title-and-btn-container">
-            <h2>active project title</h2>
-            <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
-            <span class="tool-tip">Add new task</span>
-          </div>
-          <div class="task-sort-container">
-            <p>Tasks <span>(0)</span></p>
-            <div class="sort-container" >
-              <span data-chosenSort>Sort by date</span>
-              <div class="sort-button" tabindex="0" role="button" data-sortButton>Sort</div>
-              <div class="sort-options-container" data-sortOptionsContainer>
-                <div>Sort by...</div>
-                <div class="sort-options">
-                  <div tabindex="0" data-sortDate>Date</div>
-                  <div tabindex="0" data-sortImportance>Importance</div>
-                  <div tabindex="0" data-sortCustom>Custom</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <main>    
+      <div class="task-list-container">          
+        <div class="title-and-btn-container">            
+          <h2>active project title</h2>            
+          <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>          
+          <span class="tool-tip">Add new task</span>         
+        </div>  
 
-          <div class="task-list">
-            <ul>
-              <li class="task" tabindex="0">
-                <div>Checkedsymbol</div>
-                <div class="task-details">
-                  <div>Title</div>
-                  <div class="task-options" data-taskOptions>
-                    <div data-taskDetails>Details</div>
-                    <div data-taskEdit>Edit</div>
-                    <div data-taskDelete>Delete</div>
-                  </div>
-                </div>
-              </li>
-              <li tabindex="0">Task 2</li>
-            </ul>
-          </div>
+        <div class="task-sort-container"> 
+          <p>Tasks <span>(</span><span data-taskCount></span><span>)</span></p>  
+                
+          <div class="sort-container" >        
+            <div>Sort by:</div>       
+            <div class="sort-button" tabindex="0" role="button" data-sortButton>Due Date</div>                    
+            <div class="sort-options" data-sortOptions>                         
+              <div tabindex="0" data-sortDate>Due Date</div>                         
+              <div tabindex="0" data-sortOldNew>Oldest to Newest</div>    
+              <div tabindex="0" data-sortNewOld>Newest to Oldest</div>        
+              <div tabindex="0" data-sortImportance>Importance</div>                    
+            </div>                   
+          </div>        
+        </div>
+        
+        <div class="task-list">       
+          <ul>        
+            <li class="task" tabindex="0">       
+              <span class="fa-regular fa-circle-check"></span>         
+              <div class="task-details">       
+                <div>Title</div>      
+                <div class="task-options" data-taskOptions>      
+                  <div data-taskDetails>Details</div>       
+                  <div data-taskEdit>Edit</div>      
+                  <div data-taskDelete>Delete</div>      
+                </div>       
+              </div>                  
+            </li>            
+            <li class="task" tabindex="0">       
+              <span class="fa-solid fa-circle-check"></span>           
+              <div class="task-details">       
+                <div>Title</div>      
+                <div class="task-options" data-taskOptions>      
+                  <div data-taskDetails>Details</div>       
+                  <div data-taskEdit>Edit</div>      
+                  <div data-taskDelete>Delete</div>      
+                </div>       
+              </div>                  
+            </li>            
+          </ul>        
         </div>     
-      </main>  
-
+      </div>                
+    </main>  
+    
     <div class="modal closed" data-modal>
       <div class="modal-header">
-        <h2>Create a new task...</h2>
+        <h2 class="create-task-h2">Create a new task...</h2>
+        <h2 class="edit-task-h2">Edit your task...</h2>
         <button type="button" data-cancelTaskBtn>Close</button>
       </div>
       
@@ -136,11 +147,13 @@
 
         </div>
         <input type="submit" class="add-task-btn" value="Add task" data-submitTaskBtn>
+        <input type="submit" class="edit-task-btn" value="Save" data-editTaskBtn>
       </form>
     </div>
     
     <div class="overlay closed" data-overlay></div>
     <div class="sort-overlay closed" data-sortOverlay></div>
-  </body>
-  </html>
+
+  </body> 
+</html>
   
