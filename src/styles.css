@@ -8,6 +8,10 @@
   font-size: 1.2rem;
 }
 
+/* choose colours */
+/* choose font */
+/* make tool-tips */
+
 body {
   background-color: silver;
 }
@@ -26,7 +30,6 @@ h1 {
   text-shadow: 0px 3px 3px hsl(0deg 0% 100% / 80%) ;
   padding-left: 20px;
 }
-
 
 h2,
 .default-projects li {
@@ -65,20 +68,22 @@ li {
 
 .side-bar li {
   background-color: hsl(207deg 72% 89%);
+  border: 1px solid hsl(207deg 72% 89%);
   transition: 300ms ease-out;
+  user-select: none;
 }
+/* user-select:none for all li?? */
 
 .side-bar li:hover {
+  border-color: hsl(207deg 12% 86%);
+  box-shadow: 0 0 10px hsl(207deg 12% 86%);
   cursor: pointer;
   outline: none;
-  /* border-color: hsl(207deg 69% 77%);  */
-  box-shadow: 0 0 10px hsl(207deg 69% 77%);
 }
 
 .side-bar li.current {
-  background-color: hsl(207deg 59% 67%);
-  /* border-color: hsl(207deg 69% 77%);  */
-  box-shadow: 0 0 10px hsl(207deg 69% 77%);
+  background-color: hsl(207deg 44% 93%);
+  box-shadow: 0 0 4px hsl(207deg 12% 86%);
 }
 
 .user-projects-container {
@@ -114,8 +119,8 @@ input[type="button"] {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 30px;
-  width: 30px;
+  min-height: 30px;
+  min-width: 30px;
   margin-left: 10px;
 }
 
@@ -183,8 +188,68 @@ main {
   margin-left: 310px;
 }
 
-.task-list {
-  padding-left: 20px;
+.task-sort-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sort-container {
+  display: flex;
+  position: relative;
+}
+
+.sort-container > span {
+  color: grey;
+}
+
+.sort-button {
+  border: 1px solid grey;
+  cursor: pointer;
+  max-width: 50px;
+}
+
+.sort-options-container {
+  display: none;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid grey;
+  max-width: 250px;
+  position: absolute;
+  top: 100%;
+  z-index: 15;
+}
+
+.sort-options-container.show {
+  display: block;
+}
+
+.sort-options {
+  cursor: pointer;
+}
+
+.sort-options > div:hover {
+  background-color: aquamarine;
+}
+
+.sort-options-container > div:first-child {
+  border-bottom: 1px solid grey;
+}
+
+.task {
+  display: flex;
+  gap: 10px;
+}
+
+.task-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.task-options {
+  display: flex;
+  gap: 10px;
 }
 
 .task-list,
@@ -219,13 +284,23 @@ main {
 }
 
 .overlay {
+  background-color: hsl(0deg 0% 50% / 0.3);
+  backdrop-filter: blur(2px);
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  transition: 300ms ease-out;
-  background-color: hsl(0deg 0% 50% / 0.3);
-  backdrop-filter: blur(2px);
   z-index: 10;
 }
+
+.sort-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+
