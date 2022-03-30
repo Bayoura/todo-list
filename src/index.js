@@ -1,7 +1,9 @@
 import styles from "./styles.css";
 import factories from "./factories.js"
-import '@fortawesome/fontawesome-free/js/all.js';
-import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/regular.css';
+import '@fortawesome/fontawesome-free/css/solid.css';
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
+
 
 // make it so that users can switch a todo from one project to another
 // shouldnt be able to select text of li
