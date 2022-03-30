@@ -1,3 +1,5 @@
+/* @import '@fortawesome/fontawesome-free/css/all.css'; */
+
 *,
 *::before,
 *::after {
@@ -34,6 +36,9 @@ h1 {
 h2,
 .default-projects li {
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .side-bar {
@@ -93,6 +98,7 @@ li {
 .title-and-btn-container {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .tool-tip {
@@ -231,6 +237,7 @@ main {
 
 .task {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
