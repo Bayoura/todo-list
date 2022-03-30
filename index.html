@@ -22,17 +22,16 @@
       <div>   
         <div class="default-projects">
           <ul>
-            <li tabindex="0" data-sidebarTab class="current">All</li>
-            <li tabindex="0" data-sidebarTab>Due today</li>
-            <li tabindex="0" data-sidebarTab>Due this week</li>
-            <li tabindex="0" data-sidebarTab>Important</li>
-            <li tabindex="0" data-sidebarTab>Completed</li>
-            <li tabindex="0" data-sidebarTab>Notes</li>
+            <li tabindex="0" data-sidebarTab class="current"><i class="fa-solid fa-list"></i>All</li>
+            <li tabindex="0" data-sidebarTab><i class="fa-solid fa-calendar-day"></i>Due today</li>
+            <li tabindex="0" data-sidebarTab><i class="fa-solid fa-calendar-week"></i> Due this week</li>
+            <li tabindex="0" data-sidebarTab><i class="fa-solid fa-star"></i>Important</li>
+            <li tabindex="0" data-sidebarTab><i class="fa-solid fa-square-check"></i>Completed</li>
+            <li tabindex="0" data-sidebarTab><i class="fa-solid fa-clipboard"></i>Notes</li>
           </ul> 
         </div>     
         <div class="user-projects-container">
           <div class="title-and-btn-container"> 
-            <i class="fa-solid fa-user"></i>
             <h2>Project List</h2>
             <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
             <span class="tool-tip">Add new project</span>
@@ -57,15 +56,16 @@
     </nav>
       
     <main>    
-      <div class="task-list-container">          
-        <div class="title-and-btn-container">            
-          <h2>active project title</h2>            
-          <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>          
-          <span class="tool-tip">Add new task</span>         
-        </div>  
-
+      <div class="task-list-container">                    
+        <h2>active project title</h2>            
         <div class="task-sort-container"> 
-          <p>Tasks <span>(</span><span data-taskCount></span><span>)</span></p>  
+          <div class="title-and-btn-container">
+            <p>Tasks<span>(</span><span data-taskCount></span><span>)</span></p>
+            <div>
+              <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
+              <span class="tool-tip">Add new task</span>
+            </div>
+          </div>        
                 
           <div class="sort-container" >        
             <div>Sort by:</div>       
@@ -86,9 +86,9 @@
               <div class="task-details">       
                 <div>Title</div>      
                 <div class="task-options" data-taskOptions>      
-                  <div data-taskDetails>Details</div>       
-                  <div data-taskEdit>Edit</div>      
-                  <div data-taskDelete>Delete</div>      
+                  <span data-taskDetails class="fa-solid fa-circle-info"></span>      
+                  <span data-taskEdit class="fa-solid fa-pen-to-square"></span>      
+                  <span data-taskDelete class="fa-solid fa-trash-can"></span>      
                 </div>       
               </div>                  
             </li>            
@@ -96,10 +96,10 @@
               <span class="fa-solid fa-circle-check"></span>           
               <div class="task-details">       
                 <div>Title</div>      
-                <div class="task-options" data-taskOptions>      
-                  <div data-taskDetails>Details</div>       
-                  <div data-taskEdit>Edit</div>      
-                  <div data-taskDelete>Delete</div>      
+                <div class="task-options" data-taskOptions>            
+                  <span data-taskDetails class="fa-solid fa-circle-info"></span>      
+                  <span data-taskEdit class="fa-solid fa-pen-to-square"></span>      
+                  <span data-taskDelete class="fa-solid fa-trash-can"></span>            
                 </div>       
               </div>                  
             </li>            
