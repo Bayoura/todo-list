@@ -10,6 +10,7 @@ import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 // make draggable project list items
 // keyboard support (make li items clickable by hitting enter etc)
 // when overlay is active you can still focus on list items etc. underneath the overlay (with tab)
+// if project or task title input is longer than x make it like so "this is a long..." and only display the full title when you click on the details
 
 addNavEvents();
 
@@ -107,3 +108,35 @@ sortOverlay_div.addEventListener('click', () => {
     sortOptions_div.classList.remove('show');
     sortOverlay_div.classList.add('closed');
 });
+
+const hamburger_label = document.querySelector('[data-hamburger]');
+const sidebar_nav = document.querySelector('[data-sidebar]');
+const main_element = document.querySelector('[data-main]')
+
+hamburger_label.addEventListener('click', () => {
+    sidebar_nav.classList.toggle('hidden');
+    main_element.classList.toggle('full-page');
+})
+
+//THIS ONLY WORKS ONE TIME EACH
+
+// const notCheckedIcons_span = document.querySelectorAll('[data-notChecked]');
+// const checkedIcons_span = document.querySelectorAll('[data-checked]');
+
+// notCheckedIcons_span.forEach(icon => {
+//     icon.addEventListener('click', () => {
+//         icon.classList.remove('fa-regular');
+//         icon.classList.remove('not-checked');
+//         icon.classList.add('fa-solid');
+//         icon.classList.add('checked'); 
+// })
+// })
+
+// checkedIcons_span.forEach(icon => {
+//     icon.addEventListener('click', () => {
+//         icon.classList.remove('fa-solid');
+//         icon.classList.remove('checked');
+//         icon.classList.add('fa-regular');
+//         icon.classList.add('not-checked'); 
+// })
+// })
