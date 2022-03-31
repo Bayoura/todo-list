@@ -20,7 +20,7 @@ body {
 
 header {
   background-color: hsl(208deg 52% 95%);
-  border-bottom: 2px solid 2px solid hsl(188deg 100% 27%);
+  border-bottom: 2px solid hsl(188deg 100% 27%);
   height: 120px;
   display: flex;
   flex-direction: row-reverse;
@@ -29,13 +29,13 @@ header {
 }
 
 h1 {
-  background-color: hsl(277deg 93% 14%);
+  background-color: hsl(208deg 38% 38%);
   font-size: 3rem;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0px 1px 3px hsl(208deg 52% 95%);
+  text-shadow: 0px 1px 3px hsl(208deg 49% 71%);
   margin-left: 255px;
 }
 
@@ -59,6 +59,10 @@ h2,
   min-width: 200px;
   overflow-y: auto;
   z-index: 5;
+}
+
+.side-bar.hidden {
+  display: none;
 }
 
 .side-bar > div {
@@ -202,6 +206,10 @@ main {
   margin-left: 310px;
 }
 
+main.full-page {
+  margin-left: 0;
+}
+
 .sort-container {
   display: flex;
   gap: 10px;
@@ -316,4 +324,116 @@ main {
   z-index: 10;
 }
 
+/* VIOLET MODE */
 
+body.violet {
+  background-color: hsl(302deg 9% 45%);
+  color: white;
+}
+
+header.violet {
+  background: linear-gradient(to right top, hsl(322deg 11% 7%), hsl(310deg 26% 29%), hsl(321deg 17% 55%));
+  border-bottom: 4px solid hsl(174deg 100% 50%);
+}
+
+h1.violet {
+  background-color: hsl(0deg 0% 100%);
+  text-shadow: 0px 1px 3px hsl(174deg 100% 50%);
+}
+
+.line.violet {
+  background-color: white;
+}
+
+.side-bar li.violet {
+  background-color:  hsl(302deg 9% 45%);
+}
+
+/* .side-bar li.current.violet {
+  background-color: hsl(0deg 0% 9%);
+  box-shadow: 0 0 4px hsl(0deg 0% 57%);
+}
+
+.side-bar li.violet:hover {
+  border-color: hsl(0deg 0% 36%);
+  box-shadow: 0 0 10px hsl(0deg 0% 36%);
+} */
+
+/* DARK MODE */
+
+body.dark {
+  background-color: hsl(0deg 0% 43%);
+  color: hsl(0deg 100% 100%);
+}
+
+header.dark {
+  background-color: hsl(208deg 2% 15%);
+  border-bottom: 2px solid hsl(0deg 0% 100%);
+}
+
+.side-bar.dark {
+  background-color: hsl(0deg 0% 31%);
+}
+
+.side-bar li.current.dark {
+  background-color: hsl(0deg 0% 9%);
+  box-shadow: 0 0 4px hsl(0deg 0% 57%);
+}
+
+.side-bar li.dark {
+  background-color: hsl(0deg 0% 20%);
+  border-color: hsl(0deg 0% 20%);
+}
+
+.side-bar li.dark:hover {
+  border-color: hsl(0deg 0% 36%);
+  box-shadow: 0 0 10px hsl(0deg 0% 36%);
+}
+
+.line.dark {
+  background-color: white;
+}
+
+h1.dark {
+  background-color: hsl(0deg 0% 100%);
+  text-shadow: 0px 1px 3px hsl(0deg 0% 76%);
+}
+
+/* GREEN MODE */
+
+body.green {
+  background-color: hsl(166deg 40% 84%);
+}
+
+header.green {
+  background: linear-gradient(to right top, hsl(166deg 55% 44%), hsl(150deg 57% 76%), hsl(111deg 100% 96%));
+  border-bottom: 4px solid hsl(61deg 100% 96%);
+}
+
+h1.green {
+  background-color: hsl(0deg 0% 100%);
+  text-shadow: 0px 1px 3px hsl(64deg 94% 87%);
+}
+
+.side-bar.green {
+  background-color: hsl(150deg 48% 71%);
+}
+
+.side-bar li.current.green {
+  background-color: hsl(64deg 100% 97%);
+  box-shadow: 0 0 4px hsl(64deg 100% 97%);
+}
+
+.side-bar li.green {
+  background-color: hsl(166deg 40% 84%);
+  border-color: hsl(166deg 40% 84%);
+}
+
+.side-bar li.green:hover {
+  border-color: hsl(64deg 100% 97%);
+  box-shadow: 0 0 10px hsl(64deg 100% 97%);
+}
+
+.line.green {
+  background-color: hsl(64deg 100% 97%);
+}
