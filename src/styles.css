@@ -30,7 +30,9 @@ header {
 
 h1 {
   background-color: hsl(208deg 38% 38%);
+  font-family: 'Font Awesome 6 Free';
   font-size: 3rem;
+  letter-spacing: 6px;
   -webkit-background-clip: text;
   -moz-background-clip: text;
   background-clip: text;

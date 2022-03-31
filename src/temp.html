@@ -11,14 +11,14 @@
     <header>
       <h1>Do It Now</h1>
       <input type="checkbox" id="hamburger">
-      <label for="hamburger" class="hamburger"> 
+      <label for="hamburger" class="hamburger" data-hamburger> 
         <span class="line"></span>
         <span class="line"></span>
         <span class="line"></span>
       </label>
     </header>
 
-    <nav class="side-bar">
+    <nav class="side-bar" data-sidebar>
       <div>   
         <div class="default-projects">
           <ul>
@@ -55,7 +55,7 @@
       </div> 
     </nav>
       
-    <main>    
+    <main data-main>    
       <div class="task-list-container">                    
         <h2>active project title</h2>            
         <div class="task-sort-container"> 
@@ -82,22 +82,22 @@
         <div class="task-list">       
           <ul>        
             <li class="task" tabindex="0">       
-              <span class="fa-regular fa-circle-check icon"></span>         
+              <span class="fa-regular fa-circle-check icon not-checked" data-notChecked></span>         
               <div class="task-details">       
                 <div>Title</div>      
                 <div class="task-options" data-taskOptions>      
-                  <span data-taskDetails class="fa-solid fa-magnifying-glass-plus"></span>     
+                  <span data-taskDetails class="fa-solid fa-circle-info icon"></span>     
                   <span data-taskEdit class="fa-solid fa-pen-to-square icon"></span>      
                   <span data-taskDelete class="fa-solid fa-trash-can icon"></span>      
                 </div>       
               </div>                  
             </li>            
             <li class="task" tabindex="0">       
-              <span class="fa-solid fa-circle-check icon"></span>           
+              <span class="fa-solid fa-circle-check icon checked" data-checked></span>           
               <div class="task-details">       
                 <div>Title</div>      
                 <div class="task-options" data-taskOptions>            
-                  <span data-taskDetails class="fa-solid fa-magnifying-glass-plus"></span>      
+                  <span data-taskDetails class="fa-solid fa-circle-info icon"></span>     
                   <span data-taskEdit class="fa-solid fa-pen-to-square icon"></span>      
                   <span data-taskDelete class="fa-solid fa-trash-can icon"></span>            
                 </div>       
