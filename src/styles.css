@@ -109,6 +109,11 @@ li {
   margin-top: 40px;
 }
 
+.project-list li {
+  display: flex;
+  justify-content: space-between;
+}
+
 .title-and-btn-container {
   display: flex;
   align-items: center;
