@@ -5,6 +5,7 @@ const factories = (() => {
         task.description = description;
         task.date = date;
         task.priority = priority;
+        task.done = false;
         console.log(task);
         return task;
     }
