@@ -1,17 +1,22 @@
+import factories from './factories.js';
 import addHandlers from './handlers.js';
 
 const dom = (() => {
 
-    const projectList_ul = document.querySelector('[data-projectList]');
     function renderProjects() {
+        const projectList_ul = document.querySelector('[data-projectList]');
         projectList_ul.textContent = '';
-        for (let i = 0; i < addHandlers.userProjectList.length; i++) {
+
+        for (let i = 0; i < factories.userProjectList.length; i++) {
             // li
             const listItem = document.createElement('li');
             listItem.tabIndex = 0;
             listItem.setAttribute('data-sidebarTab', '');
             listItem.setAttribute('data-id', i);
-            listItem.textContent = addHandlers.userProjectList[i].title;
+            listItem.textContent = factories.userProjectList[i].title;
+            listItem.addEventListener('click', e => {
+                addHandlers.chooseProject(e)
+            });
             projectList_ul.appendChild(listItem);
             // div and icon spans
             const iconsDiv = document.createElement('div');
@@ -33,11 +38,10 @@ const dom = (() => {
             listItem.appendChild(iconsDiv);
         }
     }
-
-    const taskContainer_div = document.querySelector('[data-taskContainer]');
-    const taskCount_span = document.querySelector('[data-taskCount]');
-
+    
     function renderHeader() {
+        const taskContainer_div = document.querySelector('[data-taskContainer]');
+        const taskCount_span = document.querySelector('[data-taskCount]');
    
         // taskCount_span.textContent = currenProject.tasks.length;
 
@@ -46,6 +50,8 @@ const dom = (() => {
     function renderTasks(currentProject) {
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
+        if (currentProject == null) return
+
         for (let i = 0; i < currentProject.tasks.length; i++) {
             // li
             const listItem = document.createElement('li');
@@ -67,7 +73,7 @@ const dom = (() => {
             listItem.append(uncheckedIcon, taskDetails);
             // title div
             const taskTitle = document.createElement('div');
-            taskTitle.textContent = currentProject.title;
+            taskTitle.textContent = currentProject.tasks[i].title;
             // task options div
             const taskOptionsDiv = document.createElement('div');
             taskOptionsDiv.classList.add('task-options');

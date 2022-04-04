@@ -3,51 +3,66 @@ import dom from './dom.js';
 
 const addHandlers = (() => {
 
-    let currentProjectId;
-
-    const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
-
     function addNavEvents() {
+        const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
         sidebarTabs.forEach(tab => tab.addEventListener('click', e => {
-            if (e.target.classList.contains('current')) {
-                return;
-            } else {
-                setCurrentTab(e.target);
-                determinecurrentProjectId(e.target);
-                dom.renderTasks(userProjectList[currentProjectId]);
-            }
+            chooseProject(e)
+            // if (e.target.classList.contains('current')) {
+            //     return;
+            // } else {
+            //     setCurrentClass(e.target);
+            //     determineCurrentProjectId();
+            //     dom.renderTasks(factories.userProjectList[currentProjectId]);
+            // }
         }));
     }
 
-    function setCurrentTab(clickedTab) {
+    function chooseProject(e) {
+        if (e.target.classList.contains('current')) {
+            return;
+        } else {
+            setCurrentClass(e.target);
+            dom.renderTasks(factories.userProjectList[determineCurrentProjectId()]);
+        }
+    }
+
+    function setCurrentClass(clickedTab) {
+        const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
         sidebarTabs.forEach(tab => {
             if (tab != clickedTab) tab.classList.remove('current');
         });
         clickedTab.classList.add('current');
     }
 
-    function determinecurrentProjectId(clickedTab) {
-        if (clickedTab.hasAttribute('data-all')) {
-            currentProjectId = 'all';
-        } else if (clickedTab.hasAttribute('data-today')) {
-            currentProjectId = 'today';     
-        } else if (clickedTab.hasAttribute('data-week')) {
-            currentProjectId = 'week';            
-        } else if (clickedTab.hasAttribute('data-important')) {
-            currentProjectId = 'important';            
-        } else if (clickedTab.hasAttribute('data-completed')) {
-            currentProjectId = 'completed';            
-        } else if (clickedTab.hasAttribute('data-notes')) {
-            currentProjectId = 'notes';
-        } else {
-            currentProjectId = clickedTab.dataset.index
-        }
-        // switchTab(currentProjectId);
+    function determineCurrentProjectId() {
+        // if (tab.hasAttribute('data-all')) {
+        //     currentProjectId = 'all';
+        // } else if (clickedTab.hasAttribute('data-today')) {
+        //     currentProjectId = 'today';     
+        // } else if (clickedTab.hasAttribute('data-week')) {
+        //     currentProjectId = 'week';            
+        // } else if (clickedTab.hasAttribute('data-important')) {
+        //     currentProjectId = 'important';            
+        // } else if (clickedTab.hasAttribute('data-completed')) {
+        //     currentProjectId = 'completed';            
+        // } else if (clickedTab.hasAttribute('data-notes')) {
+        //     currentProjectId = 'notes';
+        // } else {
+        //     currentProjectId = clickedTab.dataset.index
+        // }
+        const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
+        let id = 0;
+        sidebarTabs.forEach(tab => {
+            if (tab.classList.contains('current')) {
+                id = tab.dataset.id;
+            }
+        });
+        return id;
     }
 
     // function switchTab(id) {
     //     if (typeof id === 'number') {
-    //         dom.renderTasks(userProjectList[id]);
+    //         dom.renderTasks(factories.userProjectList[id]);
     //     }
     // }
 
@@ -76,9 +91,9 @@ const addHandlers = (() => {
                 const date = document.querySelector('[data-dateInput]').value;
                 const priorityValue = document.querySelector('input[name=priority]:checked').value;
                 const newTask = factories.taskFactory(title, description, date, priorityValue);
-                
-                userProjectList[currentProjectId].tasks.push(newTask);
-                dom.renderTasks(userProjectList[currentProjectId]);
+
+                factories.userProjectList[determineCurrentProjectId()].tasks.push(newTask);
+                dom.renderTasks(factories.userProjectList[determineCurrentProjectId()]);
             }
         })    
     });
@@ -92,7 +107,6 @@ const addHandlers = (() => {
     cancelProject_button.addEventListener('click', () => newProject_form.classList.add('closed'));
 
     
-    let userProjectList = [];
     // projects
     document.addEventListener('DOMContentLoaded', () => {    
         submitProject_button.addEventListener('click', e => {    
@@ -104,7 +118,7 @@ const addHandlers = (() => {
             if (checkStatus) {
                 const title = document.querySelector('[data-projectTitleInput]').value;
                 const newProject = factories.projectFactory(title);
-                userProjectList.push(newProject);
+                factories.userProjectList.push(newProject);
                 dom.renderProjects();
             }
         })    
@@ -157,6 +171,7 @@ const addHandlers = (() => {
 
     return {
         addNavEvents,
+        chooseProject
     }
 
 })();
