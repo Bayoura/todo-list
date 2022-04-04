@@ -7,13 +7,6 @@ const addHandlers = (() => {
         const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
         sidebarTabs.forEach(tab => tab.addEventListener('click', e => {
             chooseProject(e)
-            // if (e.target.classList.contains('current')) {
-            //     return;
-            // } else {
-            //     setCurrentClass(e.target);
-            //     determineCurrentProjectId();
-            //     dom.renderTasks(factories.userProjectList[currentProjectId]);
-            // }
         }));
     }
 
@@ -22,7 +15,9 @@ const addHandlers = (() => {
             return;
         } else {
             setCurrentClass(e.target);
-            dom.renderTasks(factories.userProjectList[determineCurrentProjectId()]);
+            let currentProject = factories.userProjectList[determineCurrentProjectId()];
+            dom.renderTasks(currentProject);
+            dom.renderHeader(currentProject);
         }
     }
 
@@ -35,36 +30,40 @@ const addHandlers = (() => {
     }
 
     function determineCurrentProjectId() {
-        // if (tab.hasAttribute('data-all')) {
-        //     currentProjectId = 'all';
-        // } else if (clickedTab.hasAttribute('data-today')) {
-        //     currentProjectId = 'today';     
-        // } else if (clickedTab.hasAttribute('data-week')) {
-        //     currentProjectId = 'week';            
-        // } else if (clickedTab.hasAttribute('data-important')) {
-        //     currentProjectId = 'important';            
-        // } else if (clickedTab.hasAttribute('data-completed')) {
-        //     currentProjectId = 'completed';            
-        // } else if (clickedTab.hasAttribute('data-notes')) {
-        //     currentProjectId = 'notes';
-        // } else {
-        //     currentProjectId = clickedTab.dataset.index
-        // }
         const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
-        let id = 0;
+        let id;
         sidebarTabs.forEach(tab => {
             if (tab.classList.contains('current')) {
-                id = tab.dataset.id;
+                if (tab.hasAttribute('data-all')) {
+                    id = 'all';
+                } else if (tab.hasAttribute('data-today')) {
+                    id = 'today';     
+                } else if (tab.hasAttribute('data-week')) {
+                    id = 'week';            
+                } else if (tab.hasAttribute('data-important')) {
+                    id = 'important';            
+                } else if (tab.hasAttribute('data-completed')) {
+                    id = 'completed';            
+                } else if (tab.hasAttribute('data-notes')) {
+                    id = 'notes';
+                } else {
+                    id = tab.dataset.id;    
+                }
             }
-        });
+        });          
         return id;
     }
 
-    // function switchTab(id) {
-    //     if (typeof id === 'number') {
-    //         dom.renderTasks(factories.userProjectList[id]);
-    //     }
-    // }
+    // get all tasks from all projects into one array
+    function getAllTasks() {
+        let allTasks = [];
+        for (let i = 0; i < factories.userProjectList.length; i++) {
+            for (let j = 0; j < factories.userProjectList[i].tasks.length; j++) {
+                allTasks.push(factories.userProjectList[i].tasks[j]);
+            }
+        }
+        return allTasks;
+    }
 
     const submitTask_button = document.querySelector('[data-submitTaskBtn]');
     const taskForm_form = document.querySelector('[data-taskModalForm]');
@@ -124,17 +123,6 @@ const addHandlers = (() => {
         })    
     });
 
-    // get all tasks from all projects into one array
-    function getAllTasks() {
-        let allTasks = [];
-        for (let i = 0; i < projectList.length; i++) {
-            for (let j = 0; j < projectList[i].tasks.length; j++) {
-                allTasks.push(projectList[i].tasks[j]);
-            }
-        }
-        return allTasks;
-    }
-
     const cancelTask_button = document.querySelector('[data-cancelTaskBtn]');
 
     cancelTask_button.addEventListener('click', () => {
@@ -171,7 +159,8 @@ const addHandlers = (() => {
 
     return {
         addNavEvents,
-        chooseProject
+        chooseProject,
+        getAllTasks
     }
 
 })();

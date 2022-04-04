@@ -6,8 +6,9 @@ const dom = (() => {
     function renderProjects() {
         const projectList_ul = document.querySelector('[data-projectList]');
         projectList_ul.textContent = '';
+        console.log(factories.userProjectList)
 
-        for (let i = 0; i < factories.userProjectList.length; i++) {
+        for (let i = 6; i < factories.userProjectList.length; i++) {
             // li
             const listItem = document.createElement('li');
             listItem.tabIndex = 0;
@@ -42,11 +43,10 @@ const dom = (() => {
     function renderHeader(currentProject) {
         const taskContainer_div = document.querySelector('[data-taskContainer]');
         const taskCount_span = document.querySelector('[data-taskCount]');
+        const projectHeading_h2 = document.querySelector('[data-projectHeading]');
 
         // h2
-        const heading = document.createElement('h2');
-        heading.textContent = currentProject.title;
-        taskContainer_div.prepend(heading);
+        projectHeading_h2.textContent = currentProject.title;
         // task count
         taskCount_span.textContent = currentProject.tasks.length;
     }
@@ -54,7 +54,13 @@ const dom = (() => {
     function renderTasks(currentProject) {
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
-        if (currentProject == null) return
+        if (currentProject == null) {
+            return;
+        } else if (currentProject === 'all') {
+            for (let i = 0; i < addHandlers.getAllTasks(); i ++) {
+                console.log('hi');
+            }
+        }
 
         for (let i = 0; i < currentProject.tasks.length; i++) {
             // li
