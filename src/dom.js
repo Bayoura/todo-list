@@ -39,12 +39,16 @@ const dom = (() => {
         }
     }
     
-    function renderHeader() {
+    function renderHeader(currentProject) {
         const taskContainer_div = document.querySelector('[data-taskContainer]');
         const taskCount_span = document.querySelector('[data-taskCount]');
-   
-        // taskCount_span.textContent = currenProject.tasks.length;
 
+        // h2
+        const heading = document.createElement('h2');
+        heading.textContent = currentProject.title;
+        taskContainer_div.prepend(heading);
+        // task count
+        taskCount_span.textContent = currentProject.tasks.length;
     }
  
     function renderTasks(currentProject) {
