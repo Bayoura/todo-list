@@ -22,12 +22,12 @@
       <div>   
         <div class="default-projects">
           <ul>
-            <li tabindex="0" data-sidebarTab data-all class="current"><i class="fa-solid fa-list icon"></i>All</li>
-            <li tabindex="0" data-sidebarTab data-today><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
-            <li tabindex="0" data-sidebarTab data-week><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
-            <li tabindex="0" data-sidebarTab data-important><i class="fa-solid fa-star icon"></i>Important</li>
-            <li tabindex="0" data-sidebarTab data-completed><i class="fa-solid fa-square-check icon"></i>Completed</li>
-            <li tabindex="0" data-sidebarTab data-notes><i class="fa-solid fa-clipboard icon"></i>Notes</li>
+            <li tabindex="0" data-sidebarTab data-all data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
+            <li tabindex="0" data-sidebarTab data-today data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
+            <li tabindex="0" data-sidebarTab data-week data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
+            <li tabindex="0" data-sidebarTab data-important data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
+            <li tabindex="0" data-sidebarTab data-completed data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
+            <li tabindex="0" data-sidebarTab data-notes data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
           </ul> 
         </div>     
         <div class="user-projects-container">
@@ -55,8 +55,8 @@
         <h2 data-projectHeading></h2>            
         <div class="task-sort-container"> 
           <div class="title-and-btn-container">
-            <p>Tasks<span>(</span><span data-taskCount></span><span>)</span></p>
-            <div>
+            <div><span>(</span><span data-taskCount></span><span>)</span></div>
+            <div data-btnDiv>
               <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
               <span class="tool-tip">Add new task</span>
             </div>
