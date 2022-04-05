@@ -6,15 +6,15 @@ const dom = (() => {
     function renderProjects() {
         const projectList_ul = document.querySelector('[data-projectList]');
         projectList_ul.textContent = '';
-        console.log(factories.userProjectList)
 
-        for (let i = 6; i < factories.userProjectList.length; i++) {
+        // i starts at 6 bc the projects with lower ids are the default ones
+        for (let i = 6; i < factories.projectList.length; i++) {
             // li
             const listItem = document.createElement('li');
             listItem.tabIndex = 0;
             listItem.setAttribute('data-sidebarTab', '');
             listItem.setAttribute('data-id', i);
-            listItem.textContent = factories.userProjectList[i].title;
+            listItem.textContent = factories.projectList[i].title;
             listItem.addEventListener('click', e => {
                 addHandlers.chooseProject(e)
             });
@@ -40,25 +40,80 @@ const dom = (() => {
         }
     }
     
-    function renderHeader(currentProject) {
-        const taskContainer_div = document.querySelector('[data-taskContainer]');
+    function renderHeader(currentProject, projectId) {
         const taskCount_span = document.querySelector('[data-taskCount]');
         const projectHeading_h2 = document.querySelector('[data-projectHeading]');
-
+        
         // h2
         projectHeading_h2.textContent = currentProject.title;
         // task count
         taskCount_span.textContent = currentProject.tasks.length;
+
+        if (projectId >= 6) {
+            console.log('bigger')
+            // make button
+        } else if (projectId === '5') {
+            //notes
+            // notes count
+            // button to add notes, also special modal??
+        }
+        
     }
  
-    function renderTasks(currentProject) {
+    function renderTasks(currentProject, projectId) {
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
         if (currentProject == null) {
             return;
-        } else if (currentProject === 'all') {
-            for (let i = 0; i < addHandlers.getAllTasks(); i ++) {
-                console.log('hi');
+        } else if (projectId < 6) {
+            currentProject.tasks = [];
+            let allTasks = addHandlers.getAllTasks();
+            switch (projectId) {
+                // all
+                case '0':
+                    currentProject.tasks = addHandlers.getAllTasks();
+                    break;
+                // today
+                case '1':
+                    let dueToday = [];
+                    const today = new Date();
+                    for (let i = 0; i < allTasks.length; i++) {
+                        if (allTasks[i].date == today) {
+                            dueToday.push(allTasks[i]);
+                        }
+                    }
+                    currentProject.tasks = dueToday;
+                    break;
+                // week
+                case '2':
+                    let dueWeek = [];
+                    for (let i = 0; i < allTasks.length; i++) {
+                        // if (allTasks[i].date == today) {
+                        //     dueWeek.push(allTasks[i]);
+                        // }
+                    }
+                    currentProject.tasks = dueWeek;
+                    break;
+                // important
+                case '3':
+                    let mostImportant = [];
+                    for (let i = 0; i < allTasks.length; i++) {
+                        if (allTasks[i].priority === 'very-high') mostImportant.push(allTasks[i]);
+                    }
+                    currentProject.tasks = mostImportant;
+                    break;
+                // completed
+                case '4':
+                   let completedTasks = [];
+                   for (let i = 0; i < allTasks.length; i++) {
+                       if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
+                   } 
+                   currentProject.tasks = completedTasks;
+                   break;
+                // notes
+                case '5':
+                    renderNotes();
+                    break;
             }
         }
 
@@ -118,6 +173,10 @@ const dom = (() => {
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
         }
+    }
+
+    function renderNotes() {
+        console.log('notes');
     }
 
     return {
