@@ -16,5 +16,5 @@ import factories from './factories.js';
 
 addHandlers.addNavEvents();
 dom.renderProjects();
-dom.renderTasks(factories.userProjectList[0]);
-dom.renderHeader(factories.userProjectList[0]);
+dom.renderTasks(factories.projectList[0], '0');
+dom.renderHeader(factories.projectList[0], '0');
