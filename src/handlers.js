@@ -15,9 +15,9 @@ const addHandlers = (() => {
             return;
         } else {
             setCurrentClass(e.target);
-            let currentProject = factories.userProjectList[determineCurrentProjectId()];
-            dom.renderTasks(currentProject);
-            dom.renderHeader(currentProject);
+            let currentProject = factories.projectList[determineCurrentProjectId()];
+            dom.renderTasks(currentProject, determineCurrentProjectId());
+            dom.renderHeader(currentProject, determineCurrentProjectId());
         }
     }
 
@@ -34,21 +34,7 @@ const addHandlers = (() => {
         let id;
         sidebarTabs.forEach(tab => {
             if (tab.classList.contains('current')) {
-                if (tab.hasAttribute('data-all')) {
-                    id = 'all';
-                } else if (tab.hasAttribute('data-today')) {
-                    id = 'today';     
-                } else if (tab.hasAttribute('data-week')) {
-                    id = 'week';            
-                } else if (tab.hasAttribute('data-important')) {
-                    id = 'important';            
-                } else if (tab.hasAttribute('data-completed')) {
-                    id = 'completed';            
-                } else if (tab.hasAttribute('data-notes')) {
-                    id = 'notes';
-                } else {
-                    id = tab.dataset.id;    
-                }
+                    id = tab.dataset.id;       
             }
         });          
         return id;
@@ -57,9 +43,9 @@ const addHandlers = (() => {
     // get all tasks from all projects into one array
     function getAllTasks() {
         let allTasks = [];
-        for (let i = 0; i < factories.userProjectList.length; i++) {
-            for (let j = 0; j < factories.userProjectList[i].tasks.length; j++) {
-                allTasks.push(factories.userProjectList[i].tasks[j]);
+        for (let i = 6; i < factories.projectList.length; i++) {
+            for (let j = 0; j < factories.projectList[i].tasks.length; j++) {
+                allTasks.push(factories.projectList[i].tasks[j]);
             }
         }
         return allTasks;
@@ -91,8 +77,9 @@ const addHandlers = (() => {
                 const priorityValue = document.querySelector('input[name=priority]:checked').value;
                 const newTask = factories.taskFactory(title, description, date, priorityValue);
 
-                factories.userProjectList[determineCurrentProjectId()].tasks.push(newTask);
-                dom.renderTasks(factories.userProjectList[determineCurrentProjectId()]);
+                factories.projectList[determineCurrentProjectId()].tasks.push(newTask);
+                dom.renderTasks(factories.projectList[determineCurrentProjectId()]);
+                dom.renderHeader(factories.projectList[determineCurrentProjectId()], determineCurrentProjectId());
             }
         })    
     });
@@ -117,7 +104,7 @@ const addHandlers = (() => {
             if (checkStatus) {
                 const title = document.querySelector('[data-projectTitleInput]').value;
                 const newProject = factories.projectFactory(title);
-                factories.userProjectList.push(newProject);
+                factories.projectList.push(newProject);
                 dom.renderProjects();
             }
         })    
