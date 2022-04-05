@@ -1,14 +1,13 @@
 import addHandlers from './handlers.js';
 
 const factories = (() => {
-    // let userProjectList = [];
-    let userProjectList = [
-        projectFactory('All'),
-        projectFactory('Today'),
-        projectFactory('Week'),
-        projectFactory('Important'),
-        projectFactory('Completed'),
-        projectFactory('Notes'),
+    let projectList = [
+        projectFactory('All Tasks'),
+        projectFactory('Due today'),
+        projectFactory('Due this week'),
+        projectFactory('Most important tasks'),
+        projectFactory('Completed Tasks'),
+        projectFactory('Notes'), 
     ];
     
     
@@ -18,7 +17,7 @@ const factories = (() => {
         task.description = description;
         task.date = date;
         task.priority = priority;
-        task.done = false;
+        task.completed = false;
         return task;
     }
     
@@ -47,12 +46,12 @@ const factories = (() => {
             taskFactory('Homework3','English book, p.25, exercisies 2 and 3','12.01.2023','high'), 
             taskFactory('Go grocery shopping3','buy apples','12.01.2023','high')
             );
-        userProjectList.push(demoProject);
-        userProjectList.push(demoProject2);
-        userProjectList.push(demoProject3);
+        projectList.push(demoProject);
+        projectList.push(demoProject2);
+        projectList.push(demoProject3);
     } else {    
         const storagedProjects = JSON.parse(localStorage.getItem('projectList')); 
-        userProjectList = storagedProjects;
+        projectList = storagedProjects;
     } 
 
 // function saveLocal() {
@@ -64,7 +63,7 @@ const factories = (() => {
     return {
         taskFactory,
         projectFactory,
-        userProjectList
+        projectList
     };
 })();
 
