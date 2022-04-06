@@ -31,20 +31,20 @@ const factories = (() => {
     if(!localStorage.getItem('projectList')) {  
         let demoProject =  projectFactory('Demo Project');
         demoProject.tasks.push(
-            taskFactory('Homework','English book, p.25, exercisies 2 and 3','12.01.2023','high'), 
-            taskFactory('Go grocery shopping','buy apples','12.01.2023','high')
+            taskFactory('Homework','English book, p.25, exercisies 2 and 3', new Date(2022, 3, 6),'high'), 
+            taskFactory('Go grocery shopping','buy apples', new Date(2022, 8, 8),'high')
             );
 
             let demoProject2 =  projectFactory('Demo Project2');
         demoProject2.tasks.push(
-            taskFactory('Homework2','English book, p.25, exercisies 2 and 3','12.01.2023','high'), 
-            taskFactory('Go grocery shopping2','buy apples','12.01.2023','high')
+            taskFactory('Homework2','English book, p.25, exercisies 2 and 3', new Date(2022, 7, 12),'high'), 
+            taskFactory('Go grocery shopping2','buy apples', new Date(2023, 1, 12),'very-high')
             );
 
             let demoProject3 =  projectFactory('Demo Project3');
         demoProject3.tasks.push(
-            taskFactory('Homework3','English book, p.25, exercisies 2 and 3','12.01.2023','high'), 
-            taskFactory('Go grocery shopping3','buy apples','12.01.2023','high')
+            taskFactory('Homework3','English book, p.25, exercisies 2 and 3', new Date(2022, 5, 16),'very-high'), 
+            taskFactory('Go grocery shopping3','buy apples', new Date(2022, 3, 10),'low')
             );
         projectList.push(demoProject);
         projectList.push(demoProject2);
