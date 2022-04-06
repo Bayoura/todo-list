@@ -73,10 +73,11 @@ const addHandlers = (() => {
             if (checkStatus) {
                 const title = document.querySelector('[data-taskTitleInput]').value;
                 const description = document.querySelector('[data-descriptionInput]').value;
-                const date = document.querySelector('[data-dateInput]').value;
+                let date = document.querySelector('[data-dateInput]').value;
+                date = new Date();
                 const priorityValue = document.querySelector('input[name=priority]:checked').value;
                 const newTask = factories.taskFactory(title, description, date, priorityValue);
-
+                
                 factories.projectList[determineCurrentProjectId()].tasks.push(newTask);
                 dom.renderTasks(factories.projectList[determineCurrentProjectId()]);
                 dom.renderHeader(factories.projectList[determineCurrentProjectId()], determineCurrentProjectId());
