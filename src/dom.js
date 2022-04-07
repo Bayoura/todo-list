@@ -59,7 +59,7 @@ const dom = (() => {
             taskButton.ariaLabel = 'add new task';
             taskButton.type = 'button';
             taskButton.classList.add('add-button');
-            taskButton.addEventListener('click', () => addHandlers.displayModal);
+            taskButton.addEventListener('click', displayModal);
             const toolTip = document.createElement('span');
             toolTip.textContent = 'Add new task';
             toolTip.classList.add('tool-tip');
@@ -84,72 +84,78 @@ const dom = (() => {
         ].join('-');    
     }
  
-    function renderTasks(currentProject, projectId) {
+    function determineTasks(currentProject, projectId) {
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
         const today = formatDate(new Date());
-        if (currentProject == null) {
-            return;
-        } else if (projectId < 6) {
-            currentProject.tasks = [];
-            let allTasks = addHandlers.getAllTasks();
-            switch (projectId) {
-                // all
-                case '0':
-                    currentProject.tasks = addHandlers.getAllTasks();
-                    break;
-                // today
-                case '1':
-                    let dueToday = [];
-                    for (let i = 0; i < allTasks.length; i++) {
-                        let dueDate = formatDate(allTasks[i].date);
-                        if (dueDate == today) {
-                            dueToday.push(allTasks[i]);
-                        }
-                    }
-                    currentProject.tasks = dueToday;
-                    break;
-                // week
-                case '2':
-                    let weekOfYear = require('dayjs/plugin/weekOfYear');
-                    dayjs.extend(weekOfYear);
-                    require('dayjs/locale/de');
-                    dayjs.locale('de');
-                    
-                    let dueWeek = [];
-                    for (let i = 0; i < allTasks.length; i++) {
-                        let dueDate = formatDate(allTasks[i].date);
-                        if (dayjs(today).week() == dayjs(dueDate).week()) {
-                            dueWeek.push(allTasks[i]);
-                        }
-                    }
-                    currentProject.tasks = dueWeek;
-                    break;
-                // important
-                case '3':
-                    let mostImportant = [];
-                    for (let i = 0; i < allTasks.length; i++) {
-                        if (allTasks[i].priority === 'very-high') mostImportant.push(allTasks[i]);
-                    }
-                    currentProject.tasks = mostImportant;
-                    break;
-                // completed
-                case '4':
-                   let completedTasks = [];
-                   for (let i = 0; i < allTasks.length; i++) {
-                       if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
-                   } 
-                   currentProject.tasks = completedTasks;
-                   break;
-                // notes
-                case '5':
-                    renderNotes();
-                    break;
-            }
-        }
+        const allTasks = addHandlers.getAllTasks();
+        currentProject.tasks = [];
 
+        switch (projectId) {
+            // all
+            case '0':
+                currentProject.tasks = addHandlers.getAllTasks();
+                renderTasks(currentProject);
+                break;
+            // today
+            case '1':
+                let dueToday = [];
+                for (let i = 0; i < allTasks.length; i++) {
+                    let dueDate = formatDate(allTasks[i].date);
+                    if (dueDate == today) {
+                        dueToday.push(allTasks[i]);
+                    }
+                }
+                currentProject.tasks = dueToday;
+                renderTasks(currentProject);
+                break;
+            // week
+            case '2':
+                let weekOfYear = require('dayjs/plugin/weekOfYear');
+                dayjs.extend(weekOfYear);
+                require('dayjs/locale/de');
+                dayjs.locale('de');
+                
+                let dueWeek = [];
+                for (let i = 0; i < allTasks.length; i++) {
+                    let dueDate = formatDate(allTasks[i].date);
+                    if (dayjs(today).week() == dayjs(dueDate).week()) {
+                        dueWeek.push(allTasks[i]);
+                    }
+                }
+                currentProject.tasks = dueWeek;
+                renderTasks(currentProject);
+                break;
+            // important
+            case '3':
+                let mostImportant = [];
+                for (let i = 0; i < allTasks.length; i++) {
+                    if (allTasks[i].priority === 'very-high') mostImportant.push(allTasks[i]);
+                }
+                currentProject.tasks = mostImportant;
+                renderTasks(currentProject);
+                break;
+            // completed
+            case '4':
+               let completedTasks = [];
+               for (let i = 0; i < allTasks.length; i++) {
+                   if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
+               } 
+               currentProject.tasks = completedTasks;
+               renderTasks(currentProject);
+               break;
+            // notes
+            case '5':
+                renderNotes();
+                break;
+            
+        }    
+    }
+
+    function renderTasks(currentProject) {
         // color the list items according to the priority!
-
+        const taskList_ul = document.querySelector('[data-taskList]');
+        taskList_ul.textContent = '';
         for (let i = 0; i < currentProject.tasks.length; i++) {
             // li
             const listItem = document.createElement('li');
@@ -225,10 +231,44 @@ const dom = (() => {
         console.log('notes');
     }
     
+    function displayModal() {
+        const modal_div = document.querySelector('[data-modal]');
+        const overlay_div = document.querySelector('[data-overlay]');
+        modal_div.classList.toggle('closed');
+        overlay_div.classList.toggle('closed');
+    }
+
+    function displaySortOptions() {
+        const sortOptions_div = document.querySelector('[data-sortOptions]');
+        const sortOverlay_div = document.querySelector('[data-sortOverlay]');
+        sortOptions_div.classList.toggle('show');
+        sortOverlay_div.classList.toggle('closed');
+    }
+
+    function displayProjectForm() {
+        const newProject_form = document.querySelector('[data-newProjectForm]');
+        const projectTitle_input = document.querySelector('[data-projectTitleInput]');
+        projectTitle_input.value = '';
+        newProject_form.classList.toggle('closed');
+    }
+
+    function toggleSidebar() {
+        const sidebar_nav = document.querySelector('[data-sidebar]');
+        const main_element = document.querySelector('[data-main]');
+    
+        sidebar_nav.classList.toggle('hidden');
+        main_element.classList.toggle('full-page');   
+    }
+    
     return {
         renderTasks,
         renderProjects,
-        renderHeader
+        renderHeader,
+        determineTasks,
+        displayModal,
+        displaySortOptions,
+        displayProjectForm,
+        toggleSidebar
     };
 })();
 
