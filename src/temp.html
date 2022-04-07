@@ -56,48 +56,22 @@
         <div class="task-sort-container"> 
           <div class="title-and-btn-container">
             <div><span>(</span><span data-taskCount></span><span>)</span></div>
-            <div data-btnDiv>
-              <button type="button" aria-label="add new task" class="add-button" data-addTaskBtn></button>
-              <span class="tool-tip">Add new task</span>
-            </div>
+            <div data-btnDiv></div>
           </div>        
                 
           <div class="sort-container" >        
             <div>Sort by:</div>       
-            <div class="sort-button" tabindex="0" role="button" data-sortButton>Due Date</div>                    
+            <div class="sort-button" tabindex="0" role="button" data-sortButton>Newest to Oldest</div>                    
             <div class="sort-options" data-sortOptions>                         
-              <div tabindex="0" data-sortDate>Due Date</div>                         
-              <div tabindex="0" data-sortOldNew>Oldest to Newest</div>    
               <div tabindex="0" data-sortNewOld>Newest to Oldest</div>        
+              <div tabindex="0" data-sortOldNew>Oldest to Newest</div>    
+              <div tabindex="0" data-sortDate>Due Date</div>                         
               <div tabindex="0" data-sortImportance>Importance</div>                    
             </div>                   
           </div>        
         </div>     
           
-        <ul class="task-list" data-taskList>        
-          <li class="task" tabindex="0">       
-            <span class="fa-regular fa-circle icon not-checked" data-notChecked></span>       
-            <div class="task-details">       
-              <div>Title</div>      
-              <div class="task-options" data-taskOptions>      
-                <span data-taskDetails class="fa-solid fa-circle-info icon"></span>     
-                <span data-taskEdit class="fa-solid fa-pen-to-square icon"></span>      
-                <span data-taskDelete class="fa-solid fa-trash-can icon"></span>      
-              </div>       
-            </div>                  
-          </li>            
-          <li class="task" tabindex="0">       
-            <span class="fa-solid fa-circle-check icon checked" data-checked></span>           
-            <div class="task-details">       
-              <div>Title</div>      
-              <div class="task-options" data-taskOptions>            
-                <span data-taskDetails class="fa-solid fa-circle-info icon"></span>     
-                <span data-taskEdit class="fa-solid fa-pen-to-square icon"></span>      
-                <span data-taskDelete class="fa-solid fa-trash-can icon"></span>            
-              </div>       
-            </div>                  
-          </li>            
-        </ul>           
+        <ul class="task-list" data-taskList></ul>           
       </div>                
     </main>  
     
