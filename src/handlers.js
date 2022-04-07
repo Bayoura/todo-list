@@ -86,16 +86,18 @@ const addHandlers = (() => {
                 let checkStatus = taskForm_form.checkValidity();
                 taskForm_form.reportValidity();
                 if (checkStatus) {
+                    const currentProject = factories.projectList[determineCurrentProjectId()];
+                    const projectId = determineCurrentProjectId();
                     const title = document.querySelector('[data-taskTitleInput]').value;
                     const description = document.querySelector('[data-descriptionInput]').value;
                     let date = document.querySelector('[data-dateInput]').value;
                     date = new Date(date);
                     const priorityValue = document.querySelector('input[name=priority]:checked').value;
-                    const newTask = factories.taskFactory(title, description, date, priorityValue);
+                    const newTask = factories.taskFactory(project, projectId, title, description, date, priorityValue);
                     
-                    factories.projectList[determineCurrentProjectId()].tasks.push(newTask);
-                    dom.renderTasks(factories.projectList[determineCurrentProjectId()]);
-                    dom.renderHeader(factories.projectList[determineCurrentProjectId()], determineCurrentProjectId());
+                    currentProject.tasks.push(newTask);
+                    dom.renderTasks(currentProject);
+                    dom.renderHeader(currentProject, determineCurrentProjectId());
                     dom.displayModal();
                 }
             })    
@@ -140,6 +142,7 @@ const addHandlers = (() => {
         addMainEvents,
         chooseProject,
         getAllTasks,
+        determineCurrentProjectId
     }
 
 })();

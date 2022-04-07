@@ -172,6 +172,7 @@ const dom = (() => {
                 'not-checked'
             );
             uncheckedIcon.ariaLabel = 'click to complete task';
+            uncheckedIcon.setAttribute('data-id', i);
             // div container for task details
             const taskDetails = document.createElement('div');
             taskDetails.classList.add('task-details');
@@ -200,7 +201,8 @@ const dom = (() => {
                 'icon'
             );
             infoIcon.setAttribute('taskInfo', '');
-            infoIcon.addEventListener('click', () => console.log('openInfoModal()'));
+            infoIcon.setAttribute('data-id', i);
+            infoIcon.addEventListener('click', () => deleteTask());
             infoIcon.ariaLabel = 'task details';
             
             const editIcon = document.createElement('span');
@@ -210,6 +212,7 @@ const dom = (() => {
                 'icon'
             );
             editIcon.setAttribute('taskEdit', '');
+            editIcon.setAttribute('data-id', i);
             editIcon.addEventListener('click', () => console.log('openEditModal()'));
             editIcon.ariaLabel = 'edit task';
 
@@ -220,7 +223,8 @@ const dom = (() => {
                 'icon'
             );
             deleteIcon.setAttribute('taskDelete', '');
-            deleteIcon.addEventListener('click', () => console.log('deleteTask()'));
+            deleteIcon.setAttribute('data-id', i);
+            deleteIcon.addEventListener('click', (e) => deleteTask(e.target));
             deleteIcon.ariaLabel = 'delete task';
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
@@ -229,6 +233,24 @@ const dom = (() => {
 
     function renderNotes() {
         console.log('notes');
+    }
+
+    // die tasks arrays von dem currentProject und dem originProject stimmen nicht überein, es wird nur im originProject gelöscht
+    function deleteTask(clicked) {
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const clickedTask = currentProject.tasks[clicked.dataset.id];
+        const originProject = factories.projectList[clickedTask.projectId];
+        console.log(originProject)
+        for (let i = 0; i < originProject.tasks.length; i++) {
+            if (originProject.tasks[i].title == clickedTask.title) {
+                originProject.tasks.splice(i, 1);
+                console.log(originProject)
+                renderTasks(currentProject)
+                renderHeader(currentProject, addHandlers.determineCurrentProjectId())
+            }
+
+        }
+        console.log();
     }
     
     function displayModal() {
