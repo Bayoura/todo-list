@@ -15,6 +15,7 @@ import factories from './factories.js';
 // if project or task title input is longer than x make it like so "this is a long..." and only display the full title when you click on the details
 
 addHandlers.addNavEvents();
+addHandlers.addMainEvents();
 dom.renderProjects();
-dom.renderTasks(factories.projectList[0], '0');
+dom.determineTasks(factories.projectList[0], '0');
 dom.renderHeader(factories.projectList[0], '0');
