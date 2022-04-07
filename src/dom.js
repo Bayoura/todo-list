@@ -46,15 +46,24 @@ const dom = (() => {
     function renderHeader(currentProject, projectId) {
         const taskCount_span = document.querySelector('[data-taskCount]');
         const projectHeading_h2 = document.querySelector('[data-projectHeading]');
+        const addTaskButton_div = document.querySelector('[data-btnDiv]');
         
+        addTaskButton_div.textContent = '';
         // h2
         projectHeading_h2.textContent = currentProject.title;
         // task count
         taskCount_span.textContent = currentProject.tasks.length;
 
-        if (projectId >= 6) {
-            console.log('bigger')
-            // make button
+        if (projectId >= 5) {
+            const taskButton = document.createElement('button');
+            taskButton.ariaLabel = 'add new task';
+            taskButton.type = 'button';
+            taskButton.classList.add('add-button');
+            taskButton.addEventListener('click', () => addHandlers.displayModal);
+            const toolTip = document.createElement('span');
+            toolTip.textContent = 'Add new task';
+            toolTip.classList.add('tool-tip');
+            addTaskButton_div.append(taskButton,toolTip);
         } else if (projectId === '5') {
             //notes
             // notes count
