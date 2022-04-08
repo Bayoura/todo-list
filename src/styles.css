@@ -285,8 +285,16 @@ main.full-page {
   padding-bottom: 20px;
 }
 
+.checked {
+  color: green;
+}
+
 .new-project-form > input{
   width: 100%;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .modal {
