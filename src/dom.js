@@ -126,11 +126,6 @@ const dom = (() => {
                 break;
             // completed
             case '4':
-            //    let completedTasks = [];
-            //    for (let i = 0; i < allTasks.length; i++) {
-            //        if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
-            //    } 
-            //    currentProject.tasks = completedTasks;
                renderTasks(currentProject);
                break;
             // notes
@@ -219,7 +214,7 @@ const dom = (() => {
             );
             editIcon.setAttribute('taskEdit', '');
             editIcon.setAttribute('data-id', i);
-            editIcon.addEventListener('click', () => console.log('openEditModal()'));
+            editIcon.addEventListener('click', e => editTask(e.target));
             editIcon.ariaLabel = 'edit task';
 
             const deleteIcon = document.createElement('span');
@@ -230,7 +225,7 @@ const dom = (() => {
             );
             deleteIcon.setAttribute('taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
-            deleteIcon.addEventListener('click', (e) => deleteTask(e.target));
+            deleteIcon.addEventListener('click', e => deleteTask(e.target));
             deleteIcon.ariaLabel = 'delete task';
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
@@ -306,10 +301,35 @@ const dom = (() => {
         }
         renderHeader(currentProject, currentProjectId)
     } 
+
+    function editTask(clicked) {
+        displayModal();
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const currentProjectId = addHandlers.determineCurrentProjectId();
+        const clickedTask = currentProject.tasks[clicked.dataset.id];
+        const originProject = factories.projectList[clickedTask.projectId];
+        originProject.tasks.splice(clickedTask.taskId, 1);  
+
+
+        document.querySelector('[data-taskTitleInput]').value = clickedTask.title;
+        document.querySelector('[data-descriptionInput]').value = clickedTask.description;
+        document.querySelector('[data-dateInput]').value = clickedTask.dueDate;
+        // document.querySelector('input[name=priority]:checked').value = clickedTask.priority;
+
+        // if (currentProjectId < 6) {
+        //     determineTasks(currentProject, currentProjectId);
+        // } else {
+        //     renderTasks(currentProject);
+        // }
+        // renderHeader(currentProject, currentProjectId)
+
+    }
     
     function displayModal() {
+        const taskForm_form = document.querySelector('[data-taskModalForm]');
         const modal_div = document.querySelector('[data-modal]');
         const overlay_div = document.querySelector('[data-overlay]');
+        taskForm_form.reset();
         modal_div.classList.toggle('closed');
         overlay_div.classList.toggle('closed');
     }
@@ -323,8 +343,7 @@ const dom = (() => {
 
     function displayProjectForm() {
         const newProject_form = document.querySelector('[data-newProjectForm]');
-        const projectTitle_input = document.querySelector('[data-projectTitleInput]');
-        projectTitle_input.value = '';
+        newProject_form.reset();
         newProject_form.classList.toggle('closed');
     }
 
