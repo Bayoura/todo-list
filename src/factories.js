@@ -10,13 +10,16 @@ const factories = (() => {
         projectFactory('Notes'), 
     ];
     
-    
-    function taskFactory(projectId, title, description, date, priority) {
+    // the projectId signifies the index number of the user project the task belongs to (starting with 6)
+    // the taskId signifies the original index of the task in the array of that user project
+    function taskFactory(projectId, title, description, dueDate, priority) {
         const task = {};
         task.projectId = projectId;
+        task.taskId = 0;
         task.title = title;
         task.description = description;
-        task.date = date;
+        task.dueDate = dueDate;
+        task.completionDate;
         task.priority = priority;
         task.completed = false;
         return task;
@@ -32,20 +35,20 @@ const factories = (() => {
     if(!localStorage.getItem('projectList')) {  
         let demoProject =  projectFactory('Demo Project');
         demoProject.tasks.push(
-            taskFactory(6, 'Homework','English book, p.25, exercisies 2 and 3', new Date(2022, 3, 6),'high'), 
-            taskFactory(6, 'Go grocery shopping','buy apples', new Date(2022, 8, 8),'high')
+            taskFactory('6', 'Homework','English book, p.25, exercisies 2 and 3', new Date(2022, 3, 6),'high'), 
+            taskFactory('6', 'Go grocery shopping','buy apples', new Date(2022, 8, 8),'high')
             );
 
             let demoProject2 =  projectFactory('Demo Project2');
         demoProject2.tasks.push(
-            taskFactory(7, 'Homework2','English book, p.25, exercisies 2 and 3', new Date(2022, 7, 12),'high'), 
-            taskFactory(7, 'Go grocery shopping2','buy apples', new Date(2023, 1, 12),'very-high')
+            taskFactory('7', 'Homework2','English book, p.25, exercisies 2 and 3', new Date(2022, 7, 12),'high'), 
+            taskFactory('7', 'Go grocery shopping2','buy apples', new Date(2023, 1, 12),'very-high')
             );
 
             let demoProject3 =  projectFactory('Demo Project3');
         demoProject3.tasks.push(
-            taskFactory(8, 'Homework3','English book, p.25, exercisies 2 and 3', new Date(2022, 5, 16),'very-high'), 
-            taskFactory(8, 'Go grocery shopping3','buy apples', new Date(2022, 3, 10),'low')
+            taskFactory('8', 'Homework3','English book, p.25, exercisies 2 and 3', new Date(2022, 5, 16),'very-high'), 
+            taskFactory('8', 'Go grocery shopping3','buy apples', new Date(2022, 3, 10),'low')
             );
         projectList.push(demoProject);
         projectList.push(demoProject2);

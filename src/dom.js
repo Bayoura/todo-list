@@ -4,6 +4,13 @@ import addHandlers from './handlers.js';
 
 const dom = (() => {
 
+    let localizedFormat = require('dayjs/plugin/localizedFormat')
+    dayjs.extend(localizedFormat)
+    let weekOfYear = require('dayjs/plugin/weekOfYear');
+    dayjs.extend(weekOfYear);
+    require('dayjs/locale/de');
+    dayjs.locale('de');
+
     function renderProjects() {
         const projectList_ul = document.querySelector('[data-projectList]');
         projectList_ul.textContent = '';
@@ -71,25 +78,12 @@ const dom = (() => {
         }
         
     }
-
-    function formatDate(date) {
-        // ✅ Format a date to YYYY-MM-DD (or any other format)
-        function padTo2Digits(num) {
-            return num.toString().padStart(2, '0');   
-        }
-        return [    
-            date.getFullYear(),
-            padTo2Digits(date.getMonth() + 1),
-            padTo2Digits(date.getDate()),   
-        ].join('-');    
-    }
  
     function determineTasks(currentProject, projectId) {
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
-        const today = formatDate(new Date());
+        const today = dayjs().format('ll');
         const allTasks = addHandlers.getAllTasks();
-        currentProject.tasks = [];
 
         switch (projectId) {
             // all
@@ -98,10 +92,10 @@ const dom = (() => {
                 renderTasks(currentProject);
                 break;
             // today
-            case '1':
+            case '1':    
                 let dueToday = [];
                 for (let i = 0; i < allTasks.length; i++) {
-                    let dueDate = formatDate(allTasks[i].date);
+                    let dueDate = dayjs(allTasks[i].dueDate).format('ll');
                     if (dueDate == today) {
                         dueToday.push(allTasks[i]);
                     }
@@ -111,15 +105,10 @@ const dom = (() => {
                 break;
             // week
             case '2':
-                let weekOfYear = require('dayjs/plugin/weekOfYear');
-                dayjs.extend(weekOfYear);
-                require('dayjs/locale/de');
-                dayjs.locale('de');
-                
                 let dueWeek = [];
                 for (let i = 0; i < allTasks.length; i++) {
-                    let dueDate = formatDate(allTasks[i].date);
-                    if (dayjs(today).week() == dayjs(dueDate).week()) {
+                    let dueDate = dayjs(allTasks[i].dueDate).format('ll');
+                    if (dayjs(dueDate).week() == dayjs(today).week()) {
                         dueWeek.push(allTasks[i]);
                     }
                 }
@@ -137,11 +126,11 @@ const dom = (() => {
                 break;
             // completed
             case '4':
-               let completedTasks = [];
-               for (let i = 0; i < allTasks.length; i++) {
-                   if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
-               } 
-               currentProject.tasks = completedTasks;
+            //    let completedTasks = [];
+            //    for (let i = 0; i < allTasks.length; i++) {
+            //        if (allTasks[i].completed === true) completedTasks.push(allTasks[i]);
+            //    } 
+            //    currentProject.tasks = completedTasks;
                renderTasks(currentProject);
                break;
             // notes
@@ -164,31 +153,48 @@ const dom = (() => {
             listItem.setAttribute('data-id', i);
             taskList_ul.appendChild(listItem);
             // icon span
-            const uncheckedIcon = document.createElement('span');
-            uncheckedIcon.classList.add(
-                'fa-regular',
-                'fa-circle',
-                'icon',
-                'not-checked'
-            );
-            uncheckedIcon.ariaLabel = 'click to complete task';
-            uncheckedIcon.setAttribute('data-id', i);
+            const checkIcon = document.createElement('span');
+            checkIcon.ariaLabel = 'click to check/uncheck task';
+            checkIcon.setAttribute('data-id', i);
+            checkIcon.addEventListener('click', (e) => changeCompletionStatus(e.target));
+
+            if (currentProject.tasks[i].completed === true) {
+                checkIcon.classList.add(
+                    'fa-solid',
+                    'fa-circle-check',
+                    'icon',
+                    'checked'
+                ); 
+            } else {
+                checkIcon.classList.add(
+                    'fa-regular',
+                    'fa-circle',
+                    'icon'
+                );    
+            }
             // div container for task details
             const taskDetails = document.createElement('div');
             taskDetails.classList.add('task-details');
-            listItem.append(uncheckedIcon, taskDetails);
+            listItem.append(checkIcon, taskDetails);
             // title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = currentProject.tasks[i].title;
-            // due date div
+            // date div
+            
             const dateDiv = document.createElement('div');
             const openingBracket = document.createElement('span');
             const closingBracket = document.createElement('span');
-            const dueDate = document.createElement('span');
-            openingBracket.textContent = '[Due: ';
+            const date = document.createElement('span');
             closingBracket.textContent = ']';
-            dueDate.textContent = formatDate(currentProject.tasks[i].date);
-            dateDiv.append(openingBracket, dueDate, closingBracket);
+            dateDiv.append(openingBracket, date, closingBracket);
+            if (currentProject.title === 'Completed Tasks') {
+                openingBracket.textContent = '[Completed: ';
+                date.textContent = dayjs(currentProject.tasks[i].completionDate).format('ll');
+            } else {
+                openingBracket.textContent = '[Due: ';
+                date.textContent = dayjs(currentProject.tasks[i].dueDate).format('ll');
+
+            }
             // task options div
             const taskOptionsDiv = document.createElement('div');
             taskOptionsDiv.classList.add('task-options');
@@ -229,29 +235,77 @@ const dom = (() => {
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
         }
+        addHandlers.updateTaskIndex();
     }
 
     function renderNotes() {
         console.log('notes');
     }
 
-    // die tasks arrays von dem currentProject und dem originProject stimmen nicht überein, es wird nur im originProject gelöscht
-    function deleteTask(clicked) {
+    function changeCompletionStatus(clicked) {
         const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const currentProjectId = addHandlers.determineCurrentProjectId();
         const clickedTask = currentProject.tasks[clicked.dataset.id];
         const originProject = factories.projectList[clickedTask.projectId];
-        console.log(originProject)
-        for (let i = 0; i < originProject.tasks.length; i++) {
-            if (originProject.tasks[i].title == clickedTask.title) {
-                originProject.tasks.splice(i, 1);
-                console.log(originProject)
-                renderTasks(currentProject)
-                renderHeader(currentProject, addHandlers.determineCurrentProjectId())
-            }
-
+        
+        if (clickedTask.completed === true) {
+            clickedTask.completed = false;
+            clickedTask.completionDate = '';
+            originProject.tasks.push(clickedTask);
+            // remove old classes:
+            clicked.removeAttribute('class');
+            clicked.classList.add(
+                'fa-regular',
+                'fa-circle',
+                'icon'
+            );  
+            setTimeout(() => {
+                factories.projectList[4].tasks.splice(clicked.dataset.id, 1);
+                renderTasks(currentProject);
+                renderHeader(currentProject, currentProjectId)
+            }, 200); 
+        } else {
+            clickedTask.completed = true;
+            clickedTask.completionDate = new Date();
+            factories.projectList[4].tasks.push(clickedTask);
+            clicked.removeAttribute('class');
+            clicked.classList.add(
+                'fa-solid',
+                'fa-circle-check',
+                'icon',
+                'checked'
+            ); 
+            
+            setTimeout(() => {
+                originProject.tasks.splice(clickedTask.taskId, 1);
+                if (currentProjectId < 6) {
+                    determineTasks(currentProject, currentProjectId);
+                } else {
+                    renderTasks(currentProject);
+                }
+                renderHeader(currentProject, currentProjectId)
+            }, 200); 
         }
-        console.log();
+        console.log(clickedTask);
+        console.log(factories.projectList);
     }
+
+    // note: the data-id attribute shows the index of the task in the current list (the default projects, e.g. 'All'),
+    // the taskId shows the index of the task in the original task list of the project the tasks belongs to (the user projects)
+    function deleteTask(clicked) {
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const currentProjectId = addHandlers.determineCurrentProjectId();
+        const clickedTask = currentProject.tasks[clicked.dataset.id];
+        const originProject = factories.projectList[clickedTask.projectId];
+        originProject.tasks.splice(clickedTask.taskId, 1);  
+
+        if (currentProjectId < 6) {
+            determineTasks(currentProject, currentProjectId);
+        } else {
+            renderTasks(currentProject);
+        }
+        renderHeader(currentProject, currentProjectId)
+    } 
     
     function displayModal() {
         const modal_div = document.querySelector('[data-modal]');

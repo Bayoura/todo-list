@@ -74,6 +74,14 @@ const addHandlers = (() => {
         }
         return allTasks;
     }
+
+    function updateTaskIndex() {
+        for (let i = 6; i < factories.projectList.length; i++) {
+            for (let j = 0; j < factories.projectList[i].tasks.length; j++) {
+                factories.projectList[i].tasks[j].taskId = j;
+            }
+        }
+    }
     
     function submitTask() {
         const submitTask_button = document.querySelector('[data-submitTaskBtn]');
@@ -90,10 +98,9 @@ const addHandlers = (() => {
                     const projectId = determineCurrentProjectId();
                     const title = document.querySelector('[data-taskTitleInput]').value;
                     const description = document.querySelector('[data-descriptionInput]').value;
-                    let date = document.querySelector('[data-dateInput]').value;
-                    date = new Date(date);
+                    const dueDate = document.querySelector('[data-dateInput]').value;
                     const priorityValue = document.querySelector('input[name=priority]:checked').value;
-                    const newTask = factories.taskFactory(project, projectId, title, description, date, priorityValue);
+                    const newTask = factories.taskFactory(projectId, title, description, dueDate, priorityValue);
                     
                     currentProject.tasks.push(newTask);
                     dom.renderTasks(currentProject);
@@ -142,7 +149,8 @@ const addHandlers = (() => {
         addMainEvents,
         chooseProject,
         getAllTasks,
-        determineCurrentProjectId
+        determineCurrentProjectId,
+        updateTaskIndex,
     }
 
 })();
