@@ -22,6 +22,7 @@ const addHandlers = (() => {
         const cancelTask_button = document.querySelector('[data-cancelTaskBtn]');
         const overlay_div = document.querySelector('[data-overlay]');
         const hamburger_label = document.querySelector('[data-hamburger]');
+        
         cancelTask_button.addEventListener('click', dom.displayModal);
         overlay_div.addEventListener('click', dom.displayModal);
         hamburger_label.addEventListener('click', dom.toggleSidebar);
