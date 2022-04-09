@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
 import addHandlers from './handlers.js';
 import dom from './dom.js';
 import factories from './factories.js';
+import taskEvents from './task-events.js';
 
 
 // make it so that users can switch a todo from one project to another
@@ -17,5 +18,5 @@ import factories from './factories.js';
 addHandlers.addNavEvents();
 addHandlers.addMainEvents();
 dom.renderProjects();
-dom.determineTasks(factories.projectList[0], '0');
+taskEvents.determineTasks(factories.projectList[0], '0');
 dom.renderHeader(factories.projectList[0], '0');

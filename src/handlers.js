@@ -1,5 +1,6 @@
 import factories from './factories.js';
 import dom from './dom.js';
+import taskEvents from './task-events.js';
 
 const addHandlers = (() => {
 
@@ -37,7 +38,7 @@ const addHandlers = (() => {
             let currentProject = factories.projectList[id];
             // check if it is a default or user project
             if (id < 6) {
-                dom.determineTasks(currentProject, id);
+                taskEvents.determineTasks(currentProject, id);
                 dom.renderHeader(currentProject, id);
             } else {
                 dom.renderTasks(currentProject);
@@ -100,6 +101,7 @@ const addHandlers = (() => {
                     const title = document.querySelector('[data-taskTitleInput]').value;
                     const description = document.querySelector('[data-descriptionInput]').value;
                     const dueDate = document.querySelector('[data-dateInput]').value;
+                    console.log(document.querySelector('[data-dateInput]').value)
                     const priorityValue = document.querySelector('input[name=priority]:checked').value;
                     const newTask = factories.taskFactory(projectId, title, description, dueDate, priorityValue);
                     

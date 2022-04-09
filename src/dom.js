@@ -1,15 +1,9 @@
 import dayjs from 'dayjs';
 import factories from './factories.js';
 import addHandlers from './handlers.js';
+import taskEvents from './task-events.js';
 
 const dom = (() => {
-
-    let localizedFormat = require('dayjs/plugin/localizedFormat')
-    dayjs.extend(localizedFormat)
-    let weekOfYear = require('dayjs/plugin/weekOfYear');
-    dayjs.extend(weekOfYear);
-    require('dayjs/locale/de');
-    dayjs.locale('de');
 
     function renderProjects() {
         const projectList_ul = document.querySelector('[data-projectList]');
@@ -79,64 +73,10 @@ const dom = (() => {
         
     }
  
-    function determineTasks(currentProject, projectId) {
-        const taskList_ul = document.querySelector('[data-taskList]');
-        taskList_ul.textContent = '';
-        const today = dayjs().format('ll');
-        const allTasks = addHandlers.getAllTasks();
-
-        switch (projectId) {
-            // all
-            case '0':
-                currentProject.tasks = addHandlers.getAllTasks();
-                renderTasks(currentProject);
-                break;
-            // today
-            case '1':    
-                let dueToday = [];
-                for (let i = 0; i < allTasks.length; i++) {
-                    let dueDate = dayjs(allTasks[i].dueDate).format('ll');
-                    if (dueDate == today) {
-                        dueToday.push(allTasks[i]);
-                    }
-                }
-                currentProject.tasks = dueToday;
-                renderTasks(currentProject);
-                break;
-            // week
-            case '2':
-                let dueWeek = [];
-                for (let i = 0; i < allTasks.length; i++) {
-                    let dueDate = dayjs(allTasks[i].dueDate).format('ll');
-                    if (dayjs(dueDate).week() == dayjs(today).week()) {
-                        dueWeek.push(allTasks[i]);
-                    }
-                }
-                currentProject.tasks = dueWeek;
-                renderTasks(currentProject);
-                break;
-            // important
-            case '3':
-                let mostImportant = [];
-                for (let i = 0; i < allTasks.length; i++) {
-                    if (allTasks[i].priority === 'very-high') mostImportant.push(allTasks[i]);
-                }
-                currentProject.tasks = mostImportant;
-                renderTasks(currentProject);
-                break;
-            // completed
-            case '4':
-               renderTasks(currentProject);
-               break;
-            // notes
-            case '5':
-                renderNotes();
-                break;
-            
-        }    
-    }
-
     function renderTasks(currentProject) {
+        let localizedFormat = require('dayjs/plugin/localizedFormat');
+        dayjs.extend(localizedFormat);
+
         // color the list items according to the priority!
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
@@ -151,7 +91,7 @@ const dom = (() => {
             const checkIcon = document.createElement('span');
             checkIcon.ariaLabel = 'click to check/uncheck task';
             checkIcon.setAttribute('data-id', i);
-            checkIcon.addEventListener('click', (e) => changeCompletionStatus(e.target));
+            checkIcon.addEventListener('click', (e) => taskEvents.changeCompletionStatus(e.target));
 
             if (currentProject.tasks[i].completed === true) {
                 checkIcon.classList.add(
@@ -203,7 +143,7 @@ const dom = (() => {
             );
             infoIcon.setAttribute('taskInfo', '');
             infoIcon.setAttribute('data-id', i);
-            infoIcon.addEventListener('click', () => deleteTask());
+            infoIcon.addEventListener('click', () => taskEvents.showTaskDetails());
             infoIcon.ariaLabel = 'task details';
             
             const editIcon = document.createElement('span');
@@ -214,7 +154,7 @@ const dom = (() => {
             );
             editIcon.setAttribute('taskEdit', '');
             editIcon.setAttribute('data-id', i);
-            editIcon.addEventListener('click', e => editTask(e.target));
+            editIcon.addEventListener('click', e => taskEvents.editTask(e.target));
             editIcon.ariaLabel = 'edit task';
 
             const deleteIcon = document.createElement('span');
@@ -225,7 +165,7 @@ const dom = (() => {
             );
             deleteIcon.setAttribute('taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
-            deleteIcon.addEventListener('click', e => deleteTask(e.target));
+            deleteIcon.addEventListener('click', e => taskEvents.deleteTask(e.target));
             deleteIcon.ariaLabel = 'delete task';
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
@@ -235,94 +175,6 @@ const dom = (() => {
 
     function renderNotes() {
         console.log('notes');
-    }
-
-    function changeCompletionStatus(clicked) {
-        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
-        const currentProjectId = addHandlers.determineCurrentProjectId();
-        const clickedTask = currentProject.tasks[clicked.dataset.id];
-        const originProject = factories.projectList[clickedTask.projectId];
-        
-        if (clickedTask.completed === true) {
-            clickedTask.completed = false;
-            clickedTask.completionDate = '';
-            originProject.tasks.push(clickedTask);
-            // remove old classes:
-            clicked.removeAttribute('class');
-            clicked.classList.add(
-                'fa-regular',
-                'fa-circle',
-                'icon'
-            );  
-            setTimeout(() => {
-                factories.projectList[4].tasks.splice(clicked.dataset.id, 1);
-                renderTasks(currentProject);
-                renderHeader(currentProject, currentProjectId)
-            }, 200); 
-        } else {
-            clickedTask.completed = true;
-            clickedTask.completionDate = new Date();
-            factories.projectList[4].tasks.push(clickedTask);
-            clicked.removeAttribute('class');
-            clicked.classList.add(
-                'fa-solid',
-                'fa-circle-check',
-                'icon',
-                'checked'
-            ); 
-            
-            setTimeout(() => {
-                originProject.tasks.splice(clickedTask.taskId, 1);
-                if (currentProjectId < 6) {
-                    determineTasks(currentProject, currentProjectId);
-                } else {
-                    renderTasks(currentProject);
-                }
-                renderHeader(currentProject, currentProjectId)
-            }, 200); 
-        }
-        console.log(clickedTask);
-        console.log(factories.projectList);
-    }
-
-    // note: the data-id attribute shows the index of the task in the current list (the default projects, e.g. 'All'),
-    // the taskId shows the index of the task in the original task list of the project the tasks belongs to (the user projects)
-    function deleteTask(clicked) {
-        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
-        const currentProjectId = addHandlers.determineCurrentProjectId();
-        const clickedTask = currentProject.tasks[clicked.dataset.id];
-        const originProject = factories.projectList[clickedTask.projectId];
-        originProject.tasks.splice(clickedTask.taskId, 1);  
-
-        if (currentProjectId < 6) {
-            determineTasks(currentProject, currentProjectId);
-        } else {
-            renderTasks(currentProject);
-        }
-        renderHeader(currentProject, currentProjectId)
-    } 
-
-    function editTask(clicked) {
-        displayModal();
-        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
-        const currentProjectId = addHandlers.determineCurrentProjectId();
-        const clickedTask = currentProject.tasks[clicked.dataset.id];
-        const originProject = factories.projectList[clickedTask.projectId];
-        originProject.tasks.splice(clickedTask.taskId, 1);  
-
-
-        document.querySelector('[data-taskTitleInput]').value = clickedTask.title;
-        document.querySelector('[data-descriptionInput]').value = clickedTask.description;
-        document.querySelector('[data-dateInput]').value = clickedTask.dueDate;
-        // document.querySelector('input[name=priority]:checked').value = clickedTask.priority;
-
-        // if (currentProjectId < 6) {
-        //     determineTasks(currentProject, currentProjectId);
-        // } else {
-        //     renderTasks(currentProject);
-        // }
-        // renderHeader(currentProject, currentProjectId)
-
     }
     
     function displayModal() {
@@ -359,7 +211,6 @@ const dom = (() => {
         renderTasks,
         renderProjects,
         renderHeader,
-        determineTasks,
         displayModal,
         displaySortOptions,
         displayProjectForm,
