@@ -8,118 +8,113 @@
   </head>  
   <body>
    
-    <header>
-      <h1>Do It Now</h1>
-      <input type="checkbox" id="hamburger">
-      <label for="hamburger" class="hamburger" data-hamburger> 
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-      </label>
-    </header>
-
-    <nav class="side-bar" data-sidebar>
-      <div>   
-        <div class="default-projects">
-          <ul>
-            <li tabindex="0" data-sidebarTab data-all data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
-            <li tabindex="0" data-sidebarTab data-today data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
-            <li tabindex="0" data-sidebarTab data-week data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
-            <li tabindex="0" data-sidebarTab data-important data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
-            <li tabindex="0" data-sidebarTab data-completed data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
-            <li tabindex="0" data-sidebarTab data-notes data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
-          </ul> 
-        </div>     
-        <div class="user-projects-container">
-          <div class="title-and-btn-container"> 
-            <h2>Project List</h2>
-            <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
-            <span class="tool-tip">Add new project</span>
+    <div id="content">
+      <header>
+        <h1>Do It Now</h1>
+        <input type="checkbox" id="hamburger">
+        <label for="hamburger" class="hamburger" data-hamburger>
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </label>
+      </header>
+      <nav class="side-bar" data-sidebar>
+        <div>
+          <div class="default-projects">
+            <ul>
+              <li tabindex="0" data-sidebarTab data-all data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
+              <li tabindex="0" data-sidebarTab data-today data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
+              <li tabindex="0" data-sidebarTab data-week data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
+              <li tabindex="0" data-sidebarTab data-important data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
+              <li tabindex="0" data-sidebarTab data-completed data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
+              <li tabindex="0" data-sidebarTab data-notes data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
+            </ul>
           </div>
-            
-          <ul class="project-list" data-projectList></ul>
-
-          <form action="" class="new-project-form closed" data-newProjectForm>
-            <input type="text" placeholder="New project name" data-projectTitleInput required>
-            <div>
-              <input type="submit" value="Add" data-submitProjectBtn>
-              <input type="button" value="Cancel" data-cancelProjectBtn>
+          <div class="user-projects-container">
+            <div class="title-and-btn-container">
+              <h2>Project List</h2>
+              <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
+              <span class="tool-tip">Add new project</span>
             </div>
-          </form>
-        </div>        
-      </div> 
-    </nav>
       
-    <main data-main>    
-      <div class="task-container" data-taskContainer>                    
-        <h2 data-projectHeading></h2>            
-        <div class="task-sort-container"> 
-          <div class="title-and-btn-container">
-            <div><span>(</span><span data-taskCount></span><span>)</span></div>
-            <div data-btnDiv></div>
-          </div>        
-                
-          <div class="sort-container" >        
-            <div>Sort by:</div>       
-            <div class="sort-button" tabindex="0" role="button" data-sortButton>Newest to Oldest</div>                    
-            <div class="sort-options" data-sortOptions>                         
-              <div tabindex="0" data-sortNewOld>Newest to Oldest</div>        
-              <div tabindex="0" data-sortOldNew>Oldest to Newest</div>    
-              <div tabindex="0" data-sortDate>Due Date</div>                         
-              <div tabindex="0" data-sortImportance>Importance</div>                    
-            </div>                   
-          </div>        
-        </div>     
-          
-        <ul class="task-list" data-taskList></ul>           
-      </div>                
-    </main>  
-    
-    <div class="modal closed" data-modal>
-      <div class="modal-header">
-        <h2 class="create-task-h2">Create a new task...</h2>
-        <h2 class="edit-task-h2">Edit your task...</h2>
-        <button type="button" data-cancelTaskBtn>Close</button>
+            <ul class="project-list" data-projectList></ul>
+            <form action="" class="new-project-form closed" data-newProjectForm>
+              <input type="text" placeholder="New project name" data-projectTitleInput required>
+              <div>
+                <input type="submit" value="Add" data-submitProjectBtn>
+                <input type="button" value="Cancel" data-cancelProjectBtn>
+              </div>
+            </form>
+          </div>
+        </div>
+      </nav>
+      
+      <main data-main>
+        <div class="task-container" data-taskContainer>
+          <h2 data-projectHeading></h2>
+          <div class="task-sort-container">
+            <div class="title-and-btn-container">
+              <div><span>(</span><span data-taskCount></span><span>)</span></div>
+              <div data-btnDiv></div>
+            </div>
+      
+            <div class="sort-container" >
+              <div>Sort by:</div>
+              <div class="sort-button" tabindex="0" role="button" data-sortButton>Newest to Oldest</div>
+              <div class="sort-options" data-sortOptions>
+                <div tabindex="0" data-sortNewOld>Newest to Oldest</div>
+                <div tabindex="0" data-sortOldNew>Oldest to Newest</div>
+                <div tabindex="0" data-sortDate>Due Date</div>
+                <div tabindex="0" data-sortImportance>Importance</div>
+              </div>
+            </div>
+          </div>
+      
+          <ul class="task-list" data-taskList></ul>
+        </div>
+      </main>
+      
+      <div class="modal closed" data-modal>
+        <div class="modal-header">
+          <h2 class="create-task-h2">Create a new task...</h2>
+          <h2 class="edit-task-h2">Edit your task...</h2>
+          <button type="button" data-cancelTaskBtn>Close</button>
+        </div>
+      
+        <form action="" class="modal-form" data-taskModalForm>
+          <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
+          <textarea data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream"></textarea>
+          <div>
+            <label for="due-date">Due date:</label>
+            <input type="date" data-dateInput id="due-date">
+          </div>
+          <div>
+            <div>Priority:</div>
+            <label>
+              <input type="radio" name="priority" value="low" class="" required>
+              Low
+            </label>
+            <label>
+              <input type="radio" name="priority" value="medium" class="" required checked>
+              Medium
+            </label>
+            <label>
+              <input type="radio" name="priority" value="high" class="" required>
+              High
+            </label>
+            <label>
+              <input type="radio" name="priority" value="very-high" class="" required>
+              Very high
+            </label>
+          </div>
+          <input type="submit" class="add-task-btn" value="Add task" data-submitTaskBtn>
+          <input type="submit" class="edit-task-btn" value="Save" data-submitEditBtn>
+        </form>
       </div>
       
-      <form action="" class="modal-form" data-taskModalForm>
-        <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
-        <textarea data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream"></textarea>
-        <div>
-          <label for="due-date">Due date:</label>
-          <input type="date" data-dateInput id="due-date">
-        </div>
-        <div>
-          <div>Priority:</div>
-
-          <label>
-            <input type="radio" name="priority" value="low" class="" required>
-            Low
-          </label>
-
-          <label>
-            <input type="radio" name="priority" value="medium" class="" required>
-            Medium
-          </label>
-
-          <label>
-            <input type="radio" name="priority" value="high" class="" required>
-            High 
-          </label>
-
-          <label>
-            <input type="radio" name="priority" value="very-high" class="" required>
-            Very high
-          </label>
-
-        </div>
-        <input type="submit" class="add-task-btn" value="Add task" data-submitTaskBtn>
-        <input type="submit" class="edit-task-btn" value="Save" data-editTaskBtn>
-      </form>
+      <div class="overlay closed" data-overlay></div>
+      <div class="sort-overlay closed" data-sortOverlay></div>
     </div>
-    
-    <div class="overlay closed" data-overlay></div>
-    <div class="sort-overlay closed" data-sortOverlay></div>
 
   </body> 
 </html>
