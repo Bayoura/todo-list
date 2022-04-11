@@ -60,7 +60,7 @@ const dom = (() => {
             taskButton.ariaLabel = 'add new task';
             taskButton.type = 'button';
             taskButton.classList.add('add-button');
-            taskButton.addEventListener('click', displayModal);
+            taskButton.addEventListener('click', toggleModal);
             const toolTip = document.createElement('span');
             toolTip.textContent = 'Add new task';
             toolTip.classList.add('tool-tip');
@@ -143,7 +143,7 @@ const dom = (() => {
             );
             infoIcon.setAttribute('taskInfo', '');
             infoIcon.setAttribute('data-id', i);
-            infoIcon.addEventListener('click', () => taskEvents.showTaskDetails());
+            infoIcon.addEventListener('click', e => renderTaskDetails(e.target));
             infoIcon.ariaLabel = 'task details';
             
             const editIcon = document.createElement('span');
@@ -176,8 +176,34 @@ const dom = (() => {
     function renderNotes() {
         console.log('notes');
     }
+
+    function renderTaskDetails(clicked) {
+        const currentProjectId = addHandlers.determineCurrentProjectId();
+        const currentProject = factories.projectList[currentProjectId];
+        const clickedTask = currentProject.tasks[clicked.dataset.id];
+
+        // create info modal
+        const content_div = document.getElementById('content');
+        const infoContainer = document.createElement('div');
+        const titleHeading = document.createElement('h2');
+        const descriptionPara = document.createElement('p');
+        const dueDatePara = document.createElement('p');
+        const completionDatePara = document.createElement('p');
+        const priorityPara = document.createElement('p');
+
+        titleHeading.textContent = clickedTask.title;
+        descriptionPara.textContent = clickedTask.description; 
+        dueDatePara.textContent = dayjs(clickedTask.dueDate).format('ll');
+        completionDatePara.textContent = dayjs(clickedTask.completionDate).format('ll');
+        priorityPara.textContent = clickedTask.priority;
+
+        infoContainer.append(titleHeading, descriptionPara, dueDatePara, priorityPara);
+        content_div.append(infoContainer);
+        
+
+    }
     
-    function displayModal() {
+    function toggleModal() {
         const taskForm_form = document.querySelector('[data-taskModalForm]');
         const modal_div = document.querySelector('[data-modal]');
         const overlay_div = document.querySelector('[data-overlay]');
@@ -211,7 +237,8 @@ const dom = (() => {
         renderTasks,
         renderProjects,
         renderHeader,
-        displayModal,
+        renderNotes,
+        toggleModal,
         displaySortOptions,
         displayProjectForm,
         toggleSidebar
