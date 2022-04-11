@@ -24,8 +24,8 @@ const addHandlers = (() => {
         const overlay_div = document.querySelector('[data-overlay]');
         const hamburger_label = document.querySelector('[data-hamburger]');
         
-        cancelTask_button.addEventListener('click', dom.displayModal);
-        overlay_div.addEventListener('click', dom.displayModal);
+        cancelTask_button.addEventListener('click', dom.toggleModal);
+        overlay_div.addEventListener('click', dom.toggleModal);
         hamburger_label.addEventListener('click', dom.toggleSidebar);
     }
 
@@ -84,36 +84,19 @@ const addHandlers = (() => {
             }
         }
     }
+
+    function addSortHandler() {
+        const sortButton_div = document.querySelector('[data-sortButton]');
+        const sortNewOld_div = document.querySelector('[data-sortNewOld]');
+        const sortOldNew_div = document.querySelector('[data-sortOldNew]');
+        const sortDate_div = document.querySelector('[data-sortDate]');
+        const sortImportance_div = document.querySelector('[data-sortImportance]');
+        const sortOverlay_div = document.querySelector('[data-sortOverlay]');
     
-    function submitTask() {
-        const submitTask_button = document.querySelector('[data-submitTaskBtn]');
-        const taskForm_form = document.querySelector('[data-taskModalForm]');
-        document.addEventListener('DOMContentLoaded', () => {    
-            submitTask_button.addEventListener('click', e => {    
-                e.preventDefault(); //stop form from submitting   
-    
-                //check if required fields are filled out
-                let checkStatus = taskForm_form.checkValidity();
-                taskForm_form.reportValidity();
-                if (checkStatus) {
-                    const currentProject = factories.projectList[determineCurrentProjectId()];
-                    const projectId = determineCurrentProjectId();
-                    const title = document.querySelector('[data-taskTitleInput]').value;
-                    const description = document.querySelector('[data-descriptionInput]').value;
-                    const dueDate = document.querySelector('[data-dateInput]').value;
-                    console.log(document.querySelector('[data-dateInput]').value)
-                    const priorityValue = document.querySelector('input[name=priority]:checked').value;
-                    const newTask = factories.taskFactory(projectId, title, description, dueDate, priorityValue);
-                    
-                    currentProject.tasks.push(newTask);
-                    dom.renderTasks(currentProject);
-                    dom.renderHeader(currentProject, determineCurrentProjectId());
-                    dom.displayModal();
-                }
-            })    
-        });
+        sortButton_div.addEventListener('click', dom.displaySortOptions);
+        sortOverlay_div.addEventListener('click', dom.displaySortOptions);
     }
-    
+      
     function submitProject() {
         const submitProject_button = document.querySelector('[data-submitProjectBtn]');
         const newProject_form = document.querySelector('[data-newProjectForm]');
@@ -134,19 +117,35 @@ const addHandlers = (() => {
             })    
         });
     }
-
-    function addSortHandler() {
-        const sortButton_div = document.querySelector('[data-sortButton]');
-        const sortNewOld_div = document.querySelector('[data-sortNewOld]');
-        const sortOldNew_div = document.querySelector('[data-sortOldNew]');
-        const sortDate_div = document.querySelector('[data-sortDate]');
-        const sortImportance_div = document.querySelector('[data-sortImportance]');
-        const sortOverlay_div = document.querySelector('[data-sortOverlay]');
     
-        sortButton_div.addEventListener('click', dom.displaySortOptions);
-        sortOverlay_div.addEventListener('click', dom.displaySortOptions);
+    function submitTask() {
+        const submitTask_button = document.querySelector('[data-submitTaskBtn]');
+        const taskForm_form = document.querySelector('[data-taskModalForm]');
+        document.addEventListener('DOMContentLoaded', () => {    
+            submitTask_button.addEventListener('click', e => {    
+                e.preventDefault(); //stop form from submitting   
+    
+                //check if required fields are filled out
+                let checkStatus = taskForm_form.checkValidity();
+                taskForm_form.reportValidity();
+                if (checkStatus) {
+                    const currentProject = factories.projectList[determineCurrentProjectId()];
+                    const projectId = determineCurrentProjectId();
+                    const title = document.querySelector('[data-taskTitleInput]').value;
+                    const description = document.querySelector('[data-descriptionInput]').value;
+                    const dueDate = document.querySelector('[data-dateInput]').value;
+                    const priority = document.querySelector('input[name=priority]:checked').value;
+                    const newTask = factories.taskFactory(projectId, title, description, dueDate, priority);
+                    
+                    currentProject.tasks.push(newTask);
+                    dom.renderTasks(currentProject);
+                    dom.renderHeader(currentProject, projectId);
+                    dom.toggleModal();
+                }
+            })    
+        });
     }
-
+    
     return {
         addNavEvents,
         addMainEvents,
