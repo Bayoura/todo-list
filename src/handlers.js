@@ -5,6 +5,55 @@ import projectEvents from './project-events.js';
 
 const addHandlers = (() => {
 
+    
+    function handlers() {
+        const body = document.querySelector('body');
+        body.addEventListener('click', e => {
+            // task handlers
+            if (e.target.hasAttribute('data-taskInfo')) {
+                dom.renderTaskDetails(e.target);
+                dom.toggleInfoModal()
+            } else if (e.target.hasAttribute('data-cancelInfoBtn') ||
+                       e.target.hasAttribute('data-infoOverlay')) {
+                dom.toggleInfoModal()
+            } else if (e.target.hasAttribute('data-taskEdit')) {
+                taskEvents.editTask(e.target);
+            } else if (e.target.hasAttribute('data-taskDelete')) {
+                taskEvents.deleteTask(e.target);
+            } else if (e.target.hasAttribute('data-taskCheck')) {
+                taskEvents.changeCompletionStatus(e.target);
+            } 
+            // project handlers
+              else if (e.target.hasAttribute('data-sidebarTab')) {
+                chooseProject(e);
+            } else if (e.target.hasAttribute('data-projectRename')) {
+                projectEvents.renameProject(e.target);
+            } else if (e.target.hasAttribute('data-projectDelete')) {
+                projectEvents.deleteProject(e.target);
+            } 
+            // task buttons
+              else if (e.target.hasAttribute('data-addTaskBtn') ||
+                       e.target.hasAttribute('data-cancelTaskBtn') ||
+                       e.target.hasAttribute('data-overlay')) {
+                dom.toggleModal();
+            } 
+            // project buttons
+              else if (e.target.hasAttribute('data-addProjectBtn') ||
+                       e.target.hasAttribute('data-cancelProjectBtn')) {
+                dom.displayProjectForm();
+            } 
+            // hamburger button
+            else if (e.target.hasAttribute('data-hamburger')) {
+                dom.toggleSidebar();
+            } 
+            // sort button
+            else if (e.target.hasAttribute('data-sortButton') ||
+                     e.target.hasAttribute('data-sortOverlay')) {
+                dom.displaySortOptions();
+            }
+        })
+    }
+
     function addNavEvents() {
         submitProject();       
         submitTask();
@@ -32,9 +81,15 @@ const addHandlers = (() => {
     function setCurrentClass(clickedTab) {
         const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
         sidebarTabs.forEach(tab => {
-            if (tab != clickedTab) tab.classList.remove('current');
+            if (tab != clickedTab) {
+                tab.classList.remove('current');
+                tab.parentElement.classList.remove('current');
+            }
         });
         clickedTab.classList.add('current');
+        if (clickedTab.dataset.id > 5) {
+            clickedTab.parentElement.classList.add('current');
+        }
     }
 
     function determineCurrentProjectId() {
@@ -121,51 +176,6 @@ const addHandlers = (() => {
                 }
             })    
         });
-    }
-
-    const body = document.querySelector('body');
-
-    function handlers() {
-        body.addEventListener('click', e => {
-            // task handlers
-            if (e.target.hasAttribute('data-taskInfo')) {
-                taskEvents.renderTaskDetails(e.target);
-            } else if (e.target.hasAttribute('data-taskEdit')) {
-                taskEvents.editTask(e.target);
-            } else if (e.target.hasAttribute('data-taskDelete')) {
-                taskEvents.deleteTask(e.target);
-            } else if (e.target.hasAttribute('data-taskCheck')) {
-                taskEvents.changeCompletionStatus(e.target);
-            } 
-            // project handlers
-              else if (e.target.hasAttribute('data-sidebarTab')) {
-                chooseProject(e);
-            } else if (e.target.hasAttribute('data-projectRename')) {
-                projectEvents.renameProject(e.target);
-            } else if (e.target.hasAttribute('data-projectDelete')) {
-                projectEvents.deleteProject(e.target);
-            } 
-            // task buttons
-              else if (e.target.hasAttribute('data-addTaskBtn') ||
-                       e.target.hasAttribute('data-cancelTaskBtn') ||
-                       e.target.hasAttribute('data-overlay')) {
-                dom.toggleModal();
-            } 
-            // project buttons
-              else if (e.target.hasAttribute('data-addProjectBtn') ||
-                       e.target.hasAttribute('data-cancelProjectBtn')) {
-                dom.displayProjectForm();
-            } 
-            // hamburger button
-            else if (e.target.hasAttribute('data-hamburger')) {
-                dom.toggleSidebar();
-            } 
-            // sort button
-            else if (e.target.hasAttribute('data-sortButton') ||
-                     e.target.hasAttribute('data-sortOverlay')) {
-                dom.displaySortOptions();
-            }
-        })
     }
     
     return {
