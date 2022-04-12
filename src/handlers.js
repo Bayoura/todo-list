@@ -1,32 +1,14 @@
 import factories from './factories.js';
 import dom from './dom.js';
 import taskEvents from './task-events.js';
+import projectEvents from './project-events.js';
 
 const addHandlers = (() => {
 
     function addNavEvents() {
-        const sidebarTabs = document.querySelectorAll('[data-sidebarTab]');
-        const addProject_button = document.querySelector('[data-addProjectBtn]');
-        const cancelProject_button = document.querySelector('[data-cancelProjectBtn]');
-
-        sidebarTabs.forEach(tab => tab.addEventListener('click', e => {
-            chooseProject(e)
-        }));
-        addProject_button.addEventListener('click', dom.displayProjectForm)
-        cancelProject_button.addEventListener('click',  dom.displayProjectForm) 
         submitProject();       
-    }
-    
-    function addMainEvents() {
         submitTask();
         addSortHandler();
-        const cancelTask_button = document.querySelector('[data-cancelTaskBtn]');
-        const overlay_div = document.querySelector('[data-overlay]');
-        const hamburger_label = document.querySelector('[data-hamburger]');
-        
-        cancelTask_button.addEventListener('click', dom.toggleModal);
-        overlay_div.addEventListener('click', dom.toggleModal);
-        hamburger_label.addEventListener('click', dom.toggleSidebar);
     }
 
     function chooseProject(e) {
@@ -86,15 +68,10 @@ const addHandlers = (() => {
     }
 
     function addSortHandler() {
-        const sortButton_div = document.querySelector('[data-sortButton]');
         const sortNewOld_div = document.querySelector('[data-sortNewOld]');
         const sortOldNew_div = document.querySelector('[data-sortOldNew]');
         const sortDate_div = document.querySelector('[data-sortDate]');
         const sortImportance_div = document.querySelector('[data-sortImportance]');
-        const sortOverlay_div = document.querySelector('[data-sortOverlay]');
-    
-        sortButton_div.addEventListener('click', dom.displaySortOptions);
-        sortOverlay_div.addEventListener('click', dom.displaySortOptions);
     }
       
     function submitProject() {
@@ -145,43 +122,61 @@ const addHandlers = (() => {
             })    
         });
     }
+
+    const body = document.querySelector('body');
+
+    function handlers() {
+        body.addEventListener('click', e => {
+            // task handlers
+            if (e.target.hasAttribute('data-taskInfo')) {
+                taskEvents.renderTaskDetails(e.target);
+            } else if (e.target.hasAttribute('data-taskEdit')) {
+                taskEvents.editTask(e.target);
+            } else if (e.target.hasAttribute('data-taskDelete')) {
+                taskEvents.deleteTask(e.target);
+            } else if (e.target.hasAttribute('data-taskCheck')) {
+                taskEvents.changeCompletionStatus(e.target);
+            } 
+            // project handlers
+              else if (e.target.hasAttribute('data-sidebarTab')) {
+                chooseProject(e);
+            } else if (e.target.hasAttribute('data-projectRename')) {
+                projectEvents.renameProject(e.target);
+            } else if (e.target.hasAttribute('data-projectDelete')) {
+                projectEvents.deleteProject(e.target);
+            } 
+            // task buttons
+              else if (e.target.hasAttribute('data-addTaskBtn') ||
+                       e.target.hasAttribute('data-cancelTaskBtn') ||
+                       e.target.hasAttribute('data-overlay')) {
+                dom.toggleModal();
+            } 
+            // project buttons
+              else if (e.target.hasAttribute('data-addProjectBtn') ||
+                       e.target.hasAttribute('data-cancelProjectBtn')) {
+                dom.displayProjectForm();
+            } 
+            // hamburger button
+            else if (e.target.hasAttribute('data-hamburger')) {
+                dom.toggleSidebar();
+            } 
+            // sort button
+            else if (e.target.hasAttribute('data-sortButton') ||
+                     e.target.hasAttribute('data-sortOverlay')) {
+                dom.displaySortOptions();
+            }
+        })
+    }
     
     return {
         addNavEvents,
-        addMainEvents,
         chooseProject,
         getAllTasks,
         determineCurrentProjectId,
         updateTaskIndex,
+        handlers
     }
 
 })();
 
 export default addHandlers;
-
-//THIS ONLY WORKS ONE TIME EACH
-
-// const notCheckedIcons_span = document.querySelectorAll('[data-notChecked]');
-// const checkedIcons_span = document.querySelectorAll('[data-checked]');
-
-// notCheckedIcons_span.forEach(icon => {
-//     icon.addEventListener('click', () => {
-//         icon.classList.remove('fa-regular');
-//         icon.classList.remove('not-checked');
-//         icon.classList.add('fa-solid');
-//         icon.classList.add('checked'); 
-// })
-// })
-
-// checkedIcons_span.forEach(icon => {
-//     icon.addEventListener('click', () => {
-//         icon.classList.remove('fa-solid');
-//         icon.classList.remove('checked');
-//         icon.classList.add('fa-regular');
-//         icon.classList.add('not-checked'); 
-// })
-// })
-
-
-// render project list
-// render task list
