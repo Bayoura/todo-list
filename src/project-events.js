@@ -14,7 +14,6 @@ const projectEvents = (() => {
 
         const currentProjectId = addHandlers.determineCurrentProjectId();
         const currentProject = factories.projectList[currentProjectId];
-        
         console.log(currentProject)
     }
 
