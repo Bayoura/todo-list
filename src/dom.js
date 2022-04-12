@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import factories from './factories.js';
 import addHandlers from './handlers.js';
 import taskEvents from './task-events.js';
+import projectEvents from './project-events.js';
 
 const dom = (() => {
 
@@ -13,31 +14,34 @@ const dom = (() => {
         for (let i = 6; i < factories.projectList.length; i++) {
             // li
             const listItem = document.createElement('li');
-            listItem.tabIndex = 0;
-            listItem.setAttribute('data-sidebarTab', '');
-            listItem.setAttribute('data-id', i);
-            listItem.textContent = factories.projectList[i].title;
-            listItem.addEventListener('click', e => {
-                addHandlers.chooseProject(e)
-            });
+            const projectTitle = document.createElement('h3');
+            projectTitle.tabIndex = 0;
+            projectTitle.setAttribute('data-sidebarTab', '');
+            projectTitle.setAttribute('data-id', i);
+            projectTitle.textContent = factories.projectList[i].title;
+
+            listItem.append(projectTitle);
             projectList_ul.appendChild(listItem);
+            
             // div and icon spans
             const iconsDiv = document.createElement('div');
+            iconsDiv.classList.add('icons-div')
             const editIcon = document.createElement('span');
             editIcon.classList.add(
                 'fa-solid',
                 'fa-pen-to-square',
                 'icon'
             );
-            editIcon.setAttribute('projectEdit', '');
+            editIcon.setAttribute('data-projectRename', '');
             editIcon.ariaLabel = 'edit project';
+
             const deleteIcon = document.createElement('span');
             deleteIcon.classList.add(
                 'fa-solid',
                 'fa-trash-can',
                 'icon'
             );
-            deleteIcon.setAttribute('projectDelete', '');
+            deleteIcon.setAttribute('data-projectDelete', '');
             deleteIcon.ariaLabel = 'delete project';
             iconsDiv.append(editIcon, deleteIcon);
             listItem.appendChild(iconsDiv);
@@ -60,7 +64,7 @@ const dom = (() => {
             taskButton.ariaLabel = 'add new task';
             taskButton.type = 'button';
             taskButton.classList.add('add-button');
-            taskButton.addEventListener('click', toggleModal);
+            taskButton.setAttribute('data-addTaskBtn', '');
             const toolTip = document.createElement('span');
             toolTip.textContent = 'Add new task';
             toolTip.classList.add('tool-tip');
@@ -69,8 +73,7 @@ const dom = (() => {
             //notes
             // notes count
             // button to add notes, also special modal??
-        }
-        
+        }    
     }
  
     function renderTasks(currentProject) {
@@ -90,8 +93,8 @@ const dom = (() => {
             // icon span
             const checkIcon = document.createElement('span');
             checkIcon.ariaLabel = 'click to check/uncheck task';
+            checkIcon.setAttribute('data-taskCheck', '');
             checkIcon.setAttribute('data-id', i);
-            checkIcon.addEventListener('click', (e) => taskEvents.changeCompletionStatus(e.target));
 
             if (currentProject.tasks[i].completed === true) {
                 checkIcon.classList.add(
@@ -115,7 +118,6 @@ const dom = (() => {
             const taskTitle = document.createElement('div');
             taskTitle.textContent = currentProject.tasks[i].title;
             // date div
-            
             const dateDiv = document.createElement('div');
             const openingBracket = document.createElement('span');
             const closingBracket = document.createElement('span');
@@ -128,12 +130,15 @@ const dom = (() => {
             } else {
                 openingBracket.textContent = '[Due: ';
                 date.textContent = dayjs(currentProject.tasks[i].dueDate).format('ll');
-
             }
             // task options div
             const taskOptionsDiv = document.createElement('div');
             taskOptionsDiv.classList.add('task-options');
-            taskDetails.append(taskTitle, dateDiv, taskOptionsDiv);
+            if (currentProject.tasks[i].dueDate !== '') {           
+                taskDetails.append(taskTitle, dateDiv, taskOptionsDiv);
+            } else {
+                taskDetails.append(taskTitle, taskOptionsDiv);
+            }
             // icon spans
             const infoIcon = document.createElement('span');
             infoIcon.classList.add(
@@ -141,9 +146,8 @@ const dom = (() => {
                 'fa-circle-info',
                 'icon'
             );
-            infoIcon.setAttribute('taskInfo', '');
+            infoIcon.setAttribute('data-taskInfo', '');
             infoIcon.setAttribute('data-id', i);
-            infoIcon.addEventListener('click', e => renderTaskDetails(e.target));
             infoIcon.ariaLabel = 'task details';
             
             const editIcon = document.createElement('span');
@@ -152,9 +156,8 @@ const dom = (() => {
                 'fa-pen-to-square',
                 'icon'
             );
-            editIcon.setAttribute('taskEdit', '');
+            editIcon.setAttribute('data-taskEdit', '');
             editIcon.setAttribute('data-id', i);
-            editIcon.addEventListener('click', e => taskEvents.editTask(e.target));
             editIcon.ariaLabel = 'edit task';
 
             const deleteIcon = document.createElement('span');
@@ -163,9 +166,8 @@ const dom = (() => {
                 'fa-trash-can',
                 'icon'
             );
-            deleteIcon.setAttribute('taskDelete', '');
+            deleteIcon.setAttribute('data-taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
-            deleteIcon.addEventListener('click', e => taskEvents.deleteTask(e.target));
             deleteIcon.ariaLabel = 'delete task';
 
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
