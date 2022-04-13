@@ -17,6 +17,7 @@ import taskEvents from './task-events.js';
 
 addHandlers.addNavEvents();
 addHandlers.handlers();
-dom.renderProjects();
+dom.renderProjects('0');
 taskEvents.determineTasks(factories.projectList[0], '0');
 dom.renderHeader(factories.projectList[0], '0');
+
