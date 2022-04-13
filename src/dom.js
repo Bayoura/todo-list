@@ -6,7 +6,7 @@ import projectEvents from './project-events.js';
 
 const dom = (() => {
 
-    function renderProjects() {
+    function renderProjects(currentProjectId) {
         const projectList_ul = document.querySelector('[data-projectList]');
         projectList_ul.textContent = '';
 
@@ -15,6 +15,10 @@ const dom = (() => {
             // li
             const listItem = document.createElement('li');
             const projectTitle = document.createElement('h3');
+            if (currentProjectId == i) {
+                listItem.classList.add('current');
+                projectTitle.classList.add('current');
+            };
             projectTitle.tabIndex = 0;
             projectTitle.setAttribute('data-sidebarTab', '');
             projectTitle.setAttribute('data-id', i);
@@ -33,6 +37,7 @@ const dom = (() => {
                 'icon'
             );
             editIcon.setAttribute('data-projectRename', '');
+            editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit project';
 
             const deleteIcon = document.createElement('span');
@@ -40,8 +45,9 @@ const dom = (() => {
                 'fa-solid',
                 'fa-trash-can',
                 'icon'
-            );
+            ); 
             deleteIcon.setAttribute('data-projectDelete', '');
+            deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete project';
             iconsDiv.append(editIcon, deleteIcon);
             listItem.appendChild(iconsDiv);
@@ -183,26 +189,22 @@ const dom = (() => {
         const currentProjectId = addHandlers.determineCurrentProjectId();
         const currentProject = factories.projectList[currentProjectId];
         const clickedTask = currentProject.tasks[clicked.dataset.id];
-
-        // create info modal
-        const content_div = document.getElementById('content');
-        const infoContainer = document.createElement('div');
-        const titleHeading = document.createElement('h2');
-        const descriptionPara = document.createElement('p');
-        const dueDatePara = document.createElement('p');
-        const completionDatePara = document.createElement('p');
-        const priorityPara = document.createElement('p');
-
+ 
+        const titleHeading = document.querySelector('[data-infoTitle]');
+        const descriptionPara = document.querySelector('[data-infoDescription]');
+        const dueDatePara = document.querySelector('[data-infoDueDate]');
+        const completionDatePara = document.querySelector('[data-infoCompletionDate]');
+        const priorityPara = document.querySelector('[data-infoPriority]');
+        
         titleHeading.textContent = clickedTask.title;
         descriptionPara.textContent = clickedTask.description; 
-        dueDatePara.textContent = dayjs(clickedTask.dueDate).format('ll');
-        completionDatePara.textContent = dayjs(clickedTask.completionDate).format('ll');
+        dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
         priorityPara.textContent = clickedTask.priority;
-
-        infoContainer.append(titleHeading, descriptionPara, dueDatePara, priorityPara);
-        content_div.append(infoContainer);
-        
-
+        if (clickedTask.completionDate !== null) {
+            completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
+        } else {
+            return
+        }
     }
     
     function toggleModal() {
@@ -212,6 +214,13 @@ const dom = (() => {
         taskForm_form.reset();
         modal_div.classList.toggle('closed');
         overlay_div.classList.toggle('closed');
+    }
+
+    function toggleInfoModal() {
+        const infoModal = document.querySelector('[data-infoModal]');
+        const infoOverlay_div = document.querySelector('[data-infoOverlay]');
+        infoModal.classList.toggle('closed');
+        infoOverlay_div.classList.toggle('closed');
     }
 
     function displaySortOptions() {
@@ -240,7 +249,9 @@ const dom = (() => {
         renderProjects,
         renderHeader,
         renderNotes,
+        renderTaskDetails,
         toggleModal,
+        toggleInfoModal,
         displaySortOptions,
         displayProjectForm,
         toggleSidebar

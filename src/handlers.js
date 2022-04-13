@@ -41,7 +41,9 @@ const addHandlers = (() => {
               else if (e.target.hasAttribute('data-addProjectBtn') ||
                        e.target.hasAttribute('data-cancelProjectBtn')) {
                 dom.displayProjectForm();
-            } 
+            } else if (e.target.hasAttribute('data-submitRenaming')) {
+                projectEvents.submitRenaming(e, e.target);
+            }
             // hamburger button
             else if (e.target.hasAttribute('data-hamburger')) {
                 dom.toggleSidebar();
@@ -53,6 +55,10 @@ const addHandlers = (() => {
             }
         })
     }
+
+    // document.addEventListener('DOMContentLoaded', () => {   
+    //     projectEvents.submitRenaming();
+    // }) 
 
     function addNavEvents() {
         submitProject();       
@@ -143,7 +149,7 @@ const addHandlers = (() => {
                     const title = document.querySelector('[data-projectTitleInput]').value;
                     const newProject = factories.projectFactory(title);
                     factories.projectList.push(newProject);
-                    dom.renderProjects();
+                    dom.renderProjects(determineCurrentProjectId());
                     dom.displayProjectForm();
                 }
             })    
