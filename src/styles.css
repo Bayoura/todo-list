@@ -49,6 +49,10 @@ h2,
   gap: 10px;
 }
 
+.default-projects li {
+  padding: 0 10px;
+}
+
 .side-bar {
   background: hsl(201deg 25% 64%);
   display: flex;
@@ -77,7 +81,6 @@ h2,
 
 .side-bar li,
 .side-bar h2 {
-  padding: 0 10px;
   margin: 15px 0;
 }
 
@@ -111,7 +114,26 @@ li {
 
 .project-list li {
   display: flex;
-  justify-content: space-between;
+}
+
+.project-list li h3 {
+  flex-grow: 1;
+  padding: 0 10px;
+}
+
+.rename-input {
+  background-color: inherit;
+  border: none;
+  width: 100%;
+}
+
+.icons-div {
+  display: flex;
+  padding-right: 10px;
+}
+
+.icons-div span:first-child {
+  padding-right: 5px;
 }
 
 .title-and-btn-container {
@@ -319,7 +341,7 @@ textarea {
   display: none;
 }
 
-.overlay {
+.overlay, .info-overlay {
   background-color: hsl(0deg 0% 50% / 0.3);
   backdrop-filter: blur(2px);
   position: fixed;
@@ -337,6 +359,20 @@ textarea {
   left: 0;
   right: 0;
   z-index: 10;
+}
+
+.info-modal {
+  background-color: lightblue; 
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  width: 600px;
+  height: 400px;
+  max-width: 100%;
+  max-height: 100%;
+
 }
 
 /* VIOLET MODE */
@@ -452,3 +488,6 @@ h1.green {
 .line.green {
   background-color: hsl(64deg 100% 97%);
 }
+
+/* style vertical scrollbar for projects */
+/* disable highlighting/selecting  */
