@@ -1,6 +1,7 @@
 import dom from './dom.js';
 import factories from './factories.js';
 import addHandlers from './handlers.js';
+import taskEvents from './task-events.js';
 
 const projectEvents = (() => {
 
@@ -85,17 +86,17 @@ const projectEvents = (() => {
     }
 
     function deleteProject(clicked) {
+        factories.projectList.splice(clicked.dataset.id, 1);
+
         const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
         const currentProjectId = addHandlers.determineCurrentProjectId();
-        const clickedTask = currentProject.tasks[clicked.dataset.id];
-        const originProject = factories.projectList[clickedTask.projectId];
-        originProject.tasks.splice(clickedTask.taskId, 1);  
-
+        
         if (currentProjectId < 6) {
-            determineTasks(currentProject, currentProjectId);
+            taskEvents.determineTasks(currentProject, currentProjectId);
         } else {
             dom.renderTasks(currentProject);
         }
+        dom.renderProjects(currentProjectId);
         dom.renderHeader(currentProject, currentProjectId)
     }
 
