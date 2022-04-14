@@ -15,8 +15,9 @@ import taskEvents from './task-events.js';
 // when overlay is active you can still focus on list items etc. underneath the overlay (with tab)
 // if project or task title input is longer than x make it like so "this is a long..." and only display the full title when you click on the details
 
+addHandlers.addClickHandlers();
+addHandlers.addKeyHandlers();
 addHandlers.addNavEvents();
-addHandlers.handlers();
 dom.renderProjects('0');
 taskEvents.determineTasks(factories.projectList[0], '0');
 dom.renderHeader(factories.projectList[0], '0');
