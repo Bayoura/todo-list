@@ -22,30 +22,39 @@ const dom = (() => {
             projectTitle.tabIndex = 0;
             projectTitle.setAttribute('data-sidebarTab', '');
             projectTitle.setAttribute('data-id', i);
-            projectTitle.textContent = factories.projectList[i].title;
+            if (factories.projectList[i].title.length > 21) {
+                console.log(factories.projectList[i].title.length)
+                console.log(factories.projectList[i].title.slice(0, 20))
+                projectTitle.textContent = factories.projectList[i].title.slice(0, 20) + '...';
+            } else {
+                console.log(factories.projectList[i].title.length)
+                projectTitle.textContent = factories.projectList[i].title;
+            }
 
             listItem.append(projectTitle);
             projectList_ul.appendChild(listItem);
             
-            // div and icon spans
+            // div and icon buttons
             const iconsDiv = document.createElement('div');
             iconsDiv.classList.add('icons-div')
-            const editIcon = document.createElement('span');
+            const editIcon = document.createElement('button');
             editIcon.classList.add(
                 'fa-solid',
                 'fa-pen-to-square',
                 'icon'
             );
+            editIcon.type = 'button';
             editIcon.setAttribute('data-projectRename', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit project';
 
-            const deleteIcon = document.createElement('span');
+            const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
                 'fa-trash-can',
                 'icon'
             ); 
+            deleteIcon.type = 'button';
             deleteIcon.setAttribute('data-projectDelete', '');
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete project';
@@ -97,7 +106,8 @@ const dom = (() => {
             listItem.setAttribute('data-id', i);
             taskList_ul.appendChild(listItem);
             // icon span
-            const checkIcon = document.createElement('span');
+            const checkIcon = document.createElement('button');
+            checkIcon.type = 'button';
             checkIcon.ariaLabel = 'click to check/uncheck task';
             checkIcon.setAttribute('data-taskCheck', '');
             checkIcon.setAttribute('data-id', i);
@@ -146,32 +156,35 @@ const dom = (() => {
                 taskDetails.append(taskTitle, taskOptionsDiv);
             }
             // icon spans
-            const infoIcon = document.createElement('span');
+            const infoIcon = document.createElement('button');
             infoIcon.classList.add(
                 'fa-solid',
                 'fa-circle-info',
                 'icon'
             );
+            infoIcon.type = 'button';
             infoIcon.setAttribute('data-taskInfo', '');
             infoIcon.setAttribute('data-id', i);
             infoIcon.ariaLabel = 'task details';
             
-            const editIcon = document.createElement('span');
+            const editIcon = document.createElement('button');
             editIcon.classList.add(
                 'fa-solid',
                 'fa-pen-to-square',
                 'icon'
             );
+            editIcon.type = 'button';
             editIcon.setAttribute('data-taskEdit', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit task';
 
-            const deleteIcon = document.createElement('span');
+            const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
                 'fa-trash-can',
                 'icon'
             );
+            deleteIcon.type = 'button';
             deleteIcon.setAttribute('data-taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete task';
