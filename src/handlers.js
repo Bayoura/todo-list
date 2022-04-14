@@ -6,9 +6,11 @@ import projectEvents from './project-events.js';
 const addHandlers = (() => {
 
     
-    function handlers() {
-        const body = document.querySelector('body');
+    const body = document.querySelector('body');
+    
+    function addClickHandlers() {
         body.addEventListener('click', e => {
+            console.log(e.target);
             // task handlers
             if (e.target.hasAttribute('data-taskInfo')) {
                 dom.renderTaskDetails(e.target);
@@ -41,11 +43,12 @@ const addHandlers = (() => {
               else if (e.target.hasAttribute('data-addProjectBtn') ||
                        e.target.hasAttribute('data-cancelProjectBtn')) {
                 dom.displayProjectForm();
-            } else if (e.target.hasAttribute('data-submitRenaming')) {
-                projectEvents.submitRenaming(e, e.target);
+            } else if (e.target.hasAttribute('data-saveRenaming')) {
+                projectEvents.saveRenaming(e.target);
             }
             // hamburger button
-            else if (e.target.hasAttribute('data-hamburger')) {
+            else if (e.target.hasAttribute('data-hamburger') ||
+                     e.target.hasAttribute('data-hamburgerLine')) {
                 dom.toggleSidebar();
             } 
             // sort button
@@ -56,8 +59,43 @@ const addHandlers = (() => {
         })
     }
 
+    function addKeyHandlers() {
+        body.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                if (e.target.hasAttribute('data-hamburger')) {
+                    dom.toggleSidebar();
+                    if (document.querySelector('[data-hamburgerCheck]').checked === false) {
+                        document.querySelector('[data-hamburgerCheck]').checked = true;
+                    } else {
+                        document.querySelector('[data-hamburgerCheck]').checked = false;
+                    }
+                } else if (e.target.hasAttribute('data-sidebarTab')) {
+                    chooseProject(e);
+                } else if (e.target.hasAttribute('data-addProjectBtn')) {
+
+                } else if (e.target.hasAttribute('data-renameInput')) {
+                    e.preventDefault();
+                    projectEvents.saveRenaming(e.target);
+                } else if (e.target.hasAttribute('data-sortButton')) {
+                    dom.displaySortOptions();
+                } 
+            } else if (e.key === 'Escape') {
+                if (!document.querySelector('[data-overlay]').classList.contains('closed')) {
+                    dom.toggleModal();
+                } else if (!document.querySelector('[data-sortOverlay]').classList.contains('closed')) {
+                    dom.displaySortOptions();
+                } else if (!document.querySelector('[data-infoOverlay]').classList.contains('closed')) {
+                    dom.toggleInfoModal();
+                } else if (e.target.hasAttribute('data-renameInput')) {
+                    dom.renderProjects(addHandlers.determineCurrentProjectId());
+                }
+
+            }
+        })
+    }
+
     // document.addEventListener('DOMContentLoaded', () => {   
-    //     projectEvents.submitRenaming();
+    //     projectEvents.saveRenaming();
     // }) 
 
     function addNavEvents() {
@@ -185,12 +223,13 @@ const addHandlers = (() => {
     }
     
     return {
+        addClickHandlers,
+        addKeyHandlers,
         addNavEvents,
         chooseProject,
         getAllTasks,
         determineCurrentProjectId,
         updateTaskIndex,
-        handlers
     }
 
 })();
