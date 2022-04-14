@@ -119,6 +119,15 @@ li {
 .project-list li h3 {
   flex-grow: 1;
   padding: 0 10px;
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+  word-break: break-word;
+   /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
 }
 
 .rename-input {
@@ -127,12 +136,17 @@ li {
   width: 100%;
 }
 
+.icon {
+  background-color: inherit;
+  border: none;
+}
+
 .icons-div {
   display: flex;
   padding-right: 10px;
 }
 
-.icons-div span:first-child {
+.icons-div button:first-child {
   padding-right: 5px;
 }
 
@@ -182,6 +196,8 @@ input[type="button"],
 .add-button::before {
   transform: rotate(90deg);
 }
+
+/* hamburger button */
 
 #hamburger {
   display:none
@@ -243,36 +259,6 @@ main.full-page {
   display: flex;
   gap: 10px;
   position: relative;
-}
-
-.sort-container > span {
-  color: grey;
-}
-
-.sort-button {
-  cursor: pointer;
-  color: darkcyan;
-}
-
-.sort-options {
-  background-color: white;
-  border-radius: 5px;
-  border: 1px solid grey;
-  box-shadow: 0 3px 6px hsl(0deg 0% 0% / 32%), 0 9px 24px hsl(0deg 0% 0% / 35%);
-  cursor: pointer;
-  display: none;
-  max-width: 250px;
-  position: absolute;
-  top: 100%;
-  z-index: 15;
-}
-
-.sort-options.show {
-  display: block;
-}
-
-.sort-options > div:hover {
-  background-color: aquamarine;
 }
 
 .task-sort-container {
@@ -344,15 +330,6 @@ textarea {
 .overlay, .info-overlay {
   background-color: hsl(0deg 0% 50% / 0.3);
   backdrop-filter: blur(2px);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-.sort-overlay {
   position: fixed;
   top: 0;
   bottom: 0;
