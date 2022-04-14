@@ -6,7 +6,7 @@ const projectEvents = (() => {
 
     function renameProject(clicked) {
         // this ensures that user can only rename one project at a time
-        if (document.querySelectorAll('[data-submitRenaming]').length > 0) {
+        if (document.querySelectorAll('[data-saveRenaming]').length > 0) {
             dom.renderProjects(addHandlers.determineCurrentProjectId());
         } 
         // when projects are newly rendered, the variable `clicked` points to an element that doesn't exist anymore
@@ -19,22 +19,20 @@ const projectEvents = (() => {
         })
 
         const iconDiv = newElement.parentElement;
-        const span = document.createElement('span');
-        // submit button
-        const submitRenamingBtn = document.createElement('submit');
-        submitRenamingBtn.setAttribute('data-submitRenaming', '');
-        submitRenamingBtn.setAttribute('data-id', `${newElement.dataset.id}`);
-        submitRenamingBtn.setAttribute('form', 'rename-project');
-        submitRenamingBtn.ariaLabel = 'save edit';
-        submitRenamingBtn.classList.add(
+        // create save button
+        const saveRenamingBtn = document.createElement('button');
+        saveRenamingBtn.type = 'button';
+        saveRenamingBtn.setAttribute('data-saveRenaming', '');
+        saveRenamingBtn.setAttribute('data-id', `${newElement.dataset.id}`);
+        
+        saveRenamingBtn.ariaLabel = 'save edit';
+        saveRenamingBtn.classList.add(
             'fa-regular',
             'fa-circle-check',
             'icon'
             ); 
             
-            
-        span.append(submitRenamingBtn)
-        iconDiv.insertBefore(span, iconDiv.firstChild);
+        iconDiv.insertBefore(saveRenamingBtn, iconDiv.firstChild);
         const clickedProject = factories.projectList[newElement.dataset.id];
         
         // input field
@@ -44,36 +42,35 @@ const projectEvents = (() => {
         renameForm.id = 'rename-project'
         renameForm.setAttribute('data-renameForm', '');
         renameInput.setAttribute('data-renameInput', '');
+        renameInput.setAttribute('data-id', `${newElement.dataset.id}`)
         renameInput.type = 'text';
         renameInput.required = true;
         renameInput.classList.add('rename-input');
         renameInput.value = clickedProject.title;
 
         renameForm.append(renameInput);
-
+        
         document.querySelectorAll('[data-sidebarTab]').forEach(tab => {
             if (tab.dataset.id === newElement.dataset.id) {
                 tab.textContent = '';
                 tab.append(renameForm);
+                renameInput.focus();
             }
         })
         newElement.remove();
-        
-
-        // if (document.querySelectorAll('[data-submitRenaming]').length === 1) {
-        //     console.log(document.querySelectorAll('[data-submitRenaming]'))
+       
+        // if (document.querySelectorAll('[data-saveRenaming]').length === 1) {
+        //     console.log(document.querySelectorAll('[data-saveRenaming]'))
         //     const body = document.querySelector('body');
         //     body.addEventListener('click', e => {
-        //         if (!e.target.classList.contains('rename-input') && !e.target.hasAttribute('data-submitRenaming')) {
+        //         if (!e.target.classList.contains('rename-input') && !e.target.hasAttribute('data-saveRenaming')) {
         //             dom.renderProjects(addHandlers.determineCurrentProjectId());
         //         }
         //     })
         // }
     }
 
-    function submitRenaming(e, clicked) {
-        e.preventDefault(); //stop form from submitting   
-        
+    function saveRenaming(clicked) { 
         //check if required fields are filled out
         const renameForm_form = document.querySelector('[data-renameForm]');
         let checkStatus = renameForm_form.checkValidity();
@@ -104,7 +101,7 @@ const projectEvents = (() => {
 
     return {
         renameProject,
-        submitRenaming,
+        saveRenaming,
         deleteProject
     }
 })()
