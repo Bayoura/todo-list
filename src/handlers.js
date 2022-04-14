@@ -10,7 +10,6 @@ const addHandlers = (() => {
     
     function addClickHandlers() {
         body.addEventListener('click', e => {
-            console.log(e.target);
             // task handlers
             if (e.target.hasAttribute('data-taskInfo')) {
                 dom.renderTaskDetails(e.target);
@@ -51,11 +50,6 @@ const addHandlers = (() => {
                      e.target.hasAttribute('data-hamburgerLine')) {
                 dom.toggleSidebar();
             } 
-            // sort button
-            else if (e.target.hasAttribute('data-sortButton') ||
-                     e.target.hasAttribute('data-sortOverlay')) {
-                dom.displaySortOptions();
-            }
         })
     }
 
@@ -76,14 +70,10 @@ const addHandlers = (() => {
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     e.preventDefault();
                     projectEvents.saveRenaming(e.target);
-                } else if (e.target.hasAttribute('data-sortButton')) {
-                    dom.displaySortOptions();
                 } 
             } else if (e.key === 'Escape') {
                 if (!document.querySelector('[data-overlay]').classList.contains('closed')) {
                     dom.toggleModal();
-                } else if (!document.querySelector('[data-sortOverlay]').classList.contains('closed')) {
-                    dom.displaySortOptions();
                 } else if (!document.querySelector('[data-infoOverlay]').classList.contains('closed')) {
                     dom.toggleInfoModal();
                 } else if (e.target.hasAttribute('data-renameInput')) {
@@ -101,7 +91,6 @@ const addHandlers = (() => {
     function addNavEvents() {
         submitProject();       
         submitTask();
-        addSortHandler();
     }
 
     function chooseProject(e) {
@@ -166,12 +155,25 @@ const addHandlers = (() => {
         }
     }
 
-    function addSortHandler() {
-        const sortNewOld_div = document.querySelector('[data-sortNewOld]');
-        const sortOldNew_div = document.querySelector('[data-sortOldNew]');
-        const sortDate_div = document.querySelector('[data-sortDate]');
-        const sortImportance_div = document.querySelector('[data-sortImportance]');
-    }
+    // function addSortHandler() {
+    //     const sortNewOld_option = document.querySelector('[data-sortNewOld]');
+    //     const sortOldNew_option = document.querySelector('[data-sortOldNew]');
+    //     const sortDate_option = document.querySelector('[data-sortDate]');
+    //     const sortPriority_option = document.querySelector('[data-sortPriority]');
+        
+    //     const currentProject = factories.projectList[determineCurrentProjectId()];
+    //     if ('oldToNew') {
+    //         currentProject.tasks.sort((taskOne, taskTwo) => taskOne.taskId - taskTwo.taskId);
+    //         console.log(currentProject.tasks)
+    //     } else if ('newToOld') {
+    //         currentProject.tasks.sort((taskOne, taskTwo) => taskTwo.taskId - taskOne.taskId);
+    //         console.log(currentProject.tasks)
+    //     } else if ('dueDate') {
+            
+    //     } else if ('priority') {
+            
+    //     }
+    // }
       
     function submitProject() {
         const submitProject_button = document.querySelector('[data-submitProjectBtn]');

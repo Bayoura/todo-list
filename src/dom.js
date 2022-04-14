@@ -23,11 +23,8 @@ const dom = (() => {
             projectTitle.setAttribute('data-sidebarTab', '');
             projectTitle.setAttribute('data-id', i);
             if (factories.projectList[i].title.length > 21) {
-                console.log(factories.projectList[i].title.length)
-                console.log(factories.projectList[i].title.slice(0, 20))
                 projectTitle.textContent = factories.projectList[i].title.slice(0, 20) + '...';
             } else {
-                console.log(factories.projectList[i].title.length)
                 projectTitle.textContent = factories.projectList[i].title;
             }
 
@@ -236,13 +233,6 @@ const dom = (() => {
         infoOverlay_div.classList.toggle('closed');
     }
 
-    function displaySortOptions() {
-        const sortOptions_div = document.querySelector('[data-sortOptions]');
-        const sortOverlay_div = document.querySelector('[data-sortOverlay]');
-        sortOptions_div.classList.toggle('show');
-        sortOverlay_div.classList.toggle('closed');
-    }
-
     function displayProjectForm() {
         const newProject_form = document.querySelector('[data-newProjectForm]');
         newProject_form.reset();
@@ -265,7 +255,6 @@ const dom = (() => {
         renderTaskDetails,
         toggleModal,
         toggleInfoModal,
-        displaySortOptions,
         displayProjectForm,
         toggleSidebar
     };

@@ -4,7 +4,6 @@ import factories from './factories.js';
 import addHandlers from './handlers.js';
 
 const taskEvents = (() => {
-
     
     let localizedFormat = require('dayjs/plugin/localizedFormat');
     dayjs.extend(localizedFormat);
@@ -170,6 +169,16 @@ const taskEvents = (() => {
         }
         dom.renderHeader(currentProject, currentProjectId)
     } 
+
+    function switchProject() {
+        // drop down menu
+        // at the top the current project
+        // underneath the other project
+        // user can click on the one he wants to switch the task to 
+        // that project will appear on top (render the menu new)
+        // change projectId 
+        // renderTasks 
+    }
 
 
     return {
