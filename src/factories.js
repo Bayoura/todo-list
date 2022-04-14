@@ -1,6 +1,7 @@
-import addHandlers from './handlers.js';
+import dayjs from 'dayjs';
 
 const factories = (() => {
+
     let projectList = [
         projectFactory('All Tasks'),
         projectFactory('Due today'),
@@ -12,12 +13,13 @@ const factories = (() => {
     
     // the projectId signifies the index number of the user project the task belongs to (starting with 6)
     // the taskId signifies the original index of the task in the array of that user project
-    function taskFactory(projectId, title, description, dueDate, priority) {
+    function taskFactory(projectId, title, description, creationDate, dueDate, priority) {
         const task = {};
         task.projectId = projectId;
         task.taskId = 0;
         task.title = title;
         task.description = description;
+        task.creationDate = creationDate;
         task.dueDate = dueDate;
         task.completionDate = null;
         task.priority = priority;
@@ -35,20 +37,20 @@ const factories = (() => {
     if(!localStorage.getItem('projectList')) {  
         let demoProject =  projectFactory('Demo Project');
         demoProject.tasks.push(
-            taskFactory('6', 'Homework','English book, p.25, exercises 2 and 3', new Date(2022, 3, 6),'high'), 
-            taskFactory('6', 'Go grocery shopping','buy apples', new Date(2022, 8, 8),'high')
+            taskFactory('6', 'Homework','English book, p.25, exercises 2 and 3', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2022, 3, 6)).format('YYYY-MM-DD'),'high'), 
+            taskFactory('6', 'Go grocery shopping','buy apples', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2022, 8, 8)).format('YYYY-MM-DD'),'high')
             );
 
             let demoProject2 =  projectFactory('Demo Project2');
         demoProject2.tasks.push(
-            taskFactory('7', 'Homework2','English book, p.25, exercises 2 and 3', new Date(2022, 7, 12),'high'), 
-            taskFactory('7', 'Go grocery shopping2','buy apples', new Date(2023, 1, 12),'very-high')
+            taskFactory('7', 'Homework2','English book, p.25, exercises 2 and 3', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2022, 7, 12)).format('YYYY-MM-DD'),'high'), 
+            taskFactory('7', 'Go grocery shopping2','buy apples', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2023, 1, 12)).format('YYYY-MM-DD'),'very-high')
             );
 
             let demoProject3 =  projectFactory('Demo Project3');
         demoProject3.tasks.push(
-            taskFactory('8', 'Homework3','English book, p.25, exercises 2 and 3', new Date(2022, 5, 16),'very-high'), 
-            taskFactory('8', 'Go grocery shopping3','buy apples', new Date(2022, 3, 10),'low')
+            taskFactory('8', 'Homework3','English book, p.25, exercises 2 and 3', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2022, 5, 16)).format('YYYY-MM-DD'),'very-high'), 
+            taskFactory('8', 'Go grocery shopping3','buy apples', dayjs(new Date()).format('YYYY-MM-DD'), dayjs(new Date(2022, 3, 10)).format('YYYY-MM-DD'),'low')
             );
         projectList.push(demoProject);
         projectList.push(demoProject2);
