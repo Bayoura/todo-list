@@ -10,11 +10,11 @@
    
     <header>
       <h1>Do It Now</h1>
-      <input type="checkbox" id="hamburger">
-      <label for="hamburger" class="hamburger" data-hamburger>
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
+      <input type="checkbox" id="hamburger" data-hamburgerCheck>
+      <label for="hamburger" class="hamburger" role="button" tabIndex ="0" data-hamburger>
+        <span class="line" data-hamburgerLine></span>
+        <span class="line" data-hamburgerLine></span>
+        <span class="line" data-hamburgerLine></span>
       </label>
     </header>
     <nav class="side-bar" data-sidebar>
@@ -49,7 +49,7 @@
     </nav>
     
     <main data-main>
-      <div class="task-container" data-taskContainer>
+      <di data-taskContainer>
         <h2 data-projectHeading></h2>
         <div class="task-sort-container">
           <div class="title-and-btn-container">
@@ -58,14 +58,13 @@
           </div>
     
           <div class="sort-container" >
-            <div>Sort by:</div>
-            <div class="sort-button" tabindex="0" role="button" data-sortButton>Newest to Oldest</div>
-            <div class="sort-options" data-sortOptions>
-              <div tabindex="0" data-sortNewOld>Newest to Oldest</div>
-              <div tabindex="0" data-sortOldNew>Oldest to Newest</div>
-              <div tabindex="0" data-sortDate>Due Date</div>
-              <div tabindex="0" data-sortImportance>Importance</div>
-            </div>
+            <label for="sort" data-a>Sort by:</label>
+            <select name="sort" id="sort" data-b>
+              <option value="volvo" data-sortOption data-sortNewOld>Newest to Oldest</option>
+              <option value="saab" data-sortOption data-sortOldNew>Oldest to Newest</option>
+              <option value="mercedes" data-sortOption data-sortDate>Due Date</option>
+              <option value="audi" data-sortOption data-sortPriority>Priority</option>
+            </select>
           </div>
         </div>
     
@@ -126,8 +125,6 @@
     
     <div class="overlay closed" data-overlay></div>
     <div class="info-overlay closed" data-infoOverlay></div>
-    <div class="sort-overlay closed" data-sortOverlay></div>
-
   </body> 
 </html>
   
