@@ -11,6 +11,7 @@ const taskEvents = (() => {
     dayjs.extend(weekOfYear);
     require('dayjs/locale/de');
     dayjs.locale('de');
+    
     function determineTasks(currentProject, projectId) {
 
         const taskList_ul = document.querySelector('[data-taskList]');
@@ -123,7 +124,7 @@ const taskEvents = (() => {
 
         document.querySelector('[data-taskTitleInput]').value = clickedTask.title;
         document.querySelector('[data-descriptionInput]').value = clickedTask.description;
-        document.querySelector('[data-dateInput]').value = dayjs(clickedTask.dueDate).format('YYYY-MM-DD');  
+        document.querySelector('[data-dateInput]').value = clickedTask.dueDate;  
         document.querySelectorAll('input[name=priority]').forEach(input => {
             if (input.value === clickedTask.priority) input.checked = true;
         })
@@ -179,6 +180,29 @@ const taskEvents = (() => {
         // change projectId 
         // renderTasks 
     }
+    
+    function sortTasks() {
+        const selectedSort = document.querySelector('[data-select]').value;
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        if (selectedSort === 'old') {
+            // at the top are the oldest:
+            currentProject.tasks.sort((a,b) => new Date(a.creationDate) - new Date(b.creationDate));
+        } else if (selectedSort === 'new') {
+            // at the top are the newest:
+            currentProject.tasks.sort((a,b) => new Date(b.creationDate) - new Date(a.creationDate));
+        } else if (selectedSort === 'date') {
+            currentProject.tasks.sort((a,b) =>  new Date(a.dueDate) - new Date(b.dueDate));
+        } else if (selectedSort === 'priority') {
+            let orderedTasks = [];
+            orderedTasks = orderedTasks.concat(
+            currentProject.tasks.filter(task => task.priority === 'very-high'), 
+            currentProject.tasks.filter(task => task.priority === 'high'),
+            currentProject.tasks.filter(task => task.priority === 'medium'), 
+            currentProject.tasks.filter(task => task.priority === 'low')
+            );
+            currentProject.tasks = orderedTasks;
+        }
+    }
 
 
     return {
@@ -186,6 +210,7 @@ const taskEvents = (() => {
         changeCompletionStatus,
         editTask,
         deleteTask,
+        sortTasks
     }
 
 })();
