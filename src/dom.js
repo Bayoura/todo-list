@@ -190,6 +190,7 @@ const dom = (() => {
             taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
         }
         addHandlers.updateTaskIndex();
+        console.log(currentProject)
     }
 
     function renderNotes() {
@@ -200,24 +201,33 @@ const dom = (() => {
         const currentProjectId = addHandlers.determineCurrentProjectId();
         const currentProject = factories.projectList[currentProjectId];
         const clickedTask = currentProject.tasks[clicked.dataset.id];
+
+        const infoModalDetails = document.querySelector('[data-infoModalDetails]');
+        infoModalDetails.textContent = '';
  
-        const titleHeading = document.querySelector('[data-infoTitle]');
-        const descriptionPara = document.querySelector('[data-infoDescription]');
-        const creationDatePara = document.querySelector('[data-infoCreationDate]');
-        const dueDatePara = document.querySelector('[data-infoDueDate]');
-        const completionDatePara = document.querySelector('[data-infoCompletionDate]');
-        const priorityPara = document.querySelector('[data-infoPriority]');
+        const titleHeading = document.querySelector('[data-infoTitle]')
+        const descriptionPara = document.createElement('p');
+        const creationDatePara = document.createElement('p');
+        const dueDatePara = document.createElement('p');
+        const completionDatePara = document.createElement('p');
+        const priorityPara = document.createElement('p');
+
+        descriptionPara.setAttribute('data-infoDescription', '');
+        creationDatePara.setAttribute('data-infoCreationDate', '');
+        dueDatePara.setAttribute('data-infoDueDate', '');
+        completionDatePara.setAttribute('data-infoCompletionDate', '');
+        priorityPara.setAttribute('data-infoPriority', '');
         
         titleHeading.textContent = clickedTask.title;
         descriptionPara.textContent = clickedTask.description; 
         creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
         dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
         priorityPara.textContent = 'Priority: ' + clickedTask.priority;
-        if (clickedTask.completionDate !== null) {
+        if (clickedTask.completed != false) {
             completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
-        } else {
-            return
         }
+    
+        infoModalDetails.append(descriptionPara, creationDatePara, dueDatePara, completionDatePara, priorityPara);
     }
     
     function toggleModal() {
