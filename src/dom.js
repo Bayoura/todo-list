@@ -93,6 +93,7 @@ const dom = (() => {
         dayjs.extend(localizedFormat);
         
         taskEvents.sortTasks();
+
         // color the list items according to the priority!
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
@@ -175,7 +176,19 @@ const dom = (() => {
             editIcon.setAttribute('data-taskEdit', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit task';
-
+           
+            const moveIcon = document.createElement('button');
+            moveIcon.classList.add(
+                'fa-solid',
+                'fa-circle-right',
+                'icon',
+                'move-icon'
+            );
+            moveIcon.type = 'button';
+            moveIcon.setAttribute('data-taskMove', '');
+            moveIcon.setAttribute('data-id', i);
+            moveIcon.ariaLabel = 'move task to another project';
+           
             const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
@@ -187,10 +200,9 @@ const dom = (() => {
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete task';
 
-            taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
+            taskOptionsDiv.append(infoIcon, editIcon, moveIcon, deleteIcon);
         }
         addHandlers.updateTaskIndex();
-        console.log(currentProject)
     }
 
     function renderNotes() {
@@ -205,21 +217,17 @@ const dom = (() => {
         const infoModalDetails = document.querySelector('[data-infoModalDetails]');
         infoModalDetails.textContent = '';
  
-        const titleHeading = document.querySelector('[data-infoTitle]')
+        const titleHeading = document.querySelector('[data-infoTitle]');
         const descriptionPara = document.createElement('p');
+        const projectPara = document.createElement('p');
         const creationDatePara = document.createElement('p');
         const dueDatePara = document.createElement('p');
         const completionDatePara = document.createElement('p');
         const priorityPara = document.createElement('p');
-
-        descriptionPara.setAttribute('data-infoDescription', '');
-        creationDatePara.setAttribute('data-infoCreationDate', '');
-        dueDatePara.setAttribute('data-infoDueDate', '');
-        completionDatePara.setAttribute('data-infoCompletionDate', '');
-        priorityPara.setAttribute('data-infoPriority', '');
         
         titleHeading.textContent = clickedTask.title;
         descriptionPara.textContent = clickedTask.description; 
+        projectPara.textContent = factories.projectList[clickedTask.projectId].title;
         creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
         dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
         priorityPara.textContent = 'Priority: ' + clickedTask.priority;
@@ -227,7 +235,43 @@ const dom = (() => {
             completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
         }
     
-        infoModalDetails.append(descriptionPara, creationDatePara, dueDatePara, completionDatePara, priorityPara);
+        infoModalDetails.append(descriptionPara, projectPara, creationDatePara, dueDatePara, completionDatePara, priorityPara);
+    }
+
+    function renderMoveSelection(clicked) {
+        
+        // newElement.textContent = '';
+        if (document.querySelectorAll('[data-moveSelection]').length > 0) {
+            renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+        } 
+        const moveButtons = document.querySelectorAll('[data-taskMove]');
+        // moveButtons.forEach(button => button.textContent = '');
+
+        let newElement = null; 
+        moveButtons.forEach(button => {
+            if (button.dataset.id === clicked.dataset.id) newElement = button;
+        })
+        
+        const taskId = newElement.dataset.id;
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const moveSelect = document.createElement('select');
+        moveSelect.name = 'move';
+        moveSelect.setAttribute('data-moveSelection', '');
+        moveSelect.classList.add('move-selection', 'closed');
+        const firstOption = document.createElement('option');
+        firstOption.value = factories.projectList[currentProject.tasks[taskId].projectId].title;
+        firstOption.textContent = factories.projectList[currentProject.tasks[taskId].projectId].title;
+        moveSelect.append(firstOption);
+            
+        for (let i = 6; i < factories.projectList.length; i++) {
+            if (i != currentProject.tasks[taskId].projectId) {
+                const option = document.createElement('option');
+                option.value = factories.projectList[i].title;
+                option.textContent = factories.projectList[i].title;
+                moveSelect.append(option);
+            }
+        }
+        newElement.append(moveSelect);
     }
     
     function toggleModal() {
@@ -266,6 +310,7 @@ const dom = (() => {
         renderHeader,
         renderNotes,
         renderTaskDetails,
+        renderMoveSelection,
         toggleModal,
         toggleInfoModal,
         displayProjectForm,

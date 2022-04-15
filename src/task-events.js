@@ -171,15 +171,22 @@ const taskEvents = (() => {
         dom.renderHeader(currentProject, currentProjectId)
     } 
 
-    function switchProject() {
+    function moveTask(clicked) {
         // drop down menu
         // at the top the current project
-        // underneath the other project
+        // underneath the other projects
         // user can click on the one he wants to switch the task to 
         // that project will appear on top (render the menu new)
         // change projectId 
         // renderTasks 
+        const moveSelection = clicked.querySelector('[data-moveSelection]');
+        moveSelection.classList.toggle('closed');
+        
+        moveSelection.addEventListener('change', () => {
+            moveSelection.classList.toggle('closed');
+        })
     }
+
     
     function sortTasks() {
         const selectedSort = document.querySelector('[data-select]').value;
@@ -210,6 +217,7 @@ const taskEvents = (() => {
         changeCompletionStatus,
         editTask,
         deleteTask,
+        moveTask,
         sortTasks
     }
 
