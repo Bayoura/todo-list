@@ -150,6 +150,17 @@ li {
   padding-right: 5px;
 }
 
+.move-icon {
+  position: relative;
+}
+
+.move-selection {
+  position: absolute;
+  top: 100%;
+  right: 0%;
+  z-index: 15;
+}
+
 .title-and-btn-container {
   display: flex;
   align-items: center;
