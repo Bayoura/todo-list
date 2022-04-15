@@ -2,6 +2,7 @@ import factories from './factories.js';
 import dom from './dom.js';
 import taskEvents from './task-events.js';
 import projectEvents from './project-events.js';
+import dayjs from 'dayjs';
 
 const addHandlers = (() => {
 
@@ -79,9 +80,15 @@ const addHandlers = (() => {
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     dom.renderProjects(addHandlers.determineCurrentProjectId());
                 }
-
             }
         })
+    }
+
+    function addChangeHandler() {
+        const selectOption = document.querySelector('[data-select]');
+        selectOption.addEventListener('change', () => {
+            dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+        });
     }
 
     // document.addEventListener('DOMContentLoaded', () => {   
@@ -154,26 +161,6 @@ const addHandlers = (() => {
             }
         }
     }
-
-    // function addSortHandler() {
-    //     const sortNewOld_option = document.querySelector('[data-sortNewOld]');
-    //     const sortOldNew_option = document.querySelector('[data-sortOldNew]');
-    //     const sortDate_option = document.querySelector('[data-sortDate]');
-    //     const sortPriority_option = document.querySelector('[data-sortPriority]');
-        
-    //     const currentProject = factories.projectList[determineCurrentProjectId()];
-    //     if ('oldToNew') {
-    //         currentProject.tasks.sort((taskOne, taskTwo) => taskOne.taskId - taskTwo.taskId);
-    //         console.log(currentProject.tasks)
-    //     } else if ('newToOld') {
-    //         currentProject.tasks.sort((taskOne, taskTwo) => taskTwo.taskId - taskOne.taskId);
-    //         console.log(currentProject.tasks)
-    //     } else if ('dueDate') {
-            
-    //     } else if ('priority') {
-            
-    //     }
-    // }
       
     function submitProject() {
         const submitProject_button = document.querySelector('[data-submitProjectBtn]');
@@ -211,9 +198,10 @@ const addHandlers = (() => {
                     const projectId = determineCurrentProjectId();
                     const title = document.querySelector('[data-taskTitleInput]').value;
                     const description = document.querySelector('[data-descriptionInput]').value;
+                    const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
                     const dueDate = document.querySelector('[data-dateInput]').value;
                     const priority = document.querySelector('input[name=priority]:checked').value;
-                    const newTask = factories.taskFactory(projectId, title, description, dueDate, priority);
+                    const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
                     
                     currentProject.tasks.push(newTask);
                     dom.renderTasks(currentProject);
@@ -227,6 +215,7 @@ const addHandlers = (() => {
     return {
         addClickHandlers,
         addKeyHandlers,
+        addChangeHandler,
         addNavEvents,
         chooseProject,
         getAllTasks,
