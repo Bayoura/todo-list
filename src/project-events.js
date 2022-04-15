@@ -88,16 +88,20 @@ const projectEvents = (() => {
     function deleteProject(clicked) {
         factories.projectList.splice(clicked.dataset.id, 1);
 
-        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
         const currentProjectId = addHandlers.determineCurrentProjectId();
-        
+        const currentProject = factories.projectList[currentProjectId];
+
         if (currentProjectId < 6) {
             taskEvents.determineTasks(currentProject, currentProjectId);
+            dom.renderProjects(currentProjectId);
+            dom.renderHeader(currentProject, currentProjectId);
         } else {
-            dom.renderTasks(currentProject);
-        }
-        dom.renderProjects(currentProjectId);
-        dom.renderHeader(currentProject, currentProjectId)
+            // set the 'all tasks' tab as current project
+            addHandlers.setCurrentClass(document.querySelector('[data-sidebarTab][data-id="0"]'));
+            taskEvents.determineTasks(factories.projectList[0], '0');
+            dom.renderProjects('0');
+            dom.renderHeader(factories.projectList[0], '0');
+        }    
     }
 
     return {
