@@ -91,7 +91,8 @@ const dom = (() => {
     function renderTasks(currentProject) {
         let localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
-
+        
+        taskEvents.sortTasks();
         // color the list items according to the priority!
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.textContent = '';
@@ -202,14 +203,16 @@ const dom = (() => {
  
         const titleHeading = document.querySelector('[data-infoTitle]');
         const descriptionPara = document.querySelector('[data-infoDescription]');
+        const creationDatePara = document.querySelector('[data-infoCreationDate]');
         const dueDatePara = document.querySelector('[data-infoDueDate]');
         const completionDatePara = document.querySelector('[data-infoCompletionDate]');
         const priorityPara = document.querySelector('[data-infoPriority]');
         
         titleHeading.textContent = clickedTask.title;
         descriptionPara.textContent = clickedTask.description; 
+        creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
         dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
-        priorityPara.textContent = clickedTask.priority;
+        priorityPara.textContent = 'Priority: ' + clickedTask.priority;
         if (clickedTask.completionDate !== null) {
             completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
         } else {
