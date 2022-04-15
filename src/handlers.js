@@ -50,7 +50,10 @@ const addHandlers = (() => {
             else if (e.target.hasAttribute('data-hamburger') ||
                      e.target.hasAttribute('data-hamburgerLine')) {
                 dom.toggleSidebar();
-            } 
+            } else if (e.target.hasAttribute('data-taskMove')) {
+                dom.renderMoveSelection(e.target);
+                taskEvents.moveTask(e.target);
+            }
         })
     }
 
@@ -218,6 +221,7 @@ const addHandlers = (() => {
         addChangeHandler,
         addNavEvents,
         chooseProject,
+        setCurrentClass,
         getAllTasks,
         determineCurrentProjectId,
         updateTaskIndex,
