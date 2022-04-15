@@ -59,16 +59,6 @@ const projectEvents = (() => {
             }
         })
         newElement.remove();
-       
-        // if (document.querySelectorAll('[data-saveRenaming]').length === 1) {
-        //     console.log(document.querySelectorAll('[data-saveRenaming]'))
-        //     const body = document.querySelector('body');
-        //     body.addEventListener('click', e => {
-        //         if (!e.target.classList.contains('rename-input') && !e.target.hasAttribute('data-saveRenaming')) {
-        //             dom.renderProjects(addHandlers.determineCurrentProjectId());
-        //         }
-        //     })
-        // }
     }
 
     function saveRenaming(clicked) { 
