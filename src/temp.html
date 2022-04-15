@@ -59,11 +59,11 @@
     
           <div class="sort-container" >
             <label for="sort" data-a>Sort by:</label>
-            <select name="sort" id="sort" data-b>
-              <option value="volvo" data-sortOption data-sortNewOld>Newest to Oldest</option>
-              <option value="saab" data-sortOption data-sortOldNew>Oldest to Newest</option>
-              <option value="mercedes" data-sortOption data-sortDate>Due Date</option>
-              <option value="audi" data-sortOption data-sortPriority>Priority</option>
+            <select name="sort" id="sort" data-select>
+              <option value="new" data-sortOption>Newest to Oldest</option>
+              <option value="old" data-sortOption >Oldest to Newest</option>
+              <option value="date" data-sortOption >Due Date</option>
+              <option value="priority" data-sortOption>Priority</option>
             </select>
           </div>
         </div>
@@ -117,6 +117,7 @@
       </div>
       <div>
         <p data-infoDescription></p>
+        <p data-infoCreationDate></p>
         <p data-infoDueDate></p>
         <p data-infoCompletionDate></p>
         <p data-infoPriority></p>
