@@ -239,25 +239,17 @@ const dom = (() => {
     }
 
     function renderMoveSelection(clicked) {
+        document.querySelector('[data-moveOverlay]').classList.remove('closed');
         
-        // newElement.textContent = '';
-        if (document.querySelectorAll('[data-moveSelection]').length > 0) {
-            renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
-        } 
         const moveButtons = document.querySelectorAll('[data-taskMove]');
-        // moveButtons.forEach(button => button.textContent = '');
-
-        let newElement = null; 
-        moveButtons.forEach(button => {
-            if (button.dataset.id === clicked.dataset.id) newElement = button;
-        })
+        moveButtons.forEach(button => button.textContent = '');
         
-        const taskId = newElement.dataset.id;
+        const taskId = clicked.dataset.id;
         const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
         const moveSelect = document.createElement('select');
         moveSelect.name = 'move';
         moveSelect.setAttribute('data-moveSelection', '');
-        moveSelect.classList.add('move-selection', 'closed');
+        moveSelect.classList.add('move-selection');
         const firstOption = document.createElement('option');
         firstOption.value = factories.projectList[currentProject.tasks[taskId].projectId].title;
         firstOption.textContent = factories.projectList[currentProject.tasks[taskId].projectId].title;
@@ -266,12 +258,18 @@ const dom = (() => {
         for (let i = 6; i < factories.projectList.length; i++) {
             if (i != currentProject.tasks[taskId].projectId) {
                 const option = document.createElement('option');
-                option.value = factories.projectList[i].title;
+                option.value = i;
                 option.textContent = factories.projectList[i].title;
                 moveSelect.append(option);
             }
         }
-        newElement.append(moveSelect);
+        clicked.append(moveSelect);
+    }
+
+    function closeMoveSelection() {
+        document.querySelector('[data-moveOverlay]').classList.add('closed');
+        document.querySelector('[data-moveSelection]').classList.add('closed');
+
     }
     
     function toggleModal() {
@@ -314,7 +312,8 @@ const dom = (() => {
         toggleModal,
         toggleInfoModal,
         displayProjectForm,
-        toggleSidebar
+        toggleSidebar,
+        closeMoveSelection
     };
 })();
 
