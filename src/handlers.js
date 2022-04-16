@@ -24,7 +24,11 @@ const addHandlers = (() => {
                 taskEvents.deleteTask(e.target);
             } else if (e.target.hasAttribute('data-taskCheck')) {
                 taskEvents.changeCompletionStatus(e.target);
-            } 
+            } else if (e.target.hasAttribute('data-taskMove')) {
+                dom.renderMoveSelection(e.target);
+            } else if (e.target.hasAttribute('data-moveOverlay')) {
+                dom.closeMoveSelection();
+            }
             // project handlers
               else if (e.target.hasAttribute('data-sidebarTab')) {
                 chooseProject(e);
@@ -50,9 +54,6 @@ const addHandlers = (() => {
             else if (e.target.hasAttribute('data-hamburger') ||
                      e.target.hasAttribute('data-hamburgerLine')) {
                 dom.toggleSidebar();
-            } else if (e.target.hasAttribute('data-taskMove')) {
-                dom.renderMoveSelection(e.target);
-                taskEvents.moveTask(e.target);
             }
         })
     }
@@ -80,6 +81,8 @@ const addHandlers = (() => {
                     dom.toggleModal();
                 } else if (!document.querySelector('[data-infoOverlay]').classList.contains('closed')) {
                     dom.toggleInfoModal();
+                }  else if (!document.querySelector('[data-moveOverlay]').classList.contains('closed')) {
+                    dom.closeMoveSelection();
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     dom.renderProjects(addHandlers.determineCurrentProjectId());
                 }
@@ -88,10 +91,15 @@ const addHandlers = (() => {
     }
 
     function addChangeHandler() {
-        const selectOption = document.querySelector('[data-select]');
-        selectOption.addEventListener('change', () => {
-            dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
-        });
+        body.addEventListener('change', e => {
+            if (e.target.hasAttribute('data-select')) {
+                dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+            } else if (e.target.hasAttribute('data-moveSelection')) {
+                dom.closeMoveSelection();
+                taskEvents.moveTask(e.target);
+                dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+            }
+        })
     }
 
     // document.addEventListener('DOMContentLoaded', () => {   
