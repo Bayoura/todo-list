@@ -170,21 +170,19 @@ const taskEvents = (() => {
         }
         dom.renderHeader(currentProject, currentProjectId)
     } 
-
+    
     function moveTask(clicked) {
-        // drop down menu
-        // at the top the current project
-        // underneath the other projects
-        // user can click on the one he wants to switch the task to 
-        // that project will appear on top (render the menu new)
-        // change projectId 
-        // renderTasks 
-        const moveSelection = clicked.querySelector('[data-moveSelection]');
-        moveSelection.classList.toggle('closed');
+        const selectedProjectId = clicked.value;
+        const taskDataId = document.querySelector('[data-moveSelection]').parentElement.dataset.id;       
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const originProject = factories.projectList[currentProject.tasks[taskDataId].projectId];
+        const newProject = factories.projectList[selectedProjectId];
+        const taskId = currentProject.tasks[taskDataId].taskId;
+        const task = originProject.tasks[taskId]
         
-        moveSelection.addEventListener('change', () => {
-            moveSelection.classList.toggle('closed');
-        })
+        newProject.tasks.push(task);
+        originProject.tasks.splice(taskId, 1);
+        task.projectId = selectedProjectId;   
     }
 
     
