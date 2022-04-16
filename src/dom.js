@@ -265,7 +265,7 @@ const dom = (() => {
         }
         clicked.append(moveSelect);
     }
-
+  
     function closeMoveSelection() {
         document.querySelector('[data-moveOverlay]').classList.add('closed');
         document.querySelector('[data-moveSelection]').classList.add('closed');
