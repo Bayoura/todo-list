@@ -70,8 +70,6 @@ const addHandlers = (() => {
                     }
                 } else if (e.target.hasAttribute('data-sidebarTab')) {
                     chooseProject(e);
-                } else if (e.target.hasAttribute('data-addProjectBtn')) {
-
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     e.preventDefault();
                     projectEvents.saveRenaming(e.target);
