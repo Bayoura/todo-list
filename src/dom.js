@@ -70,21 +70,23 @@ const dom = (() => {
         projectHeading_h2.textContent = currentProject.title;
         // task count
         taskCount_span.textContent = currentProject.tasks.length;
+        
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.classList.add('add-button');
+        const toolTip = document.createElement('span');
+        toolTip.classList.add('tool-tip');
 
-        if (projectId >= 5) {
-            const taskButton = document.createElement('button');
-            taskButton.ariaLabel = 'add new task';
-            taskButton.type = 'button';
-            taskButton.classList.add('add-button');
-            taskButton.setAttribute('data-addTaskBtn', '');
-            const toolTip = document.createElement('span');
+        if (projectId > 5) {
+            button.ariaLabel = 'add new task';
+            button.setAttribute('data-addTaskBtn', '');
             toolTip.textContent = 'Add new task';
-            toolTip.classList.add('tool-tip');
-            addTaskButton_div.append(taskButton,toolTip);
+            addTaskButton_div.append(button,toolTip);
         } else if (projectId === '5') {
-            //notes
-            // notes count
-            // button to add notes, also special modal??
+            button.ariaLabel = 'add new note';
+            button.setAttribute('data-addNoteBtn', '');
+            toolTip.textContent = 'Add new note';
+            addTaskButton_div.append(button,toolTip);
         }    
     }
  
@@ -96,6 +98,7 @@ const dom = (() => {
 
         // color the list items according to the priority!
         const taskList_ul = document.querySelector('[data-taskList]');
+        taskList_ul.classList.remove('note-list');
         taskList_ul.textContent = '';
         for (let i = 0; i < currentProject.tasks.length; i++) {
             // li
@@ -154,7 +157,7 @@ const dom = (() => {
             } else {
                 taskDetails.append(taskTitle, taskOptionsDiv);
             }
-            // icon spans
+            // icon buttons
             const infoIcon = document.createElement('button');
             infoIcon.classList.add(
                 'fa-solid',
@@ -206,7 +209,72 @@ const dom = (() => {
     }
 
     function renderNotes() {
-        console.log('notes');
+        // taskEvents.sortTasks()
+        console.log('HHHHHHH')
+        const noteList_ul = document.querySelector('[data-taskList]');
+        noteList_ul.textContent = '';
+        noteList_ul.classList.add('note-list')
+        const currentProject = factories.projectList[5];
+
+        const grid1 = document.createElement('li');
+        grid1.classList.add('grid');
+        const grid2 = document.createElement('li');
+        grid2.classList.add('grid');
+        const grid3 = document.createElement('li');
+        grid3.classList.add('grid');
+   
+        noteList_ul.append(grid1, grid2, grid3); 
+
+        for (let i = 0; i < currentProject.tasks.length; i++) {
+            const divContainer = document.createElement('div');
+
+            // date paragraph
+            const date = document.createElement('p');
+            date.textContent = dayjs(currentProject.tasks[i].creationDate).format('ll');
+
+            // icon buttons
+            const iconsDiv = document.createElement('div');
+
+            const editIcon = document.createElement('button');
+            editIcon.classList.add(
+                'fa-solid',
+                'fa-pen-to-square',
+                'icon'
+            );
+            editIcon.type = 'button';
+            editIcon.setAttribute('data-noteEdit', '');
+            editIcon.setAttribute('data-id', i);
+            editIcon.ariaLabel = 'edit note';
+           
+            const deleteIcon = document.createElement('button');
+            deleteIcon.classList.add(
+                'fa-solid',
+                'fa-trash-can',
+                'icon'
+            );
+            deleteIcon.type = 'button';
+            deleteIcon.setAttribute('data-taskDelete', '');
+            deleteIcon.setAttribute('data-id', i);
+            deleteIcon.ariaLabel = 'delete note';
+
+            iconsDiv.append(editIcon, deleteIcon);
+
+            // text paragraph
+            const para = document.createElement('p');
+            para.textContent = currentProject.tasks[i].description;
+            para.setAttribute('spellcheck', 'false');
+
+            divContainer.append(date, iconsDiv, para)
+          
+            if (i%3 === 0) {
+                grid1.appendChild(divContainer);
+            } else if (i%3 === 1) {
+                grid2.appendChild(divContainer);
+            } else if (i%3 === 2) {
+                grid3.appendChild(divContainer);
+            }
+        }
+        addHandlers.updateTaskIndex();
     }
 
     function renderTaskDetails(clicked) {
@@ -269,7 +337,6 @@ const dom = (() => {
     function closeMoveSelection() {
         document.querySelector('[data-moveOverlay]').classList.add('closed');
         document.querySelector('[data-moveSelection]').classList.add('closed');
-
     }
     
     function toggleModal() {
@@ -302,6 +369,11 @@ const dom = (() => {
         infoOverlay_div.classList.toggle('closed');
     }
 
+    function toggleNotesModal() {
+        document.querySelector('[data-notesModal]').classList.toggle('closed');
+        document.querySelector('[data-notesOverlay]').classList.toggle('closed');
+    }
+
     function displayProjectForm() {
         const newProject_form = document.querySelector('[data-newProjectForm]');
         newProject_form.reset();
@@ -326,6 +398,7 @@ const dom = (() => {
         toggleModal,
         displayCorrectModal,
         toggleInfoModal,
+        toggleNotesModal,
         displayProjectForm,
         toggleSidebar,
         closeMoveSelection
