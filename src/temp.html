@@ -58,7 +58,7 @@
           </div>
     
           <div class="sort-container" >
-            <label for="sort" data-a>Sort by:</label>
+            <label for="sort">Sort by:</label>
             <select name="sort" id="sort" data-select>
               <option value="new" data-sortOption>Newest to Oldest</option>
               <option value="old" data-sortOption >Oldest to Newest</option>
@@ -74,8 +74,8 @@
     
     <div class="modal closed" data-modal>
       <div class="modal-header">
-        <h2 class="create-task-h2">Create a new task...</h2>
-        <h2 class="edit-task-h2">Edit your task...</h2>
+        <h3 data-addProjectHeading>Create a new task...</h3>
+        <h3 data-editProjectHeading>Edit your task...</h3>
         <button type="button" data-cancelTaskBtn>Close</button>
       </div>
     
@@ -117,9 +117,41 @@
       </div>
       <div data-infoModalDetails></div>
     </div>
+
+    <div class="notes-modal closed" data-notesModal>
+      <div class="modal-header">
+        <h3 data-addNoteHeading>Create a new note...</h3>
+        <button type="button" data-cancelNoteBtn>Close</button>
+      </div>
+    
+      <form action="" class="notes-modal-form" data-noteModalForm>
+        <textarea data-noteInput aria-label="write your note" placeholder="Remember Zeke's birthday, it's the 8th of August. What kind of present might he like...?"></textarea>
+        <div>
+          <div>Priority:</div>
+          <label>
+            <input type="radio" name="priority" value="low" class="" required>
+            Low
+          </label>
+          <label>
+            <input type="radio" name="priority" value="medium" class="" required checked>
+            Medium
+          </label>
+          <label>
+            <input type="radio" name="priority" value="high" class="" required>
+            High
+          </label>
+          <label>
+            <input type="radio" name="priority" value="very-high" class="" required>
+            Very high
+          </label>
+        </div>
+        <input type="submit" value="Add Note" data-submitNoteBtn>
+      </form>
+    </div>
     
     <div class="overlay closed" data-overlay></div>
     <div class="info-overlay closed" data-infoOverlay></div>
+    <div class="notes-overlay closed" data-notesOverlay></div>
     <div class="move-overlay closed" data-moveOverlay></div>
   </body> 
 </html>
