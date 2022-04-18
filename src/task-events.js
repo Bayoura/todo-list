@@ -22,7 +22,7 @@ const taskEvents = (() => {
         switch (projectId) {
             // all
             case '0':
-                currentProject.tasks = addHandlers.getAllTasks();
+                currentProject.tasks = allTasks;
                 dom.renderTasks(currentProject);
                 break;
             // today
@@ -117,7 +117,6 @@ const taskEvents = (() => {
     }
     
     function editTask(clicked) {
-        dom.toggleModal();
         const currentProjectId = addHandlers.determineCurrentProjectId();
         const currentProject = factories.projectList[currentProjectId];
         const clickedTask = currentProject.tasks[clicked.dataset.id];
