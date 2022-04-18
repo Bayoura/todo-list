@@ -57,6 +57,11 @@ const addHandlers = (() => {
             else if (e.target.hasAttribute('data-hamburger') ||
                      e.target.hasAttribute('data-hamburgerLine')) {
                 dom.toggleSidebar();
+            } //notes button
+            else if (e.target.hasAttribute('data-addNoteBtn') ||
+                     e.target.hasAttribute('data-cancelNoteBtn') ||
+                     e.target.hasAttribute('data-notesOverlay')) {
+                dom.toggleNotesModal();
             }
         })
     }
@@ -82,10 +87,14 @@ const addHandlers = (() => {
                     dom.toggleModal();
                 } else if (!document.querySelector('[data-infoOverlay]').classList.contains('closed')) {
                     dom.toggleInfoModal();
+                }  else if (!document.querySelector('[data-notesOverlay]').classList.contains('closed')) {
+                    dom.toggleNotesModal();
                 }  else if (!document.querySelector('[data-moveOverlay]').classList.contains('closed')) {
                     dom.closeMoveSelection();
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     dom.renderProjects(addHandlers.determineCurrentProjectId());
+                } else if (e.target.hasAttribute('data-projectTitleInput')) {
+                    dom.displayProjectForm();
                 }
             }
         })
@@ -103,13 +112,18 @@ const addHandlers = (() => {
         })
     }
 
-    // document.addEventListener('DOMContentLoaded', () => {   
-    //     projectEvents.saveRenaming();
-    // }) 
-
-    function addNavEvents() {
-        submitProject();       
-        submitTask();
+    function addSubmitHandlers() {
+        document.addEventListener('DOMContentLoaded', () => {   
+            body.addEventListener('click', e => {
+                if (e.target.hasAttribute('data-submitProjectBtn')) {
+                    submitProject(e);
+                } else if (e.target.hasAttribute('data-submitTaskBtn')) {
+                    submitTask(e);
+                } else if (e.target.hasAttribute('data-submitNoteBtn')) {
+                    submitNote(e);
+                }
+            })
+        }) 
     }
 
     function chooseProject(e) {
@@ -167,68 +181,77 @@ const addHandlers = (() => {
     }
 
     function updateTaskIndex() {
-        for (let i = 6; i < factories.projectList.length; i++) {
+        for (let i = 5; i < factories.projectList.length; i++) {
             for (let j = 0; j < factories.projectList[i].tasks.length; j++) {
                 factories.projectList[i].tasks[j].taskId = j;
             }
         }
     }
       
-    function submitProject() {
-        const submitProject_button = document.querySelector('[data-submitProjectBtn]');
+    function submitProject(e) {
+        e.preventDefault(); //stop form from submitting   
+        
         const newProject_form = document.querySelector('[data-newProjectForm]');
-        document.addEventListener('DOMContentLoaded', () => {    
-            submitProject_button.addEventListener('click', e => {    
-                e.preventDefault(); //stop form from submitting   
-    
-                //check if required fields are filled out
-                let checkStatus = newProject_form.checkValidity();
-                newProject_form.reportValidity();
-                if (checkStatus) {
-                    const title = document.querySelector('[data-projectTitleInput]').value;
-                    const newProject = factories.projectFactory(title);
-                    factories.projectList.push(newProject);
-                    dom.renderProjects(determineCurrentProjectId());
-                    dom.displayProjectForm();
-                }
-            })    
-        });
+        let checkStatus = newProject_form.checkValidity();
+        newProject_form.reportValidity();
+        if (checkStatus) {
+            const title = document.querySelector('[data-projectTitleInput]').value;
+            const newProject = factories.projectFactory(title);
+            factories.projectList.push(newProject);
+            dom.renderProjects(determineCurrentProjectId());
+            dom.displayProjectForm();
+        }
     }
     
-    function submitTask() {
-        const submitTask_button = document.querySelector('[data-submitTaskBtn]');
+    function submitTask(e) {
+        e.preventDefault(); //stop form from submitting   
+        
         const taskForm_form = document.querySelector('[data-taskModalForm]');
-        document.addEventListener('DOMContentLoaded', () => {    
-            submitTask_button.addEventListener('click', e => {    
-                e.preventDefault(); //stop form from submitting   
-    
-                //check if required fields are filled out
-                let checkStatus = taskForm_form.checkValidity();
-                taskForm_form.reportValidity();
-                if (checkStatus) {
-                    const currentProject = factories.projectList[determineCurrentProjectId()];
-                    const projectId = determineCurrentProjectId();
-                    const title = document.querySelector('[data-taskTitleInput]').value;
-                    const description = document.querySelector('[data-descriptionInput]').value;
-                    const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
-                    const dueDate = document.querySelector('[data-dateInput]').value;
-                    const priority = document.querySelector('input[name=priority]:checked').value;
-                    const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
-                    
-                    currentProject.tasks.push(newTask);
-                    dom.renderTasks(currentProject);
-                    dom.renderHeader(currentProject, projectId);
-                    dom.toggleModal();
-                }
-            })    
-        });
+        let checkStatus = taskForm_form.checkValidity();
+        taskForm_form.reportValidity();
+        if (checkStatus) {
+            const projectId = determineCurrentProjectId();
+            const currentProject = factories.projectList[projectId];
+            const title = document.querySelector('[data-taskTitleInput]').value;
+            const description = document.querySelector('[data-descriptionInput]').value;
+            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
+            const dueDate = document.querySelector('[data-dateInput]').value;
+            const priority = document.querySelector('input[name=priority]:checked').value;
+            const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
+            
+            currentProject.tasks.push(newTask);
+            dom.renderTasks(currentProject);
+            dom.renderHeader(currentProject, projectId);
+            dom.toggleModal();
+        }
+    }
+
+    function submitNote(e) {
+        e.preventDefault();
+
+        const noteForm_form = document.querySelector('[data-noteModalForm]');
+        let checkStatus = noteForm_form.checkValidity();
+        noteForm_form.reportValidity();
+        if (checkStatus) {
+            const projectId = determineCurrentProjectId();
+            const currentProject = factories.projectList[projectId];
+            const note = document.querySelector('[data-noteInput]').value;
+            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
+            const priority = document.querySelector('input[name=priority]:checked').value;
+            const newNote = factories.taskFactory(projectId, null, note, creationDate, null, priority);
+
+            currentProject.tasks.push(newNote);
+            dom.renderNotes();
+            dom.renderHeader(currentProject, projectId);
+            dom.toggleNotesModal();
+        }
     }
     
     return {
         addClickHandlers,
         addKeyHandlers,
         addChangeHandler,
-        addNavEvents,
+        addSubmitHandlers,
         chooseProject,
         setCurrentClass,
         getAllTasks,
