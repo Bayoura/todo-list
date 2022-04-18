@@ -281,6 +281,20 @@ const dom = (() => {
         overlay_div.classList.toggle('closed');
     }
 
+    function displayCorrectModal(clicked) {
+        if (clicked.hasAttribute('data-addTaskBtn')) {
+            document.querySelector('[data-addProjectHeading]').classList.remove('closed');
+            document.querySelector('[data-submitTaskBtn]').classList.remove('closed');
+            document.querySelector('[data-editProjectHeading]').classList.add('closed');
+            document.querySelector('[data-submitEditBtn]').classList.add('closed');
+        } else if (clicked.hasAttribute('data-taskEdit')) {
+            document.querySelector('[data-editProjectHeading]').classList.remove('closed');
+            document.querySelector('[data-submitEditBtn]').classList.remove('closed');
+            document.querySelector('[data-addProjectHeading]').classList.add('closed');
+            document.querySelector('[data-submitTaskBtn]').classList.add('closed');
+        }
+    }
+
     function toggleInfoModal() {
         const infoModal = document.querySelector('[data-infoModal]');
         const infoOverlay_div = document.querySelector('[data-infoOverlay]');
@@ -310,6 +324,7 @@ const dom = (() => {
         renderTaskDetails,
         renderMoveSelection,
         toggleModal,
+        displayCorrectModal,
         toggleInfoModal,
         displayProjectForm,
         toggleSidebar,

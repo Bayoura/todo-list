@@ -19,6 +19,8 @@ const addHandlers = (() => {
                        e.target.hasAttribute('data-infoOverlay')) {
                 dom.toggleInfoModal()
             } else if (e.target.hasAttribute('data-taskEdit')) {
+                dom.toggleModal();
+                dom.displayCorrectModal(e.target);
                 taskEvents.editTask(e.target);
             } else if (e.target.hasAttribute('data-taskDelete')) {
                 taskEvents.deleteTask(e.target);
@@ -42,6 +44,7 @@ const addHandlers = (() => {
                        e.target.hasAttribute('data-cancelTaskBtn') ||
                        e.target.hasAttribute('data-overlay')) {
                 dom.toggleModal();
+                dom.displayCorrectModal(e.target);
             } 
             // project buttons
               else if (e.target.hasAttribute('data-addProjectBtn') ||
