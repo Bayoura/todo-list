@@ -153,9 +153,9 @@ const dom = (() => {
             const taskOptionsDiv = document.createElement('div');
             taskOptionsDiv.classList.add('task-options');
             if (currentProject.tasks[i].dueDate !== '') {           
-                taskDetails.append(taskTitle, dateDiv, taskOptionsDiv);
+                taskDetails.append(taskTitle, dateDiv, addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
             } else {
-                taskDetails.append(taskTitle, taskOptionsDiv);
+                taskDetails.append(taskTitle, addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
             }
             // icon buttons
             const infoIcon = document.createElement('button');
@@ -203,18 +203,74 @@ const dom = (() => {
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete task';
 
-            taskOptionsDiv.append(infoIcon, editIcon, moveIcon, deleteIcon);
+            if (currentProject.title === 'Completed Tasks') {
+                taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
+            } else {
+                taskOptionsDiv.append(infoIcon, editIcon, moveIcon, deleteIcon);
+            }
         }
         addHandlers.updateTaskIndex();
+    }
+
+    function addStarIcons(task) {
+        // priority div
+        const priorityDiv = document.createElement('div');
+        const starSpan1 = document.createElement('span');
+        starSpan1.classList.add(
+            "fa-solid",
+            "fa-star"
+        );
+        priorityDiv.append(starSpan1);
+
+        // depending on which priority, the note will get more star icons
+        if (task.priority === 'medium') {
+            const starSpan2 = document.createElement('span');
+            starSpan2.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            priorityDiv.append(starSpan2)
+        } else if (task.priority === 'high') {
+            const starSpan2 = document.createElement('span');
+            starSpan2.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            const starSpan3 = document.createElement('span');
+            starSpan3.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            priorityDiv.append(starSpan2, starSpan3);
+        } else if (task.priority === 'very-high') {
+            const starSpan2 = document.createElement('span');
+            starSpan2.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            const starSpan3 = document.createElement('span');
+            starSpan3.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            const starSpan4 = document.createElement('span');
+            starSpan4.classList.add(
+                "fa-solid",
+                "fa-star"
+            );
+            priorityDiv.append(starSpan2, starSpan3, starSpan4);
+        }
+
+        return priorityDiv;
     }
 
     function renderNotes() {
         taskEvents.sortTasks();
 
+        const currentProject = factories.projectList[5];
         const noteList_ul = document.querySelector('[data-taskList]');
         noteList_ul.textContent = '';
         noteList_ul.classList.add('note-list')
-        const currentProject = factories.projectList[5];
 
         const grid1 = document.createElement('li');
         grid1.classList.add('grid');
@@ -226,6 +282,8 @@ const dom = (() => {
         noteList_ul.append(grid1, grid2, grid3); 
 
         for (let i = 0; i < currentProject.tasks.length; i++) {
+
+            // note container
             const noteContainer = document.createElement('div');
             noteContainer.tabIndex = "0";
             noteContainer.classList.add('note');
@@ -270,7 +328,7 @@ const dom = (() => {
             details.classList.add('note-details');
             details.append(date, iconsDiv);
 
-            noteContainer.append(para, details);
+            noteContainer.append(addStarIcons(currentProject.tasks[i]), para, details);
           
             if (i%3 === 0) {
                 grid1.appendChild(noteContainer);
@@ -303,8 +361,10 @@ const dom = (() => {
         descriptionPara.textContent = clickedTask.description; 
         projectPara.textContent = factories.projectList[clickedTask.projectId].title;
         creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
-        dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
         priorityPara.textContent = 'Priority: ' + clickedTask.priority;
+        if (clickedTask.dueDate !== '') {           
+            dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
+        } 
         if (clickedTask.completed != false) {
             completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
         }
