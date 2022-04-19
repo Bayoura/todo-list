@@ -12,7 +12,7 @@ const factories = (() => {
     ];
     
     // the projectId signifies the index number of the user project the task belongs to (starting with 6)
-    // the taskId signifies the original index of the task in the array of that user project
+    // the taskId signifies the original index of the task in the array of the user project
     function taskFactory(projectId, title, description, creationDate, dueDate, priority) {
         const task = {};
         task.projectId = projectId;
@@ -58,7 +58,7 @@ const factories = (() => {
             taskFactory('8', 'Adopt a puppy',"Or a kitten! Best would be both, so they aren't lonely.", dayjs(new Date(2021, 6, 6)).format('YYYY-MM-DD'), dayjs(new Date(2023, 9, 2)).format('YYYY-MM-DD'),'high'),
             );
 
-        projectList[4].tasks.push(taskFactory('4', 'Create demo tasks, projects and notes','This one already makes for a good example.', dayjs(new Date(2021, 3, 12)).format('YYYY-MM-DD'), dayjs(new Date(2022, 3, 22)).format('YYYY-MM-DD'),'low'))
+        projectList[4].tasks.push(taskFactory('7', 'Create demo tasks, projects and notes','This one already makes for a good example.', dayjs(new Date(2021, 3, 12)).format('YYYY-MM-DD'), dayjs(new Date(2022, 3, 22)).format('YYYY-MM-DD'),'low'))
         projectList[4].tasks[0].completed = true;
         projectList[4].tasks[0].completionDate = dayjs(new Date(2022, 3, 19)).format('YYYY-MM-DD');
         projectList[5].tasks.push(
