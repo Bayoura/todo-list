@@ -5,6 +5,21 @@ import taskEvents from './task-events.js';
 
 const projectEvents = (() => {
 
+    function submitProject(e) {
+        e.preventDefault(); //stop form from submitting   
+        
+        const newProject_form = document.querySelector('[data-newProjectForm]');
+        let checkStatus = newProject_form.checkValidity();
+        newProject_form.reportValidity();
+        if (checkStatus) {
+            const title = document.querySelector('[data-projectTitleInput]').value;
+            const newProject = factories.projectFactory(title);
+            factories.projectList.push(newProject);
+            dom.renderProjects(addHandlers.determineCurrentProjectId());
+            dom.displayProjectForm();
+        }
+    }
+
     function renameProject(clicked) {
         // this ensures that user can only rename one project at a time
         if (document.querySelectorAll('[data-saveRenaming]').length > 0) {
@@ -95,6 +110,7 @@ const projectEvents = (() => {
     }
 
     return {
+        submitProject,
         renameProject,
         saveRenaming,
         deleteProject
