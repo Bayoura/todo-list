@@ -209,8 +209,8 @@ const dom = (() => {
     }
 
     function renderNotes() {
-        // taskEvents.sortTasks()
-        console.log('HHHHHHH')
+        taskEvents.sortTasks();
+
         const noteList_ul = document.querySelector('[data-taskList]');
         noteList_ul.textContent = '';
         noteList_ul.classList.add('note-list')
@@ -226,11 +226,17 @@ const dom = (() => {
         noteList_ul.append(grid1, grid2, grid3); 
 
         for (let i = 0; i < currentProject.tasks.length; i++) {
-            const divContainer = document.createElement('div');
+            const noteContainer = document.createElement('div');
+            noteContainer.tabIndex = "0";
+            noteContainer.classList.add('note');
+
+            // text paragraph
+            const para = document.createElement('p');
+            para.textContent = currentProject.tasks[i].description;
 
             // date paragraph
             const date = document.createElement('p');
-            date.textContent = dayjs(currentProject.tasks[i].creationDate).format('ll');
+            date.textContent = 'Created: ' + dayjs(currentProject.tasks[i].creationDate).format('ll');
 
             // icon buttons
             const iconsDiv = document.createElement('div');
@@ -259,19 +265,19 @@ const dom = (() => {
 
             iconsDiv.append(editIcon, deleteIcon);
 
-            // text paragraph
-            const para = document.createElement('p');
-            para.textContent = currentProject.tasks[i].description;
-            para.setAttribute('spellcheck', 'false');
+            // details div
+            const details = document.createElement('div');
+            details.classList.add('note-details');
+            details.append(date, iconsDiv);
 
-            divContainer.append(date, iconsDiv, para)
+            noteContainer.append(para, details);
           
             if (i%3 === 0) {
-                grid1.appendChild(divContainer);
+                grid1.appendChild(noteContainer);
             } else if (i%3 === 1) {
-                grid2.appendChild(divContainer);
+                grid2.appendChild(noteContainer);
             } else if (i%3 === 2) {
-                grid3.appendChild(divContainer);
+                grid3.appendChild(noteContainer);
             }
         }
         addHandlers.updateTaskIndex();
@@ -348,7 +354,7 @@ const dom = (() => {
         overlay_div.classList.toggle('closed');
     }
 
-    function displayCorrectModal(clicked) {
+    function displayCorrectTaskModal(clicked) {
         if (clicked.hasAttribute('data-addTaskBtn')) {
             document.querySelector('[data-addProjectHeading]').classList.remove('closed');
             document.querySelector('[data-submitTaskBtn]').classList.remove('closed');
@@ -372,6 +378,17 @@ const dom = (() => {
     function toggleNotesModal() {
         document.querySelector('[data-notesModal]').classList.toggle('closed');
         document.querySelector('[data-notesOverlay]').classList.toggle('closed');
+        document.querySelector('[data-noteModalForm]').reset();
+    }
+
+    function displayCorrectNoteModal(clicked) {
+        if (clicked.hasAttribute('data-addNoteBtn')) {
+            document.querySelector('[data-submitNoteBtn]').classList.remove('closed');
+            document.querySelector('[data-submitNoteEdit]').classList.add('closed');
+        } else if (clicked.hasAttribute('data-noteEdit')) {
+            document.querySelector('[data-submitNoteBtn]').classList.add('closed');
+            document.querySelector('[data-submitNoteEdit]').classList.remove('closed');
+        }
     }
 
     function displayProjectForm() {
@@ -396,9 +413,10 @@ const dom = (() => {
         renderTaskDetails,
         renderMoveSelection,
         toggleModal,
-        displayCorrectModal,
+        displayCorrectTaskModal,
         toggleInfoModal,
         toggleNotesModal,
+        displayCorrectNoteModal,
         displayProjectForm,
         toggleSidebar,
         closeMoveSelection
