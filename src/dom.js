@@ -412,6 +412,7 @@ const dom = (() => {
         taskForm_form.reset();
         modal_div.classList.toggle('closed');
         overlay_div.classList.toggle('closed');
+        document.querySelector('[data-taskTitleInput]').focus();
     }
 
     function displayCorrectTaskModal(clicked) {
@@ -433,12 +434,14 @@ const dom = (() => {
         const infoOverlay_div = document.querySelector('[data-infoOverlay]');
         infoModal.classList.toggle('closed');
         infoOverlay_div.classList.toggle('closed');
+        document.querySelector('[data-cancelInfoBtn]').focus();
     }
 
     function toggleNotesModal() {
         document.querySelector('[data-notesModal]').classList.toggle('closed');
         document.querySelector('[data-notesOverlay]').classList.toggle('closed');
         document.querySelector('[data-noteModalForm]').reset();
+        document.querySelector('[data-noteInput]').focus();
     }
 
     function displayCorrectNoteModal(clicked) {
@@ -455,6 +458,7 @@ const dom = (() => {
         const newProject_form = document.querySelector('[data-newProjectForm]');
         newProject_form.reset();
         newProject_form.classList.toggle('closed');
+        document.querySelector('[data-projectTitleInput]').focus();
     }
 
     function toggleSidebar() {
