@@ -70,6 +70,53 @@ const taskEvents = (() => {
         }    
     }
 
+    function sortTasks() {
+        const selectedSort = document.querySelector('[data-select]').value;
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        if (selectedSort === 'old') {
+            // at the top are the oldest:
+            currentProject.tasks.sort((a,b) => new Date(a.creationDate) - new Date(b.creationDate));
+        } else if (selectedSort === 'new') {
+            // at the top are the newest:
+            currentProject.tasks.sort((a,b) => new Date(b.creationDate) - new Date(a.creationDate));
+        } else if (selectedSort === 'date') {
+            currentProject.tasks.sort((a,b) =>  new Date(a.dueDate) - new Date(b.dueDate));
+        } else if (selectedSort === 'priority') {
+            let orderedTasks = [];
+            orderedTasks = orderedTasks.concat(
+            currentProject.tasks.filter(task => task.priority === 'very-high'), 
+            currentProject.tasks.filter(task => task.priority === 'high'),
+            currentProject.tasks.filter(task => task.priority === 'medium'), 
+            currentProject.tasks.filter(task => task.priority === 'low')
+            );
+            currentProject.tasks = orderedTasks;
+        }
+    }
+
+    // add a new task
+    function submitTask(e) {
+        e.preventDefault(); //stop form from submitting   
+        
+        const taskForm_form = document.querySelector('[data-taskModalForm]');
+        let checkStatus = taskForm_form.checkValidity();
+        taskForm_form.reportValidity();
+        if (checkStatus) {
+            const projectId = addHandlers.determineCurrentProjectId();
+            const currentProject = factories.projectList[projectId];
+            const title = document.querySelector('[data-taskTitleInput]').value;
+            const description = document.querySelector('[data-descriptionInput]').value;
+            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
+            const dueDate = document.querySelector('[data-dateInput]').value;
+            const priority = document.querySelector('input[name=priority]:checked').value;
+            const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
+            
+            currentProject.tasks.push(newTask);
+            dom.renderTasks(currentProject);
+            dom.renderHeader(currentProject, projectId);
+            dom.toggleModal();
+        }
+    }
+
     function changeCompletionStatus(clicked) {
         const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
         const currentProjectId = addHandlers.determineCurrentProjectId();
@@ -117,8 +164,7 @@ const taskEvents = (() => {
     }
     
     function editTask(clicked) {
-        const currentProjectId = addHandlers.determineCurrentProjectId();
-        const currentProject = factories.projectList[currentProjectId];
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
         const clickedTask = currentProject.tasks[clicked.dataset.id];
 
         document.querySelector('[data-taskTitleInput]').value = clickedTask.title;
@@ -127,11 +173,10 @@ const taskEvents = (() => {
         document.querySelectorAll('input[name=priority]').forEach(input => {
             if (input.value === clickedTask.priority) input.checked = true;
         })
-        const submitEdit_button = document.querySelector('[data-submitEditBtn]');
-        submitEdit_button.onclick = e => submitEdit(e, clickedTask);
+        document.querySelector('[data-submitEditBtn]').onclick = e => submitTaskEdit(e, clickedTask);
     }
 
-    function submitEdit(e, clickedTask) {
+    function submitTaskEdit(e, task) {
         e.preventDefault(); //stop form from submitting   
         
         //check if required fields are filled out
@@ -139,20 +184,20 @@ const taskEvents = (() => {
         let checkStatus = taskForm_form.checkValidity();
         taskForm_form.reportValidity();
         if (checkStatus) {
-            const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
             const projectId = addHandlers.determineCurrentProjectId();
-            clickedTask.title = document.querySelector('[data-taskTitleInput]').value;
-            clickedTask.description = document.querySelector('[data-descriptionInput]').value;
-            clickedTask.dueDate = document.querySelector('[data-dateInput]').value;
-            clickedTask.priority = document.querySelector('input[name=priority]:checked').value;
+            const currentProject = factories.projectList[projectId];
+            task.title = document.querySelector('[data-taskTitleInput]').value;
+            task.description = document.querySelector('[data-descriptionInput]').value;
+            task.dueDate = document.querySelector('[data-dateInput]').value;
+            task.priority = document.querySelector('input[name=priority]:checked').value;
             
             dom.renderTasks(currentProject);
             dom.renderHeader(currentProject, projectId);
             dom.toggleModal();
         } 
     }
-     
-    
+
+    // this also  deletes notes
     // note: the data-id attribute shows the index of the task in the current list (the default projects, e.g. 'All'),
     // the taskId shows the index of the task in the original task list of the project the tasks belongs to (the user projects)
     function deleteTask(clicked) {
@@ -184,38 +229,72 @@ const taskEvents = (() => {
         task.projectId = selectedProjectId;   
     }
 
-    
-    function sortTasks() {
-        const selectedSort = document.querySelector('[data-select]').value;
-        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
-        if (selectedSort === 'old') {
-            // at the top are the oldest:
-            currentProject.tasks.sort((a,b) => new Date(a.creationDate) - new Date(b.creationDate));
-        } else if (selectedSort === 'new') {
-            // at the top are the newest:
-            currentProject.tasks.sort((a,b) => new Date(b.creationDate) - new Date(a.creationDate));
-        } else if (selectedSort === 'date') {
-            currentProject.tasks.sort((a,b) =>  new Date(a.dueDate) - new Date(b.dueDate));
-        } else if (selectedSort === 'priority') {
-            let orderedTasks = [];
-            orderedTasks = orderedTasks.concat(
-            currentProject.tasks.filter(task => task.priority === 'very-high'), 
-            currentProject.tasks.filter(task => task.priority === 'high'),
-            currentProject.tasks.filter(task => task.priority === 'medium'), 
-            currentProject.tasks.filter(task => task.priority === 'low')
-            );
-            currentProject.tasks = orderedTasks;
+    // add a new note
+    function submitNote(e) {
+        e.preventDefault();
+
+        const noteForm_form = document.querySelector('[data-noteModalForm]');
+        let checkStatus = noteForm_form.checkValidity();
+        noteForm_form.reportValidity();
+        if (checkStatus) {
+            const projectId = addHandlers.determineCurrentProjectId();
+            const currentProject = factories.projectList[projectId];
+            const note = document.querySelector('[data-noteInput]').value;
+            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
+            const priority = document.querySelector('input[name=priority]:checked').value;
+            const newNote = factories.taskFactory(projectId, null, note, creationDate, null, priority);
+
+            currentProject.tasks.push(newNote);
+            dom.renderNotes();
+            dom.renderHeader(currentProject, projectId);
+            dom.toggleNotesModal();
         }
+    }
+
+    function editNote(clicked) {
+        const currentProject = factories.projectList[addHandlers.determineCurrentProjectId()];
+        const clickedNote = currentProject.tasks[clicked.dataset.id];
+
+        document.querySelector('[data-noteInput]').value = clickedNote.description;
+        document.querySelectorAll('input[name=priority]').forEach(input => {
+            if (input.value === clickedNote.priority) input.checked = true;
+        })
+        document.querySelector('[data-submitNoteEdit]').onclick = e => submitNoteEdit(e, clickedNote);
+    }
+
+    function submitNoteEdit(e, note) {
+        e.preventDefault(); //stop form from submitting   
+        
+        //check if required fields are filled out
+        const notesForm_form = document.querySelector('[data-noteModalForm]');
+        let checkStatus = notesForm_form.checkValidity();
+        notesForm_form.reportValidity();
+        if (checkStatus) {
+            const projectId = addHandlers.determineCurrentProjectId();
+            const currentProject = factories.projectList[projectId];
+            note.description = document.querySelector('[data-noteInput]').value;
+            note.priority = document.querySelector('input[name=priority]:checked').value;
+            
+            dom.renderNotes();
+            dom.renderHeader(currentProject, projectId);
+            dom.toggleNotesModal();
+        } 
+
     }
 
 
     return {
         determineTasks,
+        sortTasks,
+        submitTask,
         changeCompletionStatus,
         editTask,
+        submitTaskEdit,
         deleteTask,
         moveTask,
-        sortTasks
+        submitNote,
+        editNote,
+        submitNoteEdit
     }
 
 })();
