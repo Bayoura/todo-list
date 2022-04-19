@@ -66,7 +66,6 @@ const taskEvents = (() => {
             case '5':
                 dom.renderNotes();
                 break;
-            
         }    
     }
 
@@ -241,8 +240,10 @@ const taskEvents = (() => {
             const currentProject = factories.projectList[projectId];
             const note = document.querySelector('[data-noteInput]').value;
             const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
-            const priority = document.querySelector('input[name=priority]:checked').value;
+            console.log(document.querySelector('input[name=notePriority]:checked').value);
+            const priority = document.querySelector('input[name=notePriority]:checked').value;
             const newNote = factories.taskFactory(projectId, null, note, creationDate, null, priority);
+            console.log(newNote);
 
             currentProject.tasks.push(newNote);
             dom.renderNotes();
@@ -270,16 +271,13 @@ const taskEvents = (() => {
         let checkStatus = notesForm_form.checkValidity();
         notesForm_form.reportValidity();
         if (checkStatus) {
-            const projectId = addHandlers.determineCurrentProjectId();
-            const currentProject = factories.projectList[projectId];
             note.description = document.querySelector('[data-noteInput]').value;
             note.priority = document.querySelector('input[name=priority]:checked').value;
             
             dom.renderNotes();
-            dom.renderHeader(currentProject, projectId);
+            dom.renderHeader(factories.projectList[addHandlers.determineCurrentProjectId()], addHandlers.determineCurrentProjectId());
             dom.toggleNotesModal();
         } 
-
     }
 
 
@@ -287,14 +285,14 @@ const taskEvents = (() => {
         determineTasks,
         sortTasks,
         submitTask,
-        changeCompletionStatus,
-        editTask,
-        submitTaskEdit,
-        deleteTask,
-        moveTask,
         submitNote,
+        submitTaskEdit,
+        submitNoteEdit,
+        editTask,
         editNote,
-        submitNoteEdit
+        moveTask,
+        deleteTask,
+        changeCompletionStatus,
     }
 
 })();
