@@ -20,7 +20,7 @@ const addHandlers = (() => {
                 dom.toggleInfoModal()
             } else if (e.target.hasAttribute('data-taskEdit')) {
                 dom.toggleModal();
-                dom.displayCorrectModal(e.target);
+                dom.displayCorrectTaskModal(e.target);
                 taskEvents.editTask(e.target);
             } else if (e.target.hasAttribute('data-taskDelete')) {
                 taskEvents.deleteTask(e.target);
@@ -44,7 +44,7 @@ const addHandlers = (() => {
                        e.target.hasAttribute('data-cancelTaskBtn') ||
                        e.target.hasAttribute('data-overlay')) {
                 dom.toggleModal();
-                dom.displayCorrectModal(e.target);
+                dom.displayCorrectTaskModal(e.target);
             } 
             // project buttons
               else if (e.target.hasAttribute('data-addProjectBtn') ||
@@ -62,6 +62,11 @@ const addHandlers = (() => {
                      e.target.hasAttribute('data-cancelNoteBtn') ||
                      e.target.hasAttribute('data-notesOverlay')) {
                 dom.toggleNotesModal();
+                dom.displayCorrectNoteModal(e.target);
+            } else if (e.target.hasAttribute('data-noteEdit')) {
+                dom.toggleNotesModal();
+                dom.displayCorrectNoteModal(e.target);
+                taskEvents.editNote(e.target);
             }
         })
     }
@@ -103,7 +108,11 @@ const addHandlers = (() => {
     function addChangeHandler() {
         body.addEventListener('change', e => {
             if (e.target.hasAttribute('data-select')) {
-                dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+                if (determineCurrentProjectId() === '5') {
+                    dom.renderNotes();
+                } else {
+                    dom.renderTasks(factories.projectList[addHandlers.determineCurrentProjectId()]);
+                }
             } else if (e.target.hasAttribute('data-moveSelection')) {
                 dom.closeMoveSelection();
                 taskEvents.moveTask(e.target);
@@ -116,12 +125,12 @@ const addHandlers = (() => {
         document.addEventListener('DOMContentLoaded', () => {   
             body.addEventListener('click', e => {
                 if (e.target.hasAttribute('data-submitProjectBtn')) {
-                    submitProject(e);
+                    projectEvents.submitProject(e);
                 } else if (e.target.hasAttribute('data-submitTaskBtn')) {
-                    submitTask(e);
+                    taskEvents.submitTask(e);
                 } else if (e.target.hasAttribute('data-submitNoteBtn')) {
-                    submitNote(e);
-                }
+                    taskEvents.submitNote(e);
+                } 
             })
         }) 
     }
@@ -188,64 +197,6 @@ const addHandlers = (() => {
         }
     }
       
-    function submitProject(e) {
-        e.preventDefault(); //stop form from submitting   
-        
-        const newProject_form = document.querySelector('[data-newProjectForm]');
-        let checkStatus = newProject_form.checkValidity();
-        newProject_form.reportValidity();
-        if (checkStatus) {
-            const title = document.querySelector('[data-projectTitleInput]').value;
-            const newProject = factories.projectFactory(title);
-            factories.projectList.push(newProject);
-            dom.renderProjects(determineCurrentProjectId());
-            dom.displayProjectForm();
-        }
-    }
-    
-    function submitTask(e) {
-        e.preventDefault(); //stop form from submitting   
-        
-        const taskForm_form = document.querySelector('[data-taskModalForm]');
-        let checkStatus = taskForm_form.checkValidity();
-        taskForm_form.reportValidity();
-        if (checkStatus) {
-            const projectId = determineCurrentProjectId();
-            const currentProject = factories.projectList[projectId];
-            const title = document.querySelector('[data-taskTitleInput]').value;
-            const description = document.querySelector('[data-descriptionInput]').value;
-            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
-            const dueDate = document.querySelector('[data-dateInput]').value;
-            const priority = document.querySelector('input[name=priority]:checked').value;
-            const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
-            
-            currentProject.tasks.push(newTask);
-            dom.renderTasks(currentProject);
-            dom.renderHeader(currentProject, projectId);
-            dom.toggleModal();
-        }
-    }
-
-    function submitNote(e) {
-        e.preventDefault();
-
-        const noteForm_form = document.querySelector('[data-noteModalForm]');
-        let checkStatus = noteForm_form.checkValidity();
-        noteForm_form.reportValidity();
-        if (checkStatus) {
-            const projectId = determineCurrentProjectId();
-            const currentProject = factories.projectList[projectId];
-            const note = document.querySelector('[data-noteInput]').value;
-            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
-            const priority = document.querySelector('input[name=priority]:checked').value;
-            const newNote = factories.taskFactory(projectId, null, note, creationDate, null, priority);
-
-            currentProject.tasks.push(newNote);
-            dom.renderNotes();
-            dom.renderHeader(currentProject, projectId);
-            dom.toggleNotesModal();
-        }
-    }
     
     return {
         addClickHandlers,
