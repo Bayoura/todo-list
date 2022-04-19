@@ -125,27 +125,28 @@
       </div>
     
       <form action="" class="notes-modal-form" data-noteModalForm>
-        <textarea data-noteInput aria-label="write your note" placeholder="Remember Zeke's birthday, it's the 8th of August. What kind of present might he like...?"></textarea>
+        <textarea data-noteInput aria-label="write your note" placeholder="Remember Zeke's birthday, it's the 8th of August. What kind of present might he like...?" required></textarea>
         <div>
           <div>Priority:</div>
           <label>
-            <input type="radio" name="priority" value="low" class="" required>
+            <input type="radio" name="notePriority" value="low" class="" required>
             Low
           </label>
           <label>
-            <input type="radio" name="priority" value="medium" class="" required checked>
+            <input type="radio" name="notePriority" value="medium" class="" required checked>
             Medium
           </label>
           <label>
-            <input type="radio" name="priority" value="high" class="" required>
+            <input type="radio" name="notePriority" value="high" class="" required>
             High
           </label>
           <label>
-            <input type="radio" name="priority" value="very-high" class="" required>
+            <input type="radio" name="notePriority" value="very-high" class="" required>
             Very high
           </label>
         </div>
         <input type="submit" value="Add Note" data-submitNoteBtn>
+        <input type="submit" value="Save" data-submitNoteEdit>
       </form>
     </div>
     
