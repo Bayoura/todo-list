@@ -135,29 +135,34 @@ const dom = (() => {
             // title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = currentProject.tasks[i].title;
-            // date div
-            const dateDiv = document.createElement('div');
-            const openingBracket = document.createElement('span');
-            const closingBracket = document.createElement('span');
+            // date span
             const date = document.createElement('span');
-            closingBracket.textContent = ']';
-            dateDiv.append(openingBracket, date, closingBracket);
+            date.classList.add('date-span');
             if (currentProject.title === 'Completed Tasks') {
-                openingBracket.textContent = '[Completed: ';
-                date.textContent = dayjs(currentProject.tasks[i].completionDate).format('ll');
+                date.textContent = 'Completed: ' + dayjs(currentProject.tasks[i].completionDate).format('ll');
             } else {
-                openingBracket.textContent = '[Due: ';
                 date.textContent = dayjs(currentProject.tasks[i].dueDate).format('ll');
             }
-            // task options div
+            // task buttons div
+            const dateStarButtonContainer = document.createElement('div');
+            const starButtonContainer = document.createElement('div');
             const taskOptionsDiv = document.createElement('div');
-            taskOptionsDiv.classList.add('task-options');
-            if (currentProject.tasks[i].dueDate !== '') {           
-                taskDetails.append(taskTitle, dateDiv, addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
+            dateStarButtonContainer.classList.add('date-star-btn-wrap');
+            starButtonContainer.classList.add('star-btn-wrap');
+            taskOptionsDiv.classList.add('task-buttons');
+            
+            
+            if (currentProject.tasks[i].dueDate !== '') {     
+                dateStarButtonContainer.append(date, starButtonContainer);         
             } else {
-                taskDetails.append(taskTitle, addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
+                dateStarButtonContainer.append(starButtonContainer);
             }
-            // icon buttons
+            starButtonContainer.append(addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
+            taskDetails.append(taskTitle, dateStarButtonContainer);
+            
+            // taskDetails.append(taskTitle, starButtonContainer);
+
+            // icon buttons (inside of taskOptionsDiv)
             const infoIcon = document.createElement('button');
             infoIcon.classList.add(
                 'fa-solid',
@@ -218,7 +223,8 @@ const dom = (() => {
         const starSpan1 = document.createElement('span');
         starSpan1.classList.add(
             "fa-solid",
-            "fa-star"
+            "fa-star",
+            "icon"
         );
         priorityDiv.append(starSpan1);
 
@@ -227,36 +233,42 @@ const dom = (() => {
             const starSpan2 = document.createElement('span');
             starSpan2.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star",
+                "icon"
             );
             priorityDiv.append(starSpan2)
         } else if (task.priority === 'high') {
             const starSpan2 = document.createElement('span');
             starSpan2.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star", 
+                "icon"
             );
             const starSpan3 = document.createElement('span');
             starSpan3.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star",
+                "icon"
             );
             priorityDiv.append(starSpan2, starSpan3);
         } else if (task.priority === 'very-high') {
             const starSpan2 = document.createElement('span');
             starSpan2.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star",
+                "icon"
             );
             const starSpan3 = document.createElement('span');
             starSpan3.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star",
+                "icon"
             );
             const starSpan4 = document.createElement('span');
             starSpan4.classList.add(
                 "fa-solid",
-                "fa-star"
+                "fa-star",
+                "icon"
             );
             priorityDiv.append(starSpan2, starSpan3, starSpan4);
         }
@@ -349,7 +361,7 @@ const dom = (() => {
         const infoModalDetails = document.querySelector('[data-infoModalDetails]');
         infoModalDetails.textContent = '';
  
-        const titleHeading = document.querySelector('[data-infoTitle]');
+        const titleHeading = document.createElement('p');
         const descriptionPara = document.createElement('p');
         const projectPara = document.createElement('p');
         const creationDatePara = document.createElement('p');
@@ -357,19 +369,22 @@ const dom = (() => {
         const completionDatePara = document.createElement('p');
         const priorityPara = document.createElement('p');
         
-        titleHeading.textContent = clickedTask.title;
-        descriptionPara.textContent = clickedTask.description; 
-        projectPara.textContent = factories.projectList[clickedTask.projectId].title;
+        titleHeading.textContent = 'Title: ' + clickedTask.title;
+        descriptionPara.textContent = 'Description: ' + clickedTask.description; 
+        projectPara.textContent = 'Project: ' + factories.projectList[clickedTask.projectId].title;
         creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
-        priorityPara.textContent = 'Priority: ' + clickedTask.priority;
+        infoModalDetails.append(titleHeading, descriptionPara, projectPara, creationDatePara);
+
         if (clickedTask.dueDate !== '') {           
             dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
+            infoModalDetails.append(dueDatePara);
         } 
         if (clickedTask.completed != false) {
             completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
+            infoModalDetails.append(completionDatePara);
         }
-    
-        infoModalDetails.append(descriptionPara, projectPara, creationDatePara, dueDatePara, completionDatePara, priorityPara);
+        priorityPara.textContent = 'Priority: ' + clickedTask.priority;
+        infoModalDetails.append(priorityPara);
     }
 
     function renderMoveSelection(clicked) {
@@ -465,7 +480,7 @@ const dom = (() => {
         const sidebar_nav = document.querySelector('[data-sidebar]');
         const main_element = document.querySelector('[data-main]');
     
-        sidebar_nav.classList.toggle('hidden');
+        sidebar_nav.classList.toggle('closed');
         main_element.classList.toggle('full-page');   
     }
     
