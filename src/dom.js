@@ -73,7 +73,11 @@ const dom = (() => {
         
         const button = document.createElement('button');
         button.type = 'button';
-        button.classList.add('add-button');
+        button.classList.add(
+            'fa-solid',
+            'fa-circle-plus',
+            'icon'
+        );
         const toolTip = document.createElement('span');
         toolTip.classList.add('tool-tip');
 
@@ -159,8 +163,6 @@ const dom = (() => {
             }
             starButtonContainer.append(addStarIcons(currentProject.tasks[i]), taskOptionsDiv);
             taskDetails.append(taskTitle, dateStarButtonContainer);
-            
-            // taskDetails.append(taskTitle, starButtonContainer);
 
             // icon buttons (inside of taskOptionsDiv)
             const infoIcon = document.createElement('button');
@@ -310,6 +312,7 @@ const dom = (() => {
 
             // icon buttons
             const iconsDiv = document.createElement('div');
+            iconsDiv.classList.add('note-icons-wrap');
 
             const editIcon = document.createElement('button');
             editIcon.classList.add(
@@ -361,6 +364,7 @@ const dom = (() => {
         const infoModalDetails = document.querySelector('[data-infoModalDetails]');
         infoModalDetails.textContent = '';
  
+        
         const titleHeading = document.createElement('p');
         const descriptionPara = document.createElement('p');
         const projectPara = document.createElement('p');
@@ -369,21 +373,46 @@ const dom = (() => {
         const completionDatePara = document.createElement('p');
         const priorityPara = document.createElement('p');
         
-        titleHeading.textContent = 'Title: ' + clickedTask.title;
-        descriptionPara.textContent = 'Description: ' + clickedTask.description; 
-        projectPara.textContent = 'Project: ' + factories.projectList[clickedTask.projectId].title;
-        creationDatePara.textContent = 'Created: ' + dayjs(clickedTask.creationDate).format('ll');
+        const titleSpan = document.createElement('span');
+        const descriptionSpan = document.createElement('span');
+        const projectSpan = document.createElement('span');
+        const creationDateSpan = document.createElement('span');
+        const dueDateSpan = document.createElement('span');
+        const completionDateSpan = document.createElement('span');
+        const prioritySpan = document.createElement('span');
+
+        titleSpan.textContent = 'Title: ';
+        descriptionSpan.textContent = 'Description: ';
+        projectSpan.textContent = 'Project: ';
+        creationDateSpan.textContent = 'Created: ';
+
+        titleHeading.append(titleSpan);
+        descriptionPara.append(descriptionSpan);
+        projectPara.append(projectSpan);
+        creationDatePara.append(creationDateSpan);
         infoModalDetails.append(titleHeading, descriptionPara, projectPara, creationDatePara);
 
-        if (clickedTask.dueDate !== '') {           
-            dueDatePara.textContent = 'Due: ' + dayjs(clickedTask.dueDate).format('ll');
+        // insert text AFTER the span
+        titleSpan.after(clickedTask.title);
+        descriptionPara.after(clickedTask.description);
+        projectPara.after(factories.projectList[clickedTask.projectId].title);
+        creationDatePara.after(dayjs(clickedTask.creationDate).format('ll')); 
+
+        if (clickedTask.dueDate !== '') {    
+            dueDateSpan.textContent = 'Due: ';       
+            dueDatePara.append(dueDateSpan);
+            dueDateSpan.after(dayjs(clickedTask.dueDate).format('ll'));
             infoModalDetails.append(dueDatePara);
         } 
         if (clickedTask.completed != false) {
-            completionDatePara.textContent = 'Completed: ' + dayjs(clickedTask.completionDate).format('ll');
+            completionDateSpan.textContent = 'Completed: '; 
+            completionDatePara.append(completionDateSpan);
+            completionDateSpan.after(dayjs(clickedTask.completionDate).format('ll'));
             infoModalDetails.append(completionDatePara);
         }
-        priorityPara.textContent = 'Priority: ' + clickedTask.priority;
+        prioritySpan.textContent = 'Priority: ';
+        priorityPara.append(prioritySpan);
+        prioritySpan.after(clickedTask.priority);
         infoModalDetails.append(priorityPara);
     }
 
