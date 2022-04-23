@@ -6,15 +6,20 @@
   padding: 0;
   box-sizing: border-box;
   line-height: 1.6;
-  color: hsl(225deg 16% 33%);
+  color: var(--text-normal);
   font-size: 1rem;
   font-family: 'Mono Space', monospace;
 }
 
-/* make tool-tips */
+:root {
+  --text-normal: hsl(225deg 16% 33%);
+  --text-dark: hsl(225deg 16% 20%);
+  --white-purple: hsl(231deg 100% 96%);
+  --red-purple: hsl(310deg 25% 58%);
+}
 
 body {
-  background-color: hsl(231deg 100% 96%);
+  background-color: var(--white-purple);
 }
 
 main {
@@ -27,7 +32,7 @@ main.full-page {
 }
 
 header {
-  background: linear-gradient(90deg, hsl(198deg 58% 69%), hsl(222deg 53% 70%), hsl(310deg 25% 58%));
+  background: linear-gradient(90deg, hsl(198deg 58% 69%), hsl(222deg 53% 70%), var(--red-purple));
   height: 120px;
   display: flex;
   justify-content: flex-end;
@@ -45,13 +50,26 @@ h1 {
   -moz-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0px 1px 3px hsl(231deg 100% 96%);
+  text-shadow: 0px 1px 3px var(--white-purple);
   margin-left: 255px;
 }
 
 h2 {
-  color: hsl(225deg 16% 20%);
+  color: var(--text-dark);
   font-size: 1.7rem;
+}
+
+h2, 
+.project-list li h3, 
+.task-title {
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+  word-break: break-word;
+   /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 /* --------------- HAMBURGER MENU ------------------ */
@@ -83,7 +101,7 @@ label.hamburger {
 }
 
 .line {
-  background: hsl(231deg 100% 96%); 
+  background: var(--white-purple); 
   border-radius: 2px;
   display: block; 
   position: absolute; 
@@ -106,8 +124,8 @@ label.hamburger {
 /* ------------------- PROJECTS/SIDEBAR ------------------------- */
 
 .side-bar {
-  background: linear-gradient(180deg, hsl(205deg 58% 69%), hsl(222deg 53% 70%), hsl(310deg 25% 58%));
-  border-right: 2px solid hsl(231deg 100% 96%);
+  background: linear-gradient(180deg, hsl(205deg 58% 69%), hsl(222deg 53% 70%), var(--red-purple));
+  border-right: 2px solid var(--white-purple);
   display: flex;
   justify-content: center;
   position: fixed;
@@ -135,15 +153,15 @@ li {
 }
 
 .side-bar li {
-  background-color: hsl(231deg 100% 96%);
-  border: 2px solid hsl(231deg 100% 96%);
+  background-color: var(--white-purple);
+  border: 2px solid var(--white-purple);
   border-radius: 5px;
   transition: 200ms ease-out;
   user-select: none;
 }
 
 .side-bar li:hover {
-  border-color: hsl(225deg 16% 33%);
+  border-color: var(--text-normal);
   cursor: pointer;
 }
 
@@ -151,9 +169,9 @@ li {
 .side-bar li.current .icon::before, 
 h3.current
 {
-  background-color: hsl(225deg 16% 33%);
-  border-color: hsl(225deg 16% 33%);
-  color: hsl(231deg 100% 96%);
+  background-color: var(--text-normal);
+  border-color: var(--text-normal);
+  color: var(--white-purple);
 }
 
 .default-projects li {
@@ -182,14 +200,6 @@ h3.current
 .project-list li h3 {
   flex-grow: 1;
   padding: 5px 10px;
-  overflow-wrap: break-word; 
-  word-wrap: break-word;
-  word-break: break-word;
-   /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
 }
 
 /* ---------------- TASKS HEADER -------------------- */
@@ -215,14 +225,14 @@ h3.current
 
 .task-list,
 .project-list {
-  border-top: 1px solid hsl(225deg 16% 33%);
+  border-top: 1px solid var(--text-normal);
   padding-top: 10px;
   padding-bottom: 20px;
 }
 
 .task {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -235,9 +245,14 @@ h3.current
   width: 100%;
 }
 
+.task-title {
+  max-width: 50%;
+}
+
 .date-star-btn-wrap {
   display: flex;
   align-items: center;
+  align-self: flex-start;
   gap: 20px;
 }
 
@@ -308,16 +323,19 @@ h3.current
 }
 
 .note-details {
-  border-top: 2px solid hsl(310deg 25% 58%);
+  border-top: 2px solid var(--red-purple);
   padding-top: 10px;
   margin: 10px 0 5px 0;
 }
 
-.note-icons-wrap button:first-child {
-  margin-right: 10px;
+.note-icons-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 }
 
-/* --------------- BUTTONS/ICONS/TOOLTIPS -------------------- */
+/* --------------- BUTTONS/ICONS-------------------- */
 
 .icon {
   background-color: inherit;
@@ -334,7 +352,7 @@ h3.current
 }
 
 .fa-x::before {
-  color: hsl(225deg 16% 20%);
+  color: var(--text-dark);
 }
 
 .icons-div {
@@ -348,15 +366,7 @@ h3.current
 
 .title-btn-container .icon::before {
   font-size: 1.7rem;
-  color: hsl(225deg 16% 20%);
-}
-
-.tool-tip {
-  display: none;
-}
-
-.tool-tip.active {
-  display: block;
+  color: var(--text-dark);
 }
 
 button,
@@ -366,11 +376,57 @@ input[type="button"],
   cursor: pointer;
 }
 
+/* -----------------TOOLTIPS---------------------- */
+
+.tool-tip {
+  position: relative;
+}
+
+.tool-tip::before,
+.tool-tip::after {
+  --scale: 0;
+  --arrow-size: 10px;
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+  transition: 300ms transform;
+  transform-origin: bottom center;
+}
+
+.tool-tip::before {
+  --translate-y: calc(-100% - var(--arrow-size) + 2px); /* + 2px because otherwise there is a small gap between arrow and box */
+
+  content: attr(data-tooltip);
+  background-color: var(--text-dark);
+  border-radius: 3px;
+  color: white;
+  font-size: 0.8rem;
+  padding: 5px;
+  text-align: center;
+}
+
+.tool-tip:hover::before,
+.tool-tip:hover::after {
+  --scale: 1;
+}
+
+/* make an arrow */
+.tool-tip::after {
+  --translate-y: calc(-1 * var(--arrow-size));
+
+  content: '';
+  border: var(--arrow-size) solid transparent;
+  border-top-color: var(--text-dark);
+  transform-origin: top center;
+}
+
 /* ---------------MODALS----------------------- */
 
 .modal {
   background-color: hsl(231deg 100% 97%); 
   border-radius: 4px;
+  max-height: 800px;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -381,7 +437,7 @@ input[type="button"],
 }
 
 .modal-header {
-  background: linear-gradient(90deg, hsl(205deg 58% 69%), hsl(222deg 53% 70%), hsl(310deg 25% 58%));
+  background: linear-gradient(90deg, hsl(205deg 58% 69%), hsl(222deg 53% 70%), var(--red-purple));
   border-radius: 4px 4px 0 0;
   display: flex;
   justify-content: space-between;
@@ -411,7 +467,7 @@ label {
 input,
 textarea 
 {
-  border: 1px solid hsl(225deg 16% 33%);
+  border: 1px solid var(--text-normal);
   border-radius: 3px;
   padding: 5px;
 }
@@ -421,11 +477,10 @@ textarea
   width: 100%;
 }
 
-/* color needs to change depending on background -> current? */
 .rename-input {
   background-color: inherit;
   border: none;
-  color: hsl(231deg 100% 96%);
+  color: black;
   padding: 0;
   width: 100%;
 }
@@ -459,7 +514,7 @@ select {
 }
 
 .info-wrap p {
-  border-top: 1px solid hsl(310deg 25% 58%);
+  border-top: 1px solid var(--red-purple);
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -499,6 +554,131 @@ select {
   display: none;
 }
 
-/* style vertical scrollbar for projects */
-/* disable highlighting/selecting  */
-/* what if task title is very long? either truncate or give title div a max width*/
+/*-------------------------RESPONSIVE-RULES----------------------------*/
+
+@media (max-width: 1260px) {
+
+  main {
+    margin-left: 0;
+    margin-top: 250px;
+  }
+
+  main.full-page {
+    margin-top: 0;
+  }
+
+  .side-bar {
+    border: none;
+    max-height: 260px;
+    position: absolute;
+    top: 120px;
+    padding-top: 0;
+    width: 100%;
+  }
+
+  .side-bar > div {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+  }
+
+  .default-projects ul,
+  .project-list {
+    padding-bottom: 15px;
+  }
+
+  .user-projects-container {
+    margin-top: 0;
+  }
+
+  .default-projects,
+  .user-projects-container {
+    width: 50%;
+  }
+
+  header {
+    background: hsl(205deg 58% 69%);
+  }
+}
+
+@media (max-width: 950px) {
+  .note-list {
+    display: block;
+  }
+
+  .task-title {
+    max-width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    margin-left: 0;
+  }
+
+  .task {
+    border-bottom: 1px solid hsl(225deg 30% 81%);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+  }
+
+  .task-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .task-title {
+    max-width: 100%;
+  }
+
+  .date-star-btn-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .star-btn-wrap {
+    justify-content: space-between;
+    width: 220px;
+  }
+
+  .tool-tip:hover::before,
+  .tool-tip:hover::after {
+    --scale: 0;
+  }
+}
+
+@media (max-width: 576px) {
+
+  main {
+    padding: 30px 10px 15px 10px;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .task-sort-container {
+    flex-direction: column;
+  }
+
+  .side-bar > div{
+    flex-direction: column;
+    justify-content: unset;
+    gap: 0;
+  }
+
+  .default-projects,
+  .user-projects-container {
+    width: 100%;
+  }
+
+  .default-projects li {
+    font-size: 1.3rem;
+  }
+}
