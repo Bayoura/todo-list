@@ -104,7 +104,7 @@ const taskEvents = (() => {
             const currentProject = factories.projectList[projectId];
             const title = document.querySelector('[data-taskTitleInput]').value;
             const description = document.querySelector('[data-descriptionInput]').value;
-            const creationDate = dayjs(new Date()).format('YYYY-MM-DD');
+            const creationDate = new Date();
             const dueDate = document.querySelector('[data-dateInput]').value;
             const priority = document.querySelector('input[name=priority]:checked').value;
             const newTask = factories.taskFactory(projectId, title, description, creationDate, dueDate, priority);
@@ -113,6 +113,7 @@ const taskEvents = (() => {
             dom.renderTasks(currentProject);
             dom.renderHeader(currentProject, projectId);
             dom.toggleModal();
+            factories.saveLocal();
         }
     }
 
@@ -137,6 +138,7 @@ const taskEvents = (() => {
                 factories.projectList[4].tasks.splice(clicked.dataset.id, 1);
                 dom.renderTasks(currentProject);
                 dom.renderHeader(currentProject, currentProjectId)
+                factories.saveLocal();
             }, 200); 
         } else {
             clickedTask.completed = true;
@@ -157,7 +159,8 @@ const taskEvents = (() => {
                 } else {
                     dom.renderTasks(currentProject);
                 }
-                dom.renderHeader(currentProject, currentProjectId)
+                dom.renderHeader(currentProject, currentProjectId);
+                factories.saveLocal();
             }, 200); 
         }
     }
@@ -193,6 +196,7 @@ const taskEvents = (() => {
             dom.renderTasks(currentProject);
             dom.renderHeader(currentProject, projectId);
             dom.toggleModal();
+            factories.saveLocal();
         } 
     }
 
@@ -212,6 +216,7 @@ const taskEvents = (() => {
             dom.renderTasks(currentProject);
         }
         dom.renderHeader(currentProject, currentProjectId)
+        factories.saveLocal();
     } 
     
     function moveTask(clicked) {
@@ -226,6 +231,7 @@ const taskEvents = (() => {
         newProject.tasks.push(task);
         originProject.tasks.splice(taskId, 1);
         task.projectId = selectedProjectId;   
+        factories.saveLocal();
     }
 
     // add a new note
@@ -239,7 +245,7 @@ const taskEvents = (() => {
             const projectId = addHandlers.determineCurrentProjectId();
             const currentProject = factories.projectList[projectId];
             const note = document.querySelector('[data-noteInput]').value;
-            const creationDate = dayjs(new Date()).format('YYYY-MM-DD'); 
+            const creationDate = new Date(); 
             const priority = document.querySelector('input[name=notePriority]:checked').value;
             const newNote = factories.taskFactory(projectId, null, note, creationDate, null, priority);
 
@@ -247,6 +253,7 @@ const taskEvents = (() => {
             dom.renderNotes();
             dom.renderHeader(currentProject, projectId);
             dom.toggleNotesModal();
+            factories.saveLocal();
         }
     }
 
@@ -275,6 +282,7 @@ const taskEvents = (() => {
             dom.renderNotes();
             dom.renderHeader(factories.projectList[addHandlers.determineCurrentProjectId()], addHandlers.determineCurrentProjectId());
             dom.toggleNotesModal();
+            factories.saveLocal();
         } 
     }
 

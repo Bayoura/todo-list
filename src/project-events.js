@@ -17,6 +17,7 @@ const projectEvents = (() => {
             factories.projectList.push(newProject);
             dom.renderProjects(addHandlers.determineCurrentProjectId());
             dom.displayProjectForm();
+            factories.saveLocal();
         }
     }
 
@@ -87,6 +88,7 @@ const projectEvents = (() => {
 
             dom.renderProjects(addHandlers.determineCurrentProjectId());
             dom.renderHeader(factories.projectList[addHandlers.determineCurrentProjectId()], addHandlers.determineCurrentProjectId());
+            factories.saveLocal();
         } 
     }
 
@@ -107,6 +109,7 @@ const projectEvents = (() => {
             dom.renderProjects('0');
             dom.renderHeader(factories.projectList[0], '0');
         }    
+        factories.saveLocal();
     }
 
     return {
