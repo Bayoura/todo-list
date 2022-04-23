@@ -6,7 +6,14 @@ import dayjs from 'dayjs';
 
 const addHandlers = (() => {
 
-    
+    function responsiveNotes() {
+        window.addEventListener('resize', () => {
+            if (determineCurrentProjectId() === '5') {
+                dom.renderNotes();
+            }
+        })
+    }
+
     const body = document.querySelector('body');
     
     function addClickHandlers() {
@@ -203,6 +210,7 @@ const addHandlers = (() => {
         addKeyHandlers,
         addChangeHandler,
         addSubmitHandlers,
+        responsiveNotes,
         chooseProject,
         setCurrentClass,
         getAllTasks,
