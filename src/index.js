@@ -7,14 +7,11 @@ import dom from './dom.js';
 import factories from './factories.js';
 import taskEvents from './task-events.js';
 
-
-// shouldnt be able to select text of li
-// make draggable project list items
-
 addHandlers.addClickHandlers();
 addHandlers.addKeyHandlers();
 addHandlers.addChangeHandler();
 addHandlers.addSubmitHandlers();
+addHandlers.responsiveNotes();
 dom.renderProjects('0');
 taskEvents.determineTasks(factories.projectList[0], '0');
 dom.renderHeader(factories.projectList[0], '0');
