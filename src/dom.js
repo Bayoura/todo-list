@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import factories from './factories.js';
 import addHandlers from './handlers.js';
 import taskEvents from './task-events.js';
-import projectEvents from './project-events.js';
 
 const dom = (() => {
 
@@ -34,6 +33,10 @@ const dom = (() => {
             // div and icon buttons
             const iconsDiv = document.createElement('div');
             iconsDiv.classList.add('icons-div')
+
+            const editDiv = document.createElement('div');
+            editDiv.setAttribute('data-tooltip', 'Rename');
+            editDiv.classList.add('tool-tip');
             const editIcon = document.createElement('button');
             editIcon.classList.add(
                 'fa-solid',
@@ -44,7 +47,11 @@ const dom = (() => {
             editIcon.setAttribute('data-projectRename', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit project';
+            editDiv.append(editIcon);
 
+            const deleteDiv = document.createElement('div');
+            deleteDiv.setAttribute('data-tooltip', 'Delete');
+            deleteDiv.classList.add('tool-tip');
             const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
@@ -55,7 +62,9 @@ const dom = (() => {
             deleteIcon.setAttribute('data-projectDelete', '');
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete project';
-            iconsDiv.append(editIcon, deleteIcon);
+            deleteDiv.append(deleteIcon);
+
+            iconsDiv.append(editDiv, deleteDiv);
             listItem.appendChild(iconsDiv);
         }
     }
@@ -71,6 +80,9 @@ const dom = (() => {
         // task count
         taskCount_span.textContent = currentProject.tasks.length;
         
+        // add button
+        const toolTipDiv = document.createElement('div');
+        toolTipDiv.classList.add('tool-tip');
         const button = document.createElement('button');
         button.type = 'button';
         button.classList.add(
@@ -78,19 +90,18 @@ const dom = (() => {
             'fa-circle-plus',
             'icon'
         );
-        const toolTip = document.createElement('span');
-        toolTip.classList.add('tool-tip');
+        toolTipDiv.append(button);
 
         if (projectId > 5) {
             button.ariaLabel = 'add new task';
             button.setAttribute('data-addTaskBtn', '');
-            toolTip.textContent = 'Add new task';
-            addTaskButton_div.append(button,toolTip);
+            toolTipDiv.setAttribute('data-tooltip', 'Add new task');
+            addTaskButton_div.append(toolTipDiv);
         } else if (projectId === '5') {
             button.ariaLabel = 'add new note';
             button.setAttribute('data-addNoteBtn', '');
-            toolTip.textContent = 'Add new note';
-            addTaskButton_div.append(button,toolTip);
+            toolTipDiv.setAttribute('data-tooltip', 'Add new note');
+            addTaskButton_div.append(toolTipDiv);
         }    
     }
  
@@ -139,6 +150,7 @@ const dom = (() => {
             // title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = currentProject.tasks[i].title;
+            taskTitle.classList.add('task-title')
             // date span
             const date = document.createElement('span');
             date.classList.add('date-span');
@@ -165,6 +177,9 @@ const dom = (() => {
             taskDetails.append(taskTitle, dateStarButtonContainer);
 
             // icon buttons (inside of taskOptionsDiv)
+            const infoDiv = document.createElement('div');
+            infoDiv.setAttribute('data-tooltip', 'Details');
+            infoDiv.classList.add('tool-tip');
             const infoIcon = document.createElement('button');
             infoIcon.classList.add(
                 'fa-solid',
@@ -175,7 +190,11 @@ const dom = (() => {
             infoIcon.setAttribute('data-taskInfo', '');
             infoIcon.setAttribute('data-id', i);
             infoIcon.ariaLabel = 'task details';
+            infoDiv.append(infoIcon);
             
+            const editDiv = document.createElement('div');
+            editDiv.setAttribute('data-tooltip', 'Edit');
+            editDiv.classList.add('tool-tip');
             const editIcon = document.createElement('button');
             editIcon.classList.add(
                 'fa-solid',
@@ -186,7 +205,11 @@ const dom = (() => {
             editIcon.setAttribute('data-taskEdit', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit task';
+            editDiv.append(editIcon);
            
+            const moveDiv = document.createElement('div');
+            moveDiv.setAttribute('data-tooltip', 'Move');
+            moveDiv.classList.add('tool-tip');
             const moveIcon = document.createElement('button');
             moveIcon.classList.add(
                 'fa-solid',
@@ -198,7 +221,11 @@ const dom = (() => {
             moveIcon.setAttribute('data-taskMove', '');
             moveIcon.setAttribute('data-id', i);
             moveIcon.ariaLabel = 'move task to another project';
+            moveDiv.append(moveIcon);
            
+            const deleteDiv = document.createElement('div');
+            deleteDiv.setAttribute('data-tooltip', 'Delete');
+            deleteDiv.classList.add('tool-tip');
             const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
@@ -209,11 +236,12 @@ const dom = (() => {
             deleteIcon.setAttribute('data-taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete task';
+            deleteDiv.append(deleteIcon);
 
             if (currentProject.title === 'Completed Tasks') {
-                taskOptionsDiv.append(infoIcon, editIcon, deleteIcon);
+                taskOptionsDiv.append(infoDiv, editDiv, deleteDiv);
             } else {
-                taskOptionsDiv.append(infoIcon, editIcon, moveIcon, deleteIcon);
+                taskOptionsDiv.append(infoDiv, editDiv, moveDiv, deleteDiv);
             }
         }
         addHandlers.updateTaskIndex();
@@ -292,7 +320,6 @@ const dom = (() => {
         grid2.classList.add('grid');
         const grid3 = document.createElement('li');
         grid3.classList.add('grid');
-   
         noteList_ul.append(grid1, grid2, grid3); 
 
         for (let i = 0; i < currentProject.tasks.length; i++) {
@@ -314,6 +341,9 @@ const dom = (() => {
             const iconsDiv = document.createElement('div');
             iconsDiv.classList.add('note-icons-wrap');
 
+            const editDiv = document.createElement('div');
+            editDiv.setAttribute('data-tooltip', 'Edit');
+            editDiv.classList.add('tool-tip');
             const editIcon = document.createElement('button');
             editIcon.classList.add(
                 'fa-solid',
@@ -324,7 +354,11 @@ const dom = (() => {
             editIcon.setAttribute('data-noteEdit', '');
             editIcon.setAttribute('data-id', i);
             editIcon.ariaLabel = 'edit note';
+            editDiv.append(editIcon);
            
+            const deleteDiv = document.createElement('div');
+            deleteDiv.setAttribute('data-tooltip', 'Delete');
+            deleteDiv.classList.add('tool-tip');
             const deleteIcon = document.createElement('button');
             deleteIcon.classList.add(
                 'fa-solid',
@@ -335,8 +369,9 @@ const dom = (() => {
             deleteIcon.setAttribute('data-taskDelete', '');
             deleteIcon.setAttribute('data-id', i);
             deleteIcon.ariaLabel = 'delete note';
+            deleteDiv.append(deleteIcon);
 
-            iconsDiv.append(editIcon, deleteIcon);
+            iconsDiv.append(editDiv, deleteDiv);
 
             // details div
             const details = document.createElement('div');
@@ -344,13 +379,17 @@ const dom = (() => {
             details.append(date, iconsDiv);
 
             noteContainer.append(addStarIcons(currentProject.tasks[i]), para, details);
-          
-            if (i%3 === 0) {
+
+            if (screen.width > 950) {
+                if (i%3 === 0) {
+                    grid1.appendChild(noteContainer);
+                } else if (i%3 === 1) {
+                    grid2.appendChild(noteContainer);
+                } else if (i%3 === 2) {
+                    grid3.appendChild(noteContainer);
+                }
+            } else {
                 grid1.appendChild(noteContainer);
-            } else if (i%3 === 1) {
-                grid2.appendChild(noteContainer);
-            } else if (i%3 === 2) {
-                grid3.appendChild(noteContainer);
             }
         }
         addHandlers.updateTaskIndex();
@@ -365,7 +404,7 @@ const dom = (() => {
         infoModalDetails.textContent = '';
  
         
-        const titleHeading = document.createElement('p');
+        const titlePara = document.createElement('p');
         const descriptionPara = document.createElement('p');
         const projectPara = document.createElement('p');
         const creationDatePara = document.createElement('p');
@@ -380,24 +419,30 @@ const dom = (() => {
         const dueDateSpan = document.createElement('span');
         const completionDateSpan = document.createElement('span');
         const prioritySpan = document.createElement('span');
-
-        titleSpan.textContent = 'Title: ';
-        descriptionSpan.textContent = 'Description: ';
-        projectSpan.textContent = 'Project: ';
-        creationDateSpan.textContent = 'Created: ';
-
-        titleHeading.append(titleSpan);
-        descriptionPara.append(descriptionSpan);
-        projectPara.append(projectSpan);
-        creationDatePara.append(creationDateSpan);
-        infoModalDetails.append(titleHeading, descriptionPara, projectPara, creationDatePara);
-
+               
         // insert text AFTER the span
-        titleSpan.after(clickedTask.title);
-        descriptionPara.after(clickedTask.description);
-        projectPara.after(factories.projectList[clickedTask.projectId].title);
-        creationDatePara.after(dayjs(clickedTask.creationDate).format('ll')); 
+        titleSpan.textContent = 'Title: ';
+        titlePara.append(titleSpan);
+        titleSpan.after(clickedTask.title); 
+        infoModalDetails.append(titlePara);
 
+        if (clickedTask.description !== '') {
+            descriptionSpan.textContent = 'Description: ';
+            descriptionPara.append(descriptionSpan);
+            descriptionSpan.after(clickedTask.description);
+            infoModalDetails.append(descriptionPara);
+        }
+
+        projectSpan.textContent = 'Project: ';
+        projectPara.append(projectSpan);
+        projectSpan.after(factories.projectList[clickedTask.projectId].title);
+
+        creationDateSpan.textContent = 'Created: ';
+        creationDatePara.append(creationDateSpan);
+        creationDateSpan.after(dayjs(clickedTask.creationDate).format('ll')); 
+
+        infoModalDetails.append(projectPara, creationDatePara);
+       
         if (clickedTask.dueDate !== '') {    
             dueDateSpan.textContent = 'Due: ';       
             dueDatePara.append(dueDateSpan);
@@ -412,7 +457,9 @@ const dom = (() => {
         }
         prioritySpan.textContent = 'Priority: ';
         priorityPara.append(prioritySpan);
-        prioritySpan.after(clickedTask.priority);
+        let priority = clickedTask.priority;
+        if (priority === 'very-high') priority = 'Very high';
+        prioritySpan.after(priority[0].toUpperCase() + priority.slice(1).toLowerCase());
         infoModalDetails.append(priorityPara);
     }
 
