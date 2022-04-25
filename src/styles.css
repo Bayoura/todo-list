@@ -589,7 +589,7 @@ select {
   }
 
   header {
-    background-color: hsl(206deg 57% 69%);
+    background: hsl(206deg 57% 69%);
   }
 }
 
