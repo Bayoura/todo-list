@@ -196,10 +196,19 @@ const addHandlers = (() => {
         return allTasks;
     }
 
+    // start at 4 so completed tasks and notes also get an id
     function updateTaskIndex() {
-        for (let i = 5; i < factories.projectList.length; i++) {
+        for (let i = 4; i < factories.projectList.length; i++) {
             for (let j = 0; j < factories.projectList[i].tasks.length; j++) {
                 factories.projectList[i].tasks[j].taskId = j;
+            }
+        }
+    }
+
+    function updateProjectIndex() {
+        for (let i = 6; i < factories.projectList.length; i++) {
+            for (let j = 0; j < factories.projectList[i].tasks.length; j++) {
+                factories.projectList[i].tasks[j].projectId = i;
             }
         }
     }
@@ -216,6 +225,7 @@ const addHandlers = (() => {
         getAllTasks,
         determineCurrentProjectId,
         updateTaskIndex,
+        updateProjectIndex
     }
 
 })();
