@@ -67,6 +67,7 @@ const dom = (() => {
             iconsDiv.append(editDiv, deleteDiv);
             listItem.appendChild(iconsDiv);
         }
+        addHandlers.updateProjectIndex();
     }
     
     function renderHeader(currentProject, projectId) {
@@ -95,23 +96,23 @@ const dom = (() => {
         if (projectId > 5) {
             button.ariaLabel = 'add new task';
             button.setAttribute('data-addTaskBtn', '');
-            toolTipDiv.setAttribute('data-tooltip', 'Add new task');
+            toolTipDiv.setAttribute('data-tooltip', 'New task');
             addTaskButton_div.append(toolTipDiv);
         } else if (projectId === '5') {
             button.ariaLabel = 'add new note';
             button.setAttribute('data-addNoteBtn', '');
-            toolTipDiv.setAttribute('data-tooltip', 'Add new note');
+            toolTipDiv.setAttribute('data-tooltip', 'New note');
             addTaskButton_div.append(toolTipDiv);
         }    
     }
  
     function renderTasks(currentProject) {
+        console.log(factories.projectList)
         let localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
         
         taskEvents.sortTasks();
 
-        // color the list items according to the priority!
         const taskList_ul = document.querySelector('[data-taskList]');
         taskList_ul.classList.remove('note-list');
         taskList_ul.textContent = '';
@@ -150,11 +151,11 @@ const dom = (() => {
             // title div
             const taskTitle = document.createElement('div');
             taskTitle.textContent = currentProject.tasks[i].title;
-            taskTitle.classList.add('task-title')
+            taskTitle.classList.add('task-title');
             // date span
             const date = document.createElement('span');
             date.classList.add('date-span');
-            if (currentProject.title === 'Completed Tasks') {
+            if (addHandlers.determineCurrentProjectId() === '4') {
                 date.textContent = 'Completed: ' + dayjs(currentProject.tasks[i].completionDate).format('ll');
             } else {
                 date.textContent = dayjs(currentProject.tasks[i].dueDate).format('ll');
@@ -238,7 +239,7 @@ const dom = (() => {
             deleteIcon.ariaLabel = 'delete task';
             deleteDiv.append(deleteIcon);
 
-            if (currentProject.title === 'Completed Tasks') {
+            if (addHandlers.determineCurrentProjectId() === '4') {
                 taskOptionsDiv.append(infoDiv, editDiv, deleteDiv);
             } else {
                 taskOptionsDiv.append(infoDiv, editDiv, moveDiv, deleteDiv);
@@ -302,7 +303,6 @@ const dom = (() => {
             );
             priorityDiv.append(starSpan2, starSpan3, starSpan4);
         }
-
         return priorityDiv;
     }
 
@@ -324,10 +324,10 @@ const dom = (() => {
 
         for (let i = 0; i < currentProject.tasks.length; i++) {
 
-            // note container
-            const noteContainer = document.createElement('div');
-            noteContainer.tabIndex = "0";
-            noteContainer.classList.add('note');
+            // note 
+            const note = document.createElement('div');
+            note.tabIndex = "0";
+            note.classList.add('note');
 
             // text paragraph
             const para = document.createElement('p');
@@ -378,18 +378,18 @@ const dom = (() => {
             details.classList.add('note-details');
             details.append(date, iconsDiv);
 
-            noteContainer.append(addStarIcons(currentProject.tasks[i]), para, details);
+            note.append(addStarIcons(currentProject.tasks[i]), para, details);
 
             if (screen.width > 950) {
                 if (i%3 === 0) {
-                    grid1.appendChild(noteContainer);
+                    grid1.appendChild(note);
                 } else if (i%3 === 1) {
-                    grid2.appendChild(noteContainer);
+                    grid2.appendChild(note);
                 } else if (i%3 === 2) {
-                    grid3.appendChild(noteContainer);
+                    grid3.appendChild(note);
                 }
             } else {
-                grid1.appendChild(noteContainer);
+                grid1.appendChild(note);
             }
         }
         addHandlers.updateTaskIndex();
@@ -403,7 +403,6 @@ const dom = (() => {
         const infoModalDetails = document.querySelector('[data-infoModalDetails]');
         infoModalDetails.textContent = '';
  
-        
         const titlePara = document.createElement('p');
         const descriptionPara = document.createElement('p');
         const projectPara = document.createElement('p');
@@ -433,15 +432,18 @@ const dom = (() => {
             infoModalDetails.append(descriptionPara);
         }
 
-        projectSpan.textContent = 'Project: ';
-        projectPara.append(projectSpan);
-        projectSpan.after(factories.projectList[clickedTask.projectId].title);
+        if (factories.projectList[clickedTask.projectId] !== undefined) {
+            projectSpan.textContent = 'Project: ';
+            projectPara.append(projectSpan);
+            projectSpan.after(factories.projectList[clickedTask.projectId].title);
+            infoModalDetails.append(projectPara);
+        }
 
         creationDateSpan.textContent = 'Created: ';
         creationDatePara.append(creationDateSpan);
         creationDateSpan.after(dayjs(clickedTask.creationDate).format('ll')); 
 
-        infoModalDetails.append(projectPara, creationDatePara);
+        infoModalDetails.append(creationDatePara);
        
         if (clickedTask.dueDate !== '') {    
             dueDateSpan.textContent = 'Due: ';       
@@ -476,7 +478,7 @@ const dom = (() => {
         moveSelect.setAttribute('data-moveSelection', '');
         moveSelect.classList.add('move-selection');
         const firstOption = document.createElement('option');
-        firstOption.value = factories.projectList[currentProject.tasks[taskId].projectId].title;
+        firstOption.value = currentProject.tasks[taskId].projectId;
         firstOption.textContent = factories.projectList[currentProject.tasks[taskId].projectId].title;
         moveSelect.append(firstOption);
             
@@ -555,7 +557,6 @@ const dom = (() => {
     function toggleSidebar() {
         const sidebar_nav = document.querySelector('[data-sidebar]');
         const main_element = document.querySelector('[data-main]');
-    
         sidebar_nav.classList.toggle('closed');
         main_element.classList.toggle('full-page');   
     }
@@ -567,14 +568,14 @@ const dom = (() => {
         renderNotes,
         renderTaskDetails,
         renderMoveSelection,
+        closeMoveSelection,
         toggleModal,
         displayCorrectTaskModal,
         toggleInfoModal,
         toggleNotesModal,
         displayCorrectNoteModal,
         displayProjectForm,
-        toggleSidebar,
-        closeMoveSelection
+        toggleSidebar
     };
 })();
 
