@@ -8,6 +8,38 @@
   <script defer src="main.js"></script></head>  
   <body>
    
+    <nav class="side-bar" data-sidebar>
+      <div>
+        <div class="default-projects">
+          <ul>
+            <li tabindex="0" data-sidebarTab data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
+            <li tabindex="0" data-sidebarTab data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
+            <li tabindex="0" data-sidebarTab data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
+            <li tabindex="0" data-sidebarTab data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
+            <li tabindex="0" data-sidebarTab data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
+            <li tabindex="0" data-sidebarTab data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
+          </ul>
+        </div>
+        <div class="user-projects-container">
+          <div class="title-btn-container">
+            <h2>Project List</h2>
+            <div class="tool-tip" data-tooltip="New project">
+              <button type="button" aria-label="add new project" class="fa-solid fa-folder-plus icon" data-addProjectBtn></button>
+            </div>
+          </div>
+    
+          <ul class="project-list" data-projectList></ul>
+          <form action="" class="new-project-form closed" data-newProjectForm>
+            <input type="text" placeholder="New project name" data-projectTitleInput required>
+            <div>
+              <input type="submit" class="add-btn" value="Add" data-submitProjectBtn>
+              <button type="button" class="cancel-btn" data-cancelProjectBtn>Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+
     <header>
       <h1>Do It Now</h1>
       <input type="checkbox" id="hamburger" data-hamburgerCheck>
@@ -17,53 +49,23 @@
         <span class="line" data-hamburgerLine></span>
       </label>
     </header>
-    <nav class="side-bar" data-sidebar>
-      <div>
-        <div class="default-projects">
-          <ul>
-            <li tabindex="0" data-sidebarTab data-all data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
-            <li tabindex="0" data-sidebarTab data-today data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
-            <li tabindex="0" data-sidebarTab data-week data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
-            <li tabindex="0" data-sidebarTab data-important data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
-            <li tabindex="0" data-sidebarTab data-completed data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
-            <li tabindex="0" data-sidebarTab data-notes data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
-          </ul>
-        </div>
-        <div class="user-projects-container">
-          <div class="title-and-btn-container">
-            <h2>Project List</h2>
-            <button type="button" aria-label="add new project" class="add-button" data-addProjectBtn></button>
-            <span class="tool-tip">Add new project</span>
-          </div>
-    
-          <ul class="project-list" data-projectList></ul>
-          <form action="" class="new-project-form closed" data-newProjectForm>
-            <input type="text" placeholder="New project name" data-projectTitleInput required>
-            <div>
-              <input type="submit" value="Add" data-submitProjectBtn>
-              <input type="button" value="Cancel" data-cancelProjectBtn>
-            </div>
-          </form>
-        </div>
-      </div>
-    </nav>
     
     <main data-main>
-      <di data-taskContainer>
+      <div>
         <h2 data-projectHeading></h2>
         <div class="task-sort-container">
-          <div class="title-and-btn-container">
-            <div><span>(</span><span data-taskCount></span><span>)</span></div>
+          <div class="title-btn-container">
+            <div class="task-count"><span>(</span><span data-taskCount></span><span>)</span></div>
             <div data-btnDiv></div>
           </div>
     
-          <div class="sort-container" >
-            <label for="sort" data-a>Sort by:</label>
-            <select name="sort" id="sort" data-b>
-              <option value="volvo" data-sortOption data-sortNewOld>Newest to Oldest</option>
-              <option value="saab" data-sortOption data-sortOldNew>Oldest to Newest</option>
-              <option value="mercedes" data-sortOption data-sortDate>Due Date</option>
-              <option value="audi" data-sortOption data-sortPriority>Priority</option>
+          <div>
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort" data-select>
+              <option value="new">Newest to Oldest</option>
+              <option value="old">Oldest to Newest</option>
+              <option value="date">Due Date</option>
+              <option value="priority">Priority</option>
             </select>
           </div>
         </div>
@@ -74,57 +76,103 @@
     
     <div class="modal closed" data-modal>
       <div class="modal-header">
-        <h2 class="create-task-h2">Create a new task...</h2>
-        <h2 class="edit-task-h2">Edit your task...</h2>
-        <button type="button" data-cancelTaskBtn>Close</button>
+        <h2 data-addProjectHeading>Create task</h2>
+        <h2 data-editProjectHeading>Edit task</h2>
       </div>
     
       <form action="" class="modal-form" data-taskModalForm>
-        <input type="text" data-taskTitleInput aria-label="title of your task"  placeholder="Go grocery shopping" required>
-        <textarea data-descriptionInput aria-label="description of your task" placeholder="Description: buy apples, bread, lots of ice cream"></textarea>
-        <div>
-          <label for="due-date">Due date:</label>
+        <section>
+          <label for="input-task-title">Title*</label>
+          <input type="text" id="input-task-title" data-taskTitleInput placeholder="Go grocery shopping" required>
+        </section>
+        <section>
+          <label for="input-task-description">Description</label>
+          <textarea id="input-task-description" data-descriptionInput placeholder="Buy apples, bread, lots of ice cream. Don't forget your purse like last time."></textarea>
+        </section>
+        <section>
+          <label for="due-date">Due date</label>
           <input type="date" data-dateInput id="due-date">
+        </section>
+        <section>
+          <p>Priority*</p>
+          <div>
+            <label>
+              <input type="radio" name="priority" value="low" class="" required>
+              Low
+            </label>
+            <label>
+              <input type="radio" name="priority" value="medium" class="" required checked>
+              Medium
+            </label>
+            <label>
+              <input type="radio" name="priority" value="high" class="" required>
+              High
+            </label>
+            <label>
+              <input type="radio" name="priority" value="very-high" class="" required>
+              Very high
+            </label>
+          </div>
+        </section>
+        <div class="cancel-save-btn-wrap">
+          <input type="submit" class="add-btn" value="Add" data-submitTaskBtn>
+          <input type="submit" class="add-btn" value="Save" data-submitEditBtn>
+          <button type="button" class="cancel-btn" data-cancelTaskBtn>Cancel</button>
         </div>
-        <div>
-          <div>Priority:</div>
-          <label>
-            <input type="radio" name="priority" value="low" class="" required>
-            Low
-          </label>
-          <label>
-            <input type="radio" name="priority" value="medium" class="" required checked>
-            Medium
-          </label>
-          <label>
-            <input type="radio" name="priority" value="high" class="" required>
-            High
-          </label>
-          <label>
-            <input type="radio" name="priority" value="very-high" class="" required>
-            Very high
-          </label>
-        </div>
-        <input type="submit" class="add-task-btn" value="Add task" data-submitTaskBtn>
-        <input type="submit" class="edit-task-btn" value="Save" data-submitEditBtn>
       </form>
     </div>
 
-    <div class="info-modal closed" data-infoModal>
+    <div class="modal closed" data-infoModal>
+      <div class="modal-header" data-infoModalHeader>
+        <h2>Task Details</h2>
+        <button type="button" class="fa-solid fa-x icon" aria-label="close" data-cancelInfoBtn></button>
+      </div>
+      <div class="info-wrap" data-infoModalDetails></div>
+    </div>
+
+    <div class="modal closed" data-notesModal>
       <div class="modal-header">
-        <h3 data-infoTitle></h3>
-        <button type="button" data-cancelInfoBtn>Close</button>
+        <h2 data-addNoteHeading>Create note</h2>
       </div>
-      <div>
-        <p data-infoDescription></p>
-        <p data-infoDueDate></p>
-        <p data-infoCompletionDate></p>
-        <p data-infoPriority></p>
-      </div>
+    
+      <form action="" class="modal-form" data-noteModalForm>
+        <section>
+          <label for="input-note-description">Description*</label>
+          <textarea id="input-note-description" data-noteInput placeholder="Remember Zeke's birthday, it's the 8th of August. What kind of present might he like...?" required></textarea>
+        </section>
+        <section>
+          <p>Priority*</p>
+          <div>
+            <label>
+              <input type="radio" name="notePriority" value="low" class="" required>
+              Low
+            </label>
+            <label>
+              <input type="radio" name="notePriority" value="medium" class="" required checked>
+              Medium
+            </label>
+            <label>
+              <input type="radio" name="notePriority" value="high" class="" required>
+              High
+            </label>
+            <label>
+              <input type="radio" name="notePriority" value="very-high" class="" required>
+              Very high
+            </label>
+          </div>
+        </section>
+        <div class="cancel-save-btn-wrap">
+          <input type="submit" class="add-btn" value="Add Note" data-submitNoteBtn>
+          <input type="submit" class="add-btn" value="Save" data-submitNoteEdit>
+          <button type="button" class="cancel-btn" data-cancelNoteBtn>Cancel</button>
+        </div>
+      </form>
     </div>
     
     <div class="overlay closed" data-overlay></div>
     <div class="info-overlay closed" data-infoOverlay></div>
+    <div class="notes-overlay closed" data-notesOverlay></div>
+    <div class="move-overlay closed" data-moveOverlay></div>
   </body> 
 </html>
   
