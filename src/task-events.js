@@ -42,6 +42,7 @@ const taskEvents = (() => {
                 let dueWeek = [];
                 for (let i = 0; i < allTasks.length; i++) {
                     let dueDate = dayjs(allTasks[i].dueDate).format('ll');
+                    // see if dates are in the same calendar week
                     if (dayjs(dueDate).week() == dayjs(today).week()) {
                         dueWeek.push(allTasks[i]);
                     }
@@ -124,22 +125,32 @@ const taskEvents = (() => {
         const originProject = factories.projectList[clickedTask.projectId];
         
         if (clickedTask.completed === true) {
-            clickedTask.completed = false;
-            clickedTask.completionDate = '';
-            originProject.tasks.push(clickedTask);
-            // remove old classes:
-            clicked.removeAttribute('class');
-            clicked.classList.add(
-                'fa-regular',
-                'fa-circle',
-                'icon'
-            );  
-            setTimeout(() => {
-                factories.projectList[4].tasks.splice(clicked.dataset.id, 1);
-                dom.renderTasks(currentProject);
-                dom.renderHeader(currentProject, currentProjectId)
-                factories.saveLocal();
-            }, 200); 
+            
+            if (factories.projectList.length < 7) {
+                return;
+            } else {
+                clickedTask.completed = false;
+                clickedTask.completionDate = '';
+                // remove old classes:
+                clicked.removeAttribute('class');
+                clicked.classList.add(
+                    'fa-regular',
+                    'fa-circle',
+                    'icon'
+                );
+                if (originProject === undefined) {
+                    factories.projectList[6].tasks.push(clickedTask);
+                    clickedTask.projectId = '6';
+                } else {
+                    originProject.tasks.push(clickedTask);
+                }
+                setTimeout(() => {
+                    factories.projectList[4].tasks.splice(clicked.dataset.id, 1);
+                    dom.renderTasks(currentProject);
+                    dom.renderHeader(currentProject, currentProjectId)
+                    factories.saveLocal();
+                }, 200); 
+            }    
         } else {
             clickedTask.completed = true;
             clickedTask.completionDate = new Date();
@@ -179,9 +190,7 @@ const taskEvents = (() => {
     }
 
     function submitTaskEdit(e, task) {
-        e.preventDefault(); //stop form from submitting   
-        
-        //check if required fields are filled out
+        e.preventDefault(); 
         const taskForm_form = document.querySelector('[data-taskModalForm]');
         let checkStatus = taskForm_form.checkValidity();
         taskForm_form.reportValidity();
@@ -208,7 +217,13 @@ const taskEvents = (() => {
         const currentProjectId = addHandlers.determineCurrentProjectId();
         const clickedTask = currentProject.tasks[clicked.dataset.id];
         const originProject = factories.projectList[clickedTask.projectId];
-        originProject.tasks.splice(clickedTask.taskId, 1);  
+  
+        // special case for completed tasks
+        if (currentProjectId === '4') {
+            factories.projectList[4].tasks.splice(clickedTask.taskId, 1);
+        } else {
+            originProject.tasks.splice(clickedTask.taskId, 1);  
+        }
 
         if (currentProjectId < 6) {
             determineTasks(currentProject, currentProjectId);
@@ -269,9 +284,7 @@ const taskEvents = (() => {
     }
 
     function submitNoteEdit(e, note) {
-        e.preventDefault(); //stop form from submitting   
-        
-        //check if required fields are filled out
+        e.preventDefault();
         const notesForm_form = document.querySelector('[data-noteModalForm]');
         let checkStatus = notesForm_form.checkValidity();
         notesForm_form.reportValidity();
@@ -285,8 +298,6 @@ const taskEvents = (() => {
             factories.saveLocal();
         } 
     }
-
-
     return {
         determineTasks,
         sortTasks,
@@ -300,7 +311,6 @@ const taskEvents = (() => {
         deleteTask,
         changeCompletionStatus,
     }
-
 })();
 
 export default taskEvents;

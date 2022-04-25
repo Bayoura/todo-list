@@ -107,7 +107,6 @@ const dom = (() => {
     }
  
     function renderTasks(currentProject) {
-        console.log(factories.projectList)
         let localizedFormat = require('dayjs/plugin/localizedFormat');
         dayjs.extend(localizedFormat);
         
