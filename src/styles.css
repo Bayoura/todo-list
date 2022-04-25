@@ -29,6 +29,7 @@ main {
 
 main.full-page {
   margin-left: 0;
+  margin-top: 0;
 }
 
 header {
@@ -51,7 +52,6 @@ h1 {
   background-clip: text;
   color: transparent;
   text-shadow: 0px 1px 3px var(--white-purple);
-  margin-left: 255px;
 }
 
 h2 {
@@ -61,7 +61,8 @@ h2 {
 
 h2, 
 .project-list li h3, 
-.task-title {
+.task-title,
+.note > p {
   overflow-wrap: break-word; 
   word-wrap: break-word;
   word-break: break-word;
@@ -214,13 +215,6 @@ h3.current
   margin-bottom: 10px;
 }
 
-.sort-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
-
 /* -------------- TASKS -------------------- */
 
 .task-list,
@@ -231,10 +225,12 @@ h3.current
 }
 
 .task {
+  border-bottom: 1px solid ghostwhite;
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .task-details {
@@ -259,7 +255,7 @@ h3.current
 .star-btn-wrap {
   display: flex;
   justify-content: space-between;
-  width: 300px;
+  width: 250px;
 }
 
 .date-span {
@@ -292,33 +288,21 @@ h3.current
 
 .note-list {
   display: flex;
-  justify-content: space-between;
   gap: 15px;
   margin-top: 20px;
 }
 
 .note {
   background-color: ghostwhite;
-  border-radius: 2px;
-  box-shadow: 4px 4px 10px black;
+  border-radius: 3px;
+  box-shadow: 4px 4px 10px var(--text-dark);
   padding: 10px;
   margin: 15px 0;
   transition: 200ms ease-in;
 }
 
-.note > p {
-  overflow-wrap: break-word; 
-  word-wrap: break-word;
-  word-break: break-word;
-   /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
 .note:hover {
-  box-shadow: 6px 6px 13px black;
+  box-shadow: 6px 6px 13px var(--text-dark);
   transform: scale(1.01);
 }
 
@@ -330,8 +314,6 @@ h3.current
 
 .note-icons-wrap {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   gap: 10px;
 }
 
@@ -358,11 +340,9 @@ h3.current
 .icons-div {
   display: flex;
   padding-right: 10px;
+  gap: 5px;
 }
 
-.icons-div button:first-child {
-  padding-right: 5px;
-}
 
 .title-btn-container .icon::before {
   font-size: 1.7rem;
@@ -374,6 +354,27 @@ input[type="submit"],
 input[type="button"],
 .icon {
   cursor: pointer;
+}
+
+.add-btn,
+.cancel-btn
+{
+  border: 1px solid var(--text-normal);
+  border-radius: 3px;
+  padding: 5px;
+  width: 100px;
+}
+
+.add-btn {
+  background-color: var(--text-dark);
+  border: 1px solid var(--text-dark);
+  color: var(--white-purple);
+}
+
+.cancel-btn {
+  background-color: var(--white-purple);
+  border: 1px solid var(--text-dark);
+  color: var(--text-dark);
 }
 
 /* -----------------TOOLTIPS---------------------- */
@@ -456,17 +457,20 @@ section {
   flex-direction: column;
 }
 
+/* priority paragraph */
 section p {
   font-weight: bold;
 }
 
 label {
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 input,
 textarea 
 {
+  background-color: ghostwhite;
   border: 1px solid var(--text-normal);
   border-radius: 3px;
   padding: 5px;
@@ -488,25 +492,18 @@ textarea
 textarea {
   border-radius: 3px;
   height: 150px;
-  padding: 5px;
   resize: vertical;
 }
 
 select {
   background-color: hsl(231deg 100% 97%);
-  border-radius: 2px;
+  border-radius: 3px;
+  padding: 5px;
 }
 
 .cancel-save-btn-wrap {
   display: flex;
   gap: 10px;
-}
-
-.cancel-save-btn-wrap button, 
-.cancel-save-btn-wrap input,
-.new-project-form div input
-{
-  width: 100px;
 }
 
 .info-wrap {
@@ -563,22 +560,17 @@ select {
     margin-top: 250px;
   }
 
-  main.full-page {
-    margin-top: 0;
-  }
-
   .side-bar {
     border: none;
     max-height: 260px;
     position: absolute;
-    top: 120px;
+    top: 119px;
     padding-top: 0;
     width: 100%;
   }
 
   .side-bar > div {
     display: flex;
-    justify-content: space-around;
     gap: 30px;
   }
 
@@ -597,7 +589,7 @@ select {
   }
 
   header {
-    background: hsl(205deg 58% 69%);
+    background-color: hsl(206deg 57% 69%);
   }
 }
 
@@ -609,6 +601,10 @@ select {
   .task-title {
     max-width: 40%;
   }
+
+  .star-btn-wrap {
+    width: 220px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -617,9 +613,7 @@ select {
   }
 
   .task {
-    border-bottom: 1px solid hsl(225deg 30% 81%);
     margin-bottom: 15px;
-    padding-bottom: 10px;
   }
 
   .task-details {
@@ -640,7 +634,6 @@ select {
 
   .star-btn-wrap {
     justify-content: space-between;
-    width: 220px;
   }
 
   .tool-tip:hover::before,

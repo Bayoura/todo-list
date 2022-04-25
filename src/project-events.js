@@ -27,7 +27,7 @@ const projectEvents = (() => {
             dom.renderProjects(addHandlers.determineCurrentProjectId());
         } 
         // when projects are newly rendered, the variable `clicked` points to an element that doesn't exist anymore
-        // because after the click, the element was erased (when above condition is fulfilled) and an identical copy was rendered
+        // because after the click, the element was erased (when the above condition is fulfilled) and an identical copy was rendered
         // `newElement` is the same as `clicked` but it points to the current rendered element
         const renameButtons = document.querySelectorAll('[data-projectRename]');
         let newElement = null; 
@@ -36,6 +36,7 @@ const projectEvents = (() => {
         })
 
         const iconDiv = newElement.parentElement;
+        iconDiv.dataset.tooltip = 'Save';
         // create save button
         const saveRenamingBtn = document.createElement('button');
         saveRenamingBtn.type = 'button';
@@ -49,7 +50,7 @@ const projectEvents = (() => {
             'icon'
             ); 
             
-        iconDiv.insertBefore(saveRenamingBtn, iconDiv.firstChild);
+        iconDiv.append(saveRenamingBtn);
         const clickedProject = factories.projectList[newElement.dataset.id];
         
         // input field
@@ -67,6 +68,7 @@ const projectEvents = (() => {
 
         renameForm.append(renameInput);
         
+        // append input field and remove h3 text content
         document.querySelectorAll('[data-sidebarTab]').forEach(tab => {
             if (tab.dataset.id === newElement.dataset.id) {
                 tab.textContent = '';
@@ -74,6 +76,7 @@ const projectEvents = (() => {
                 renameInput.focus();
             }
         })
+        // remove edit button so save button can take its place
         newElement.remove();
     }
 

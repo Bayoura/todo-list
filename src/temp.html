@@ -12,18 +12,18 @@
       <div>
         <div class="default-projects">
           <ul>
-            <li tabindex="0" data-sidebarTab data-all data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
-            <li tabindex="0" data-sidebarTab data-today data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
-            <li tabindex="0" data-sidebarTab data-week data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
-            <li tabindex="0" data-sidebarTab data-important data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
-            <li tabindex="0" data-sidebarTab data-completed data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
-            <li tabindex="0" data-sidebarTab data-notes data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
+            <li tabindex="0" data-sidebarTab data-id="0" class="current"><i class="fa-solid fa-list icon"></i>All</li>
+            <li tabindex="0" data-sidebarTab data-id="1"><i class="fa-solid fa-calendar-day icon"></i>Due today</li>
+            <li tabindex="0" data-sidebarTab data-id="2"><i class="fa-solid fa-calendar-week icon"></i> Due this week</li>
+            <li tabindex="0" data-sidebarTab data-id="3"><i class="fa-solid fa-star icon"></i>Important</li>
+            <li tabindex="0" data-sidebarTab data-id="4"><i class="fa-solid fa-square-check icon"></i>Completed</li>
+            <li tabindex="0" data-sidebarTab data-id="5"><i class="fa-solid fa-clipboard icon"></i>Notes</li>
           </ul>
         </div>
         <div class="user-projects-container">
           <div class="title-btn-container">
             <h2>Project List</h2>
-            <div class="tool-tip" data-tooltip="Add new project">
+            <div class="tool-tip" data-tooltip="New project">
               <button type="button" aria-label="add new project" class="fa-solid fa-folder-plus icon" data-addProjectBtn></button>
             </div>
           </div>
@@ -32,8 +32,8 @@
           <form action="" class="new-project-form closed" data-newProjectForm>
             <input type="text" placeholder="New project name" data-projectTitleInput required>
             <div>
-              <input type="submit" value="Add" data-submitProjectBtn>
-              <input type="button" value="Cancel" data-cancelProjectBtn>
+              <input type="submit" class="add-btn" value="Add" data-submitProjectBtn>
+              <button type="button" class="cancel-btn" data-cancelProjectBtn>Cancel</button>
             </div>
           </form>
         </div>
@@ -51,7 +51,7 @@
     </header>
     
     <main data-main>
-      <di data-taskContainer>
+      <div>
         <h2 data-projectHeading></h2>
         <div class="task-sort-container">
           <div class="title-btn-container">
@@ -59,13 +59,13 @@
             <div data-btnDiv></div>
           </div>
     
-          <div class="sort-container" >
+          <div>
             <label for="sort">Sort by:</label>
             <select name="sort" id="sort" data-select>
-              <option value="new" data-sortOption>Newest to Oldest</option>
-              <option value="old" data-sortOption >Oldest to Newest</option>
-              <option value="date" data-sortOption >Due Date</option>
-              <option value="priority" data-sortOption>Priority</option>
+              <option value="new">Newest to Oldest</option>
+              <option value="old">Oldest to Newest</option>
+              <option value="date">Due Date</option>
+              <option value="priority">Priority</option>
             </select>
           </div>
         </div>
@@ -115,9 +115,9 @@
           </div>
         </section>
         <div class="cancel-save-btn-wrap">
-          <input type="submit" class="add-task-btn" value="Add" data-submitTaskBtn>
-          <input type="submit" class="edit-task-btn" value="Save" data-submitEditBtn>
-          <button type="button" data-cancelTaskBtn>Cancel</button>
+          <input type="submit" class="add-btn" value="Add" data-submitTaskBtn>
+          <input type="submit" class="add-btn" value="Save" data-submitEditBtn>
+          <button type="button" class="cancel-btn" data-cancelTaskBtn>Cancel</button>
         </div>
       </form>
     </div>
@@ -162,9 +162,9 @@
           </div>
         </section>
         <div class="cancel-save-btn-wrap">
-          <input type="submit" value="Add Note" data-submitNoteBtn>
-          <input type="submit" value="Save" data-submitNoteEdit>
-          <button type="button" data-cancelNoteBtn>Cancel</button>
+          <input type="submit" class="add-btn" value="Add Note" data-submitNoteBtn>
+          <input type="submit" class="add-btn" value="Save" data-submitNoteEdit>
+          <button type="button" class="cancel-btn" data-cancelNoteBtn>Cancel</button>
         </div>
       </form>
     </div>

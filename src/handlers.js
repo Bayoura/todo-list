@@ -2,7 +2,6 @@ import factories from './factories.js';
 import dom from './dom.js';
 import taskEvents from './task-events.js';
 import projectEvents from './project-events.js';
-import dayjs from 'dayjs';
 
 const addHandlers = (() => {
 
@@ -93,6 +92,8 @@ const addHandlers = (() => {
                 } else if (e.target.hasAttribute('data-renameInput')) {
                     e.preventDefault();
                     projectEvents.saveRenaming(e.target);
+                } else if (e.target.tagName === 'INPUT' && e.target.type !== 'submit') {
+                    e.preventDefault();
                 } 
             } else if (e.key === 'Escape') {
                 if (!document.querySelector('[data-overlay]').classList.contains('closed')) {
@@ -152,11 +153,10 @@ const addHandlers = (() => {
             // check if it is a default or user project
             if (id < 6) {
                 taskEvents.determineTasks(currentProject, id);
-                dom.renderHeader(currentProject, id);
             } else {
                 dom.renderTasks(currentProject);
-                dom.renderHeader(currentProject, id);
             }
+            dom.renderHeader(currentProject, id);
         }
     }
 
